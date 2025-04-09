@@ -1,0 +1,4 @@
+<B>2025-04-08 12:23:05</B>
+<BR>Il file <B>YPianoCaricoToyotaRiga.jsp</B> è stato generato correttamente nel cartela <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00003\websrc\it\dnd\thip\logis\lgb</B><BR>Il file <B>YPianoCaricoToyotaRiga.jsp</B> è stato copiato nel classpath
+<BR>Il file <B>YPianoCaricoToyota.jsp</B> è stato generato correttamente nel cartela <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00003\websrc\it\dnd\thip\logis\lgb</B><BR>Il file <B>YPianoCaricoToyota.jsp</B> è stato copiato nel classpath
+<BR><B>Generazione JSP è completata con successo</B><BR>

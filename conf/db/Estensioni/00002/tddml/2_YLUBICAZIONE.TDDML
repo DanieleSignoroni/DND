@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE TDDML SYSTEM "../../../TDDML.dtd">
+<TDDML>
+  <!-- YLUBICAZIONE (YLUBICA): Ubicazione; -->
+  <CreateTable schema="THIPPERS" name="YLUBICAZIONE" shortname="YLUBICA">
+    <Column name="COD_MAG_FISICO" shortname="COD_MAG_FI" type="char" length="5" nullable="no"/>
+    <Column name="CODICE" shortname="CODICE" type="char" length="15" nullable="no"/>
+    <Column name="BLOCCATA_AGV" shortname="BLOCCATA_A" type="char" length="1" nullable="no" default="N"/>
+    <Column name="GES_BAIA_PRELIEVO" shortname="GES_BAIA_P" type="char" length="1" nullable="no" default="N"/>
+    <Column name="TIPO_GESTIONE_PERS" shortname="TIPO_GESTI" type="char" length="1" nullable="no" default="O"/>
+  </CreateTable>
+  <CreateIndex schema="THIPPERS" name="YLUBICAZIONE_I01" tabschema="THIPPERS" tabname="YLUBICAZIONE" shortname="YLUBIC_I01" unique="yes">
+    <IndexCol name="COD_MAG_FISICO" order="Asc"/>
+    <IndexCol name="CODICE" order="Asc"/>
+  </CreateIndex>
+  <AlterTable schema="THIPPERS" name="YLUBICAZIONE">
+    <AddPrimaryKey>
+      <PrimaryKey>
+        <ColumnRef name="COD_MAG_FISICO"/>
+        <ColumnRef name="CODICE"/>
+      </PrimaryKey>
+    </AddPrimaryKey>
+  </AlterTable>
+  <Comment>
+    <CommentTable schema="THIPPERS" name="YLUBICAZIONE" text="Ubicazione">
+      <CommentColumn name="COD_MAG_FISICO" text="Centro D."/>
+      <CommentColumn name="CODICE" text="Ubicazione"/>
+      <CommentColumn name="BLOCCATA_AGV" text="Ubicazione bloccata AGV"/>
+      <CommentColumn name="GES_BAIA_PRELIEVO" text="Gestione come baia di prelievo"/>
+      <CommentColumn name="TIPO_GESTIONE_PERS" text="Tipo gestione"/>
+    </CommentTable>
+    <CommentIndex schema="THIPPERS" name="YLUBICAZIONE_I01" text="Primary Key"/>
+  </Comment>
+  <Grant schema="THIPPERS" name="YLUBICAZIONE"/>
+</TDDML>

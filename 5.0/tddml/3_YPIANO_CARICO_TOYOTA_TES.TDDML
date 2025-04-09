@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE TDDML SYSTEM "../../../TDDML.dtd">
+<TDDML>
+  <!-- YPIANO_CARICO_TOYOTA_TES (YPIANO_): Piano di carico Toyota; -->
+  <CreateTable schema="THIPPERS" name="YPIANO_CARICO_TOYOTA_TES" shortname="YPIANO_">
+    <Column name="ID_AZIENDA" shortname="ID_AZIENDA" type="char" length="3" nullable="no"/>
+    <Column name="STATO" shortname="STATO" type="char" length="1" nullable="no"/>
+    <Column name="R_UTENTE_CRZ" shortname="R_UTENTE_C" type="char" length="20" nullable="yes"/>
+    <Column name="TIMESTAMP_CRZ" shortname="TIMESTAMP_" type="timestamp" nullable="no" default="CURRENT TIMESTAMP"/>
+    <Column name="R_UTENTE_AGG" shortname="R_UTENTE_A" type="char" length="20" nullable="yes"/>
+    <Column name="TIMESTAMP_AGG" shortname="TIMESTAMP0" type="timestamp" nullable="no" default="CURRENT TIMESTAMP"/>
+    <Column name="ID_ANNO_DOC" shortname="ID_ANNO_DO" type="char" length="6" nullable="no"/>
+    <Column name="ID_NUMERO_DOC" shortname="ID_NUMERO_" type="char" length="10" nullable="no"/>
+    <Column name="NUMERO_DOC_FMT" shortname="NUM_DOC_FMT" type="char" length="20" nullable="yes"/>
+    <Column name="DATA_DOC" shortname="DATA_DOC" type="date" nullable="yes"/>
+    <Column name="R_COD_UBICAZIONE_STOCK" shortname="R_COD_UBIC" type="char" length="15" nullable="yes"/>
+    <Column name="R_MAG_FISICO_STOCK" shortname="R_MAG_FISI" type="char" length="5" nullable="yes"/>
+    <Column name="R_COD_UBICAZIONE_PRL" shortname="R_COD_UBI0" type="char" length="15" nullable="yes"/>
+    <Column name="R_MAG_FISICO_PRL" shortname="R_MAG_FIS0" type="char" length="5" nullable="yes"/>
+    <Column name="STATO_UDC" shortname="STATO_UDC" type="char" length="1" nullable="no" default="0"/>
+    <Column name="R_COD_MAPPA_UDC" shortname="R_COD_MAPP" type="char" length="20" nullable="yes"/>
+    <Column name="ID_ANNO_ORDINE" shortname="ID_ANNO_OR" type="char" length="6" nullable="yes"/>
+    <Column name="ID_NUMERO_ORD" shortname="ID_NUMERO0" type="char" length="10" nullable="yes"/>
+    <Column name="ID_RIGA_ATTIVITA" shortname="ID_RIGA_AT" type="integer" nullable="yes"/>
+    <Column name="R_REPARTO" shortname="R_REPARTO" type="char" length="3" nullable="yes"/>
+    <Column name="STATO_GESTIONE" shortname="STATO_GEST" type="char" length="1" nullable="no" default="O"/>
+  </CreateTable>
+  <CreateIndex schema="THIPPERS" name="YPIANO_CARICO__I01" tabschema="THIPPERS" tabname="YPIANO_CARICO_TOYOTA_TES" shortname="YPIANO_I01" unique="yes">
+    <IndexCol name="ID_AZIENDA" order="Asc"/>
+    <IndexCol name="ID_ANNO_DOC" order="Asc"/>
+    <IndexCol name="ID_NUMERO_DOC" order="Asc"/>
+  </CreateIndex>
+  <AlterTable schema="THIPPERS" name="YPIANO_CARICO_TOYOTA_TES">
+    <AddPrimaryKey>
+      <PrimaryKey>
+        <ColumnRef name="ID_AZIENDA"/>
+        <ColumnRef name="ID_ANNO_DOC"/>
+        <ColumnRef name="ID_NUMERO_DOC"/>
+      </PrimaryKey>
+    </AddPrimaryKey>
+  </AlterTable>
+  <Comment>
+    <CommentTable schema="THIPPERS" name="YPIANO_CARICO_TOYOTA_TES" text="Piano di carico Toyota">
+      <CommentColumn name="ID_AZIENDA" text="Azienda"/>
+      <CommentColumn name="STATO" text="Stato"/>
+      <CommentColumn name="R_UTENTE_CRZ" text="Utente creazione"/>
+      <CommentColumn name="TIMESTAMP_CRZ" text="Timestamp creazione"/>
+      <CommentColumn name="R_UTENTE_AGG" text="Utente ultima modifica"/>
+      <CommentColumn name="TIMESTAMP_AGG" text="Timestamp ultima modifica"/>
+      <CommentColumn name="ID_ANNO_DOC" text="Anno documento"/>
+      <CommentColumn name="ID_NUMERO_DOC" text="Numero documento"/>
+      <CommentColumn name="NUMERO_DOC_FMT" text="Numero documento formattato"/>
+      <CommentColumn name="DATA_DOC" text="Data documento"/>
+      <CommentColumn name="R_COD_UBICAZIONE_STOCK" text="Ubicazione Stockaggio"/>
+      <CommentColumn name="R_MAG_FISICO_STOCK" text="Magazzino fisico stock"/>
+      <CommentColumn name="R_COD_UBICAZIONE_PRL" text="Ubicazione Prelievo"/>
+      <CommentColumn name="R_MAG_FISICO_PRL" text="Magazzino fisico prelievo"/>
+      <CommentColumn name="STATO_UDC" text="Stato UDC"/>
+      <CommentColumn name="R_COD_MAPPA_UDC" text="Codice UDC"/>
+      <CommentColumn name="ID_ANNO_ORDINE" text="Anno ordine"/>
+      <CommentColumn name="ID_NUMERO_ORD" text="Numero ordine"/>
+      <CommentColumn name="ID_RIGA_ATTIVITA" text="Riga attivita"/>
+      <CommentColumn name="R_REPARTO" text="Reparto"/>
+      <CommentColumn name="STATO_GESTIONE" text="Stato gestione"/>
+    </CommentTable>
+    <CommentIndex schema="THIPPERS" name="YPIANO_CARICO__I01" text="Primary Key"/>
+  </Comment>
+  <Grant schema="THIPPERS" name="YPIANO_CARICO_TOYOTA_TES"/>
+</TDDML>

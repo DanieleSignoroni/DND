@@ -1,0 +1,5 @@
+<B>2025-04-08 12:22:58</B>
+<B>2025-04-08 12:22:58</B>
+<BR>Il descrittore di classe <B>YPianoCaricoToyotaRiga</B> è stato generato correttamente
+<BR>Il descrittore di classe <B>YPianoCaricoToyota</B> è stato generato correttamente
+<BR><B>La generazione descrittori di classe è completata con successo</B><BR>

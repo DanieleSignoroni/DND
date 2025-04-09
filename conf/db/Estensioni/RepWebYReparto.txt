@@ -1,0 +1,4 @@
+<B>2025-04-08 10:10:28</B>
+<BR>Il file <B>YReparto.properties</B> è stato generato correttamente nel cartela <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00001\src\it\dnd\thip\base\azienda\resources</B><BR>Il file <B>it\dnd\thip\base\azienda\resourcesYReparto.properties</B> è stato copiato nel classpath
+<BR>Il file <B>YReparto.properties</B> è stato generato correttamente nel cartela <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00001\src\it\dnd\thip\base\azienda\resources</B><BR>Il file <B>it\dnd\thip\base\azienda\resourcesYReparto.properties</B> è stato copiato nel classpath
+<BR><B>Generazione HTML/TFML è completata con successo</B><BR>

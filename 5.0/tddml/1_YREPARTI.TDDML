@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE TDDML SYSTEM "../../../TDDML.dtd">
+<TDDML>
+  <!-- YREPARTI (YREPART): Reparto; -->
+  <CreateTable schema="THIPPERS" name="YREPARTI" shortname="YREPART">
+    <Column name="ID_AZIENDA" shortname="ID_AZIENDA" type="char" length="3" nullable="no"/>
+    <Column name="ID_REPARTO" shortname="ID_REPARTO" type="char" length="3" nullable="no"/>
+    <Column name="SERVITO_LOGISTICA" shortname="SERVITO_LO" type="char" length="1" nullable="no" default="N"/>
+    <Column name="BLOCCO_MISSIONI_PRL_AGV" shortname="BLOCCO_MIS" type="char" length="1" nullable="no" default="N"/>
+    <Column name="BLOCCO_MISSIONI_RIPOS_AGV" shortname="BLOCCO_MI0" type="char" length="1" nullable="no" default="N"/>
+  </CreateTable>
+  <CreateIndex schema="THIPPERS" name="YREPARTI_I01" tabschema="THIPPERS" tabname="YREPARTI" shortname="YREPAR_I01" unique="yes">
+    <IndexCol name="ID_AZIENDA" order="Asc"/>
+    <IndexCol name="ID_REPARTO" order="Asc"/>
+  </CreateIndex>
+  <AlterTable schema="THIPPERS" name="YREPARTI">
+    <AddPrimaryKey>
+      <PrimaryKey>
+        <ColumnRef name="ID_AZIENDA"/>
+        <ColumnRef name="ID_REPARTO"/>
+      </PrimaryKey>
+    </AddPrimaryKey>
+  </AlterTable>
+  <Comment>
+    <CommentTable schema="THIPPERS" name="YREPARTI" text="Reparto">
+      <CommentColumn name="ID_AZIENDA" text="IdAzienda"/>
+      <CommentColumn name="ID_REPARTO" text="Codice"/>
+      <CommentColumn name="SERVITO_LOGISTICA" text="Servito da Logistica"/>
+      <CommentColumn name="BLOCCO_MISSIONI_PRL_AGV" text="Blocco missioni prelievo AGV"/>
+      <CommentColumn name="BLOCCO_MISSIONI_RIPOS_AGV" text="Blocco missioni riposizionamento AGV"/>
+    </CommentTable>
+    <CommentIndex schema="THIPPERS" name="YREPARTI_I01" text="Primary Key"/>
+  </Comment>
+  <Grant schema="THIPPERS" name="YREPARTI"/>
+</TDDML>

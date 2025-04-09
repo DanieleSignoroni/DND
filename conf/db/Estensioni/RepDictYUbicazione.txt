@@ -1,0 +1,6 @@
+<B>2025-04-08 10:15:38</B>
+<BR>Il file <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00002\tddml\2_DROP_YLUBICAZIONE.TDDML</B> e' stato generato correttamente.
+<BR>Il dizionario <B>YLUBICAZIONE</B> è stato creato
+<BR>Il file <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00002\tddml\2_YLUBICAZIONE.TDDML</B> e' stato generato correttamente.
+<BR>Il file <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00002\tddml\2_CONSTRAINT.TDDML</B> e' stato generato correttamente.
+<BR><B>La generazione tabella è completata con successo</B><BR>
