@@ -50,9 +50,9 @@ public class YCostantiDnd {
 		return valore;
 	}
 
-	public String searchXml(){
+	public static String searchXml(){
 		String defaultXml = DND_XML;
-		URL url = getClass().getClassLoader().getResource(defaultXml);
+		URL url = YCostantiDnd.class.getClassLoader().getResource(defaultXml);
 		if(url != null){
 			return url.toString();
 		}
