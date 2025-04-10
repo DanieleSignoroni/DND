@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 
 import com.thera.thermfw.persist.KeyHelper;
 import com.thera.thermfw.web.ServletEnvironment;
+import com.thera.thermfw.web.WebGridForm;
 import com.thera.thermfw.web.WebMenuAbstract;
 import com.thera.thermfw.web.WebMenuBar;
 import com.thera.thermfw.web.WebToolBar;
@@ -151,6 +152,10 @@ public class YPianoCaricoToyotaRigaGridActionAdapter extends DocumentoGridAction
 
 	public int getTipoEstratto() {
 		return DocumentoNavigazioneWeb.RIGA_PRM_ESTRATTO;
+	}
+
+	public String getDoubleClickAction() {
+		return WebGridForm.DOUBLE_CLICK_DEF_ACTION;
 	}
 
 }
