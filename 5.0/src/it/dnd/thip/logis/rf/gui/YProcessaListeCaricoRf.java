@@ -186,7 +186,7 @@ public class YProcessaListeCaricoRf extends LogisRF {
 		while (!stop &&
 				esecuzioneMissioni.getNumMissConfermate() < dim &&
 				esecuzioneMissioni.getPosMiss() >= 0 &&
-						esecuzioneMissioni.getPosMiss() < dim) {
+				esecuzioneMissioni.getPosMiss() < dim) {
 			esecuzionePianiCarico.setRigaPianoCaricoInConferma((YPianoCaricoToyotaRiga) esecuzionePianiCarico.getElencoRighe().elementAt(esecuzioneMissioni.getPosMiss()));
 			esecuzioneMissioni.setMissInConferma((Missione) esecuzioneMissioni.getElencoMissioni().elementAt(esecuzioneMissioni.getPosMiss()));
 			res = visualizzaMissione();   // Esegui missione.
@@ -355,6 +355,15 @@ public class YProcessaListeCaricoRf extends LogisRF {
 			Vector liste = new Vector();
 			liste.add(tl);
 			caricaListeInEsecuzione(liste);
+
+			//.Se e' il primo prelievo della riga, quindi stato prelievo = '0'
+			//.devo mostrare una pagina dove e' possibile lanciare la stampa dell'etichetta per quella riga prelievo
+			//.se l'utente conferma allora stampo, altrimenti no, torno comunque qui
+			if(riga.getStatoPrelievo() == StatoPrelievoRigaToyota.NON_PRELEVATA) {
+				//.quindi nel metodo che visualizza la form basta che ci sia un return in ogni caso
+				stampaEtichetteRiga(riga);
+			}
+
 			TForm form = getTForm(formPaginaEsecuzioneCarico);
 			settaDatiForm(form, riga);
 			sendForm(form);
@@ -642,6 +651,37 @@ public class YProcessaListeCaricoRf extends LogisRF {
 		return ERRORE;
 	}
 
+	public String formStampaEtichette = "paginaStampaEtichetta";
+
+	protected void stampaEtichetteRiga(YPianoCaricoToyotaRiga riga) {
+		TForm form = getTForm(formStampaEtichette);
+		try {
+			form.getTField("Label2").setValue("l'ordine "+(riga.getNumeroRiferimento() != null ? riga.getNumeroRiferimento() : ""));
+			if(riga.getCliente() != null) {
+				form.getTField("Label4").setVisible(false);
+				form.getTField("Label4").setValue(riga.getCliente().getRagioneSociale());
+			}else {
+				form.getTField("Label3").setValue("");
+				form.getTField("Label4").setValue("");
+			}
+			sendForm(form);
+			TForm risposta = readInput();
+			if (risposta.getKeyPressed().equals(TForm.KEY_ESC) ||
+					risposta.getKeyPressed().equals(TForm.KEY_CTL_X)) {
+				return;
+			}
+			if (risposta.getKeyPressed().equals(TForm.KEY_F1)) {
+				//.Lancio la stampa dell'etichetta, per la stampa usare la logica presente in it.thera.thip.logis.bas.StampaRptEticPklEsec.esegui()
+				//.in modo che non facciamo il batch ma stampiamo direttamente come da std logis
+				System.out.println(":Stampa etichette true");
+			}
+		} catch(Exception e) {
+			e.printStackTrace(Trace.excStream);
+			pagina = MENU;
+		}
+		return;
+	}
+
 	protected ErrorMessage testBarcode(String barcode) {
 		if (barcode.trim().equals(""))
 			return new ErrorMessage("LOGIS01054", ResourceLoader.getString(RESOURCES,"mancaBarcode"));
@@ -927,7 +967,7 @@ public class YProcessaListeCaricoRf extends LogisRF {
 			form.getTField("NumeroRiferimentoLbl").setValue("");
 			form.getTField("NumeroRiferimento").setValue("");
 		}
-		
+
 		form.getTField("RagioneSocialeCli").setValue("");
 
 		if(riga.getCliente() != null) {
@@ -952,7 +992,7 @@ public class YProcessaListeCaricoRf extends LogisRF {
 
 		form.getTField("TastiFunzioneUltimaLbl").setValue(formatoTastiFunzioneBassi());
 	}
-	
+
 	protected void gestionePuntoCarico(TForm form, Missione m) {
 		String puntoCarico = formato(m.getRigaLista().getTestataLista().getPuntoCarico(), 17);
 		boolean puntoCaricoVisible = (puntoCarico.length() > 0);

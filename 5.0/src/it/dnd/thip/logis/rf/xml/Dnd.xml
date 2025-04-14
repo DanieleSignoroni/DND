@@ -28,7 +28,7 @@
         <field Name="TastoF3" Sequence="9" Row="14" Column="11" Width="11" Height="1" Visible="true" Value="F3=Spedisci" SourceType="all" AcceptValueMode="enter" Mandatory="false" RESId="paginaPresentazioneReparti_TastoF3">
             <type Display="output" Size="20" Scale="0" Justify="left">com.thera.thermfw.type.StringType</type>
         </field>
-        <list Name="ListaReparti" Header="true" Check="multiple" Row="7" Column="1" Width="21" Height="6" Visible="true">
+        <list Name="ListaReparti" Header="true" Check="multiple" Row="5" Column="1" Width="21" Height="6" Visible="true">
             <item RESId="paginaPresentazioneReparti_ListaReparti">LISTA</item>
         </list>
         <hotkeys>
@@ -210,4 +210,32 @@
             <type Display="output" Size="21" Scale="0" Justify="left">com.thera.thermfw.type.StringType</type>
         </field>
     </form>
+    
+     <form Name="paginaStampaEtichetta" Acknowledge="byFKey" Beep="none" Type="normal">
+        <field Name="TastoCLR" Sequence="1" Row="1" Column="1" Width="8" Height="1" Visible="true" Value="CTL_X=Esci" SourceType="all" AcceptValueMode="enter" Mandatory="false" RESId="paginaUdcNumeroRitorno_TastoCLR">
+            <type Display="output" Size="21" Scale="0" Justify="left">com.thera.thermfw.type.StringType</type>
+        </field>
+        <field Name="TastoF1" Sequence="2" Row="1" Column="16" Width="5" Height="1" Visible="true" Value="F1=OK" SourceType="all" AcceptValueMode="enter" Mandatory="false" RESId="paginaUdcNumeroRitorno_TastoF1">
+            <type Display="output" Size="21" Scale="0" Justify="left">com.thera.thermfw.type.StringType</type>
+        </field>
+        <field Name="Label0" Sequence="3" Row="3" Column="1" Width="18" Height="1" Visible="true" Value="Si sta inizializzando" SourceType="all" AcceptValueMode="enter" Mandatory="false" RESId="paginaStampaEtichetta_Label0">
+            <type Display="output" Size="21" Scale="0" Justify="left">com.thera.thermfw.type.StringType</type>
+        </field>
+        <field Name="Label2" Sequence="4" Row="4" Column="1" Width="16" Height="1" Visible="true" SourceType="all" AcceptValueMode="enter" Mandatory="false">
+            <type Display="output" Size="21" Scale="0" Justify="left">com.thera.thermfw.type.StringType</type>
+        </field>
+        <field Name="Label3" Sequence="5" Row="5" Column="1" Width="10" Height="1" Visible="true" Value="del cliente" SourceType="all" AcceptValueMode="enter" Mandatory="false" RESId="paginaStampaEtichetta_Label3">
+            <type Display="output" Size="21" Scale="0" Justify="left">com.thera.thermfw.type.StringType</type>
+        </field>
+        <field Name="Label4" Sequence="6" Row="6" Column="1" Width="10" Height="1" Visible="true" SourceType="all" AcceptValueMode="enter" Mandatory="false" >
+            <type Display="output" Size="21" Scale="0" Justify="left">com.thera.thermfw.type.StringType</type>
+        </field>
+        <field Name="Label5" Sequence="7" Row="7" Column="1" Width="20" Height="1" Visible="true" Value="Si desidera stampare" SourceType="all" AcceptValueMode="enter" Mandatory="false" RESId="paginaStampaEtichetta_Label5">
+            <type Display="output" Size="21" Scale="0" Justify="left">com.thera.thermfw.type.StringType</type>
+        </field>
+        <field Name="Label6" Sequence="8" Row="8" Column="1" Width="15" Height="1" Visible="true" Value="l'etichetta?" SourceType="all" AcceptValueMode="enter" Mandatory="false" RESId="paginaStampaEtichetta_Label6">
+            <type Display="output" Size="21" Scale="0" Justify="left">com.thera.thermfw.type.StringType</type>
+        </field>
+    </form>
+    
 </LogisLogin>
