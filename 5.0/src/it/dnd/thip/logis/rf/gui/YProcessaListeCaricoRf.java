@@ -900,6 +900,7 @@ public class YProcessaListeCaricoRf extends LogisRF {
 
 		gestioneLotto(form, m);
 		gestioneConfigurazione(form, m);
+		gestionePuntoCarico(form, m);
 
 		form.getTField("UMVal").setValue(formato(m.getArticolo().getUmBase(), 2));
 		form.getTField("CodiceArticoloVal").setValue(formato(m.getArticolo().getCodice(), 17));
@@ -950,6 +951,17 @@ public class YProcessaListeCaricoRf extends LogisRF {
 		form.getTField("QtaConfermataTxt").setDisplay(TField.DISPLAY_INPUT);
 
 		form.getTField("TastiFunzioneUltimaLbl").setValue(formatoTastiFunzioneBassi());
+	}
+	
+	protected void gestionePuntoCarico(TForm form, Missione m) {
+		String puntoCarico = formato(m.getRigaLista().getTestataLista().getPuntoCarico(), 17);
+		boolean puntoCaricoVisible = (puntoCarico.length() > 0);
+		form.getTField("PuntoCaricoVal").setValue(puntoCarico);
+		form.getTField("PuntoCaricoLbl").setVisible(puntoCaricoVisible);
+		form.getTField("PuntoCaricoVal").setVisible(puntoCaricoVisible);
+		if (!puntoCaricoVisible) {
+			form.getTField("PuntoCaricoLbl").setValue("");
+		}
 	}
 
 	protected void gestioneUdc(TForm form, Missione m) {
