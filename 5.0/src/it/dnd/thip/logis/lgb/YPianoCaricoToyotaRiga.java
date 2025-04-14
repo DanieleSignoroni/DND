@@ -1,5 +1,6 @@
 package it.dnd.thip.logis.lgb;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -55,6 +56,14 @@ public class YPianoCaricoToyotaRiga extends YPianoCaricoToyotaRigaPO {
 			}
 		}
 		return super.save();
+	}
+	
+	public BigDecimal getResiduoDaPrelevare() {
+		BigDecimal res = BigDecimal.ZERO;
+		BigDecimal qtaRcs = getQuantitaRichiestaUmPrm() != null ? getQuantitaRichiestaUmPrm() : BigDecimal.ZERO;
+		BigDecimal qtaPrel = getQuantitaPrelevataUmPrm() != null ? getQuantitaPrelevataUmPrm() : BigDecimal.ZERO;
+		res = qtaRcs.subtract(qtaPrel);
+		return res;
 	}
 
 }

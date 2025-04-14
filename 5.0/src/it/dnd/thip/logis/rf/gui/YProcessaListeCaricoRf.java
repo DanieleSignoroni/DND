@@ -3,13 +3,16 @@ package it.dnd.thip.logis.rf.gui;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import com.thera.thermfw.base.ResourceLoader;
 import com.thera.thermfw.base.Trace;
 import com.thera.thermfw.common.ErrorMessage;
 import com.thera.thermfw.persist.ConnectionManager;
+import com.thera.thermfw.persist.ErrorCodes;
 import com.thera.thermfw.persist.Factory;
+import com.thera.thermfw.persist.KeyHelper;
 import com.thera.thermfw.persist.PersistentObject;
 import com.thera.thermfw.rf.driver.Driver;
 import com.thera.thermfw.rf.driver.FormCreator;
@@ -28,9 +31,18 @@ import it.dnd.thip.logis.lgb.YPianoCaricoToyotaTM;
 import it.thera.thip.base.azienda.Azienda;
 import it.thera.thip.base.azienda.Reparto;
 import it.thera.thip.logis.bas.Attributo;
+import it.thera.thip.logis.bas.Numeratore;
+import it.thera.thip.logis.bas.NumeratoreMaxException;
+import it.thera.thip.logis.bas.NumeratoreMaxProgrException;
+import it.thera.thip.logis.bas.NumeratoreNotFoundException;
+import it.thera.thip.logis.bas.NumeratoreNotValidException;
 import it.thera.thip.logis.bas.ParametriLogis;
+import it.thera.thip.logis.fis.AbilPostazioneTipoLista;
+import it.thera.thip.logis.fis.EsecuzioneMissioni;
 import it.thera.thip.logis.fis.MappaUdc;
 import it.thera.thip.logis.fis.Missione;
+import it.thera.thip.logis.fis.PianificazioneLista;
+import it.thera.thip.logis.lgb.TestataLista;
 import it.thera.thip.logis.prd.CampoTrascodificaGruppo;
 import it.thera.thip.logis.prd.ConfigurazioneArticolo;
 import it.thera.thip.logis.rf.gui.LogisRF;
@@ -85,6 +97,9 @@ public class YProcessaListeCaricoRf extends LogisRF {
 	protected final static int ERR_GRAVE = 99;
 	protected final static int ERRORE = 100;
 	protected final static int SALTO_MISSIONI = 10;
+	protected final static int MISSIONE = 7;
+	protected final static int CANCELLA = 8;
+	protected final static int ESITO = 11;
 
 	protected int pagina = SELEZIONE;
 
@@ -93,6 +108,7 @@ public class YProcessaListeCaricoRf extends LogisRF {
 	protected String formPaginaSelezioneReparto = "paginaPresentazioneReparti";
 
 	public YEsecuzionePianiCarico esecuzionePianiCarico = null;
+	public EsecuzioneMissioni esecuzioneMissioni = null;
 
 	protected boolean flagAvanti = true;
 	protected boolean flagIndietro = false;
@@ -100,6 +116,11 @@ public class YProcessaListeCaricoRf extends LogisRF {
 	protected boolean naviga = true;
 
 	protected boolean gestioneUdsInCorso = true;
+
+	protected final static char PRELIEVO_SU_RIFERIMENTO = '0';
+	protected final static char PRELIEVO_SU_UDC_REPARTO = '1';
+
+	protected char tipoPrelievo = PRELIEVO_SU_RIFERIMENTO;
 
 	public ErrorMessage esegui() {
 		ErrorMessage err = null;
@@ -112,6 +133,7 @@ public class YProcessaListeCaricoRf extends LogisRF {
 				break;
 			case SELEZIONE:
 				esecuzionePianiCarico = (YEsecuzionePianiCarico) Factory.createObject(YEsecuzionePianiCarico.class);
+				esecuzioneMissioni = (EsecuzioneMissioni) Factory.createObject(EsecuzioneMissioni.class);
 				paginaSelezioneReparto();
 				break;
 			case UDC_NR_RITORNO:
@@ -122,6 +144,10 @@ public class YProcessaListeCaricoRf extends LogisRF {
 				break;
 			case ESECUZIONE_CARICO: 
 				paginaEsecuzioneCarico();
+				break;
+			case CANCELLA:
+				paginaCancella();
+				break;
 			default:
 				try {
 					messaggio(true, ResourceLoader.getString(RESOURCES,"msg0001"));
@@ -138,8 +164,9 @@ public class YProcessaListeCaricoRf extends LogisRF {
 
 	public String formPaginaEsecuzioneCarico = "visualizzaMissioneUds";
 
+	@SuppressWarnings({ })
 	protected void paginaEsecuzioneCarico() {
-		if(esecuzionePianiCarico.getElencoRighe().size() == 0) {
+		if(esecuzioneMissioni.getElencoMissioni().size() == 0) {
 			try {
 				messaggio(true, ResourceLoader.getString(RES_FILE, "noPrelieviEsecuzioneCarico"));
 			} catch (Exception ex) {
@@ -148,40 +175,41 @@ public class YProcessaListeCaricoRf extends LogisRF {
 			pagina = UDC_NR_RITORNO;
 			return;
 		}
-		int dim = esecuzionePianiCarico.getElencoRighe().size();
+		int dim = esecuzioneMissioni.getElencoMissioni().size();
 		int res = 0;                            // Esito esecuzione.
 		boolean stop = false;
 		boolean out = false;
 		flagAvanti = naviga &&
-				(esecuzionePianiCarico.getElencoRighe().size() > 1 ||
-						esecuzionePianiCarico.getElencoBidoneMissioni().size() > 1);
+				(esecuzioneMissioni.getElencoMissioni().size() > 1 ||
+						esecuzioneMissioni.getElencoBidoneMissioni().size() > 1);
 		flagIndietro = false;
 		while (!stop &&
-				esecuzionePianiCarico.getNumMissConfermate() < dim &&
-				esecuzionePianiCarico.getPosMiss() >= 0 &&
-				esecuzionePianiCarico.getPosMiss() < dim) {
-			esecuzionePianiCarico.setRigaPianoCaricoInConferma((YPianoCaricoToyotaRiga) esecuzionePianiCarico.getElencoRighe().elementAt(esecuzionePianiCarico.getPosMiss()));
+				esecuzioneMissioni.getNumMissConfermate() < dim &&
+				esecuzioneMissioni.getPosMiss() >= 0 &&
+						esecuzioneMissioni.getPosMiss() < dim) {
+			esecuzionePianiCarico.setRigaPianoCaricoInConferma((YPianoCaricoToyotaRiga) esecuzionePianiCarico.getElencoRighe().elementAt(esecuzioneMissioni.getPosMiss()));
+			esecuzioneMissioni.setMissInConferma((Missione) esecuzioneMissioni.getElencoMissioni().elementAt(esecuzioneMissioni.getPosMiss()));
 			res = visualizzaMissione();   // Esegui missione.
 			switch (res) {
 			case SALTA_MISS:
-				if (esecuzionePianiCarico.getElencoBidoneMissioniSaltate().isEmpty())
+				if (esecuzioneMissioni.getElencoBidoneMissioniSaltate().isEmpty())
 					break;
-				Missione mSaltata = (Missione) esecuzionePianiCarico.getElencoBidoneMissioniSaltate().lastElement();
+				Missione mSaltata = (Missione) esecuzioneMissioni.getElencoBidoneMissioniSaltate().lastElement();
 				if (cancellaSaltata(mSaltata)) {
-					int num = esecuzionePianiCarico.getNumMissConfermate();
-					esecuzionePianiCarico.setNumMissConfermate(++num);
+					int num = esecuzioneMissioni.getNumMissConfermate();
+					esecuzioneMissioni.setNumMissConfermate(++num);
 				}
 				break;
 			case CONFERMA:  // Missione confermata.
-			int num = esecuzionePianiCarico.getNumMissConfermate();
-			esecuzionePianiCarico.setNumMissConfermate(++num);
-			if (!cercaMissioneAvanti())       // Cerca tra le missioni successive.
-				stop =  true;
-			if (stop) {                       // Non trovata quindi ...
-				if (cercaMissioneIndietro())    // ... cerca tra le missioni precedenti.
-					stop = false;
-			}
-			break;
+				int num = esecuzioneMissioni.getNumMissConfermate();
+				esecuzioneMissioni.setNumMissConfermate(++num);
+				if (!cercaMissioneAvanti())       // Cerca tra le missioni successive.
+					stop =  true;
+				if (stop) {                       // Non trovata quindi ...
+					if (cercaMissioneIndietro())    // ... cerca tra le missioni precedenti.
+						stop = false;
+				}
+				break;
 			case PROX_MISS: // Missione saltata.
 				flagIndietro = naviga && true;
 				if (!cercaMissioneAvanti())       // Cerca tra le missioni successive.
@@ -204,6 +232,7 @@ public class YProcessaListeCaricoRf extends LogisRF {
 				break;
 			case CLR:       // Esci.
 				stop = true;
+				pagina = CANCELLA;
 				break;
 			case ERR_GRAVE: // Torna al menù principale.
 				out = true;
@@ -214,13 +243,75 @@ public class YProcessaListeCaricoRf extends LogisRF {
 			default:        // Errore.
 				break;                            // Ripropone la stessa missione.
 			}                 // Rileggo per caricare anche le eventuali missioni aggiunte.
-			dim = esecuzionePianiCarico.getElencoRighe().size();
+			dim = esecuzioneMissioni.getElencoMissioni().size();
 		}
 		if (out)
 			pagina = MENU;
-		else
-			pagina = UDC_NR_RITORNO;
+		else {
+			if(pagina != CANCELLA) {
+				if(dim == esecuzionePianiCarico.getNumMissConfermate() && tipoPrelievo == PRELIEVO_SU_RIFERIMENTO) {
+					try {
+						String msg = "Sono terminati i prelievi relativi all'ordine "+esecuzionePianiCarico.getRigaPianoCaricoInConferma().getNumeroRiferimento();
+						if(esecuzionePianiCarico.getRigaPianoCaricoInConferma().getCliente() != null) {
+							msg += " del cliente "+esecuzionePianiCarico.getRigaPianoCaricoInConferma().getCliente().getRagioneSociale();
+						}
+						messaggio(false, msg);
+					} catch (Exception e) {
+						e.printStackTrace(Trace.excStream);
+					}
+					pagina = UDC_NR_RITORNO;
+				}else if(dim == esecuzionePianiCarico.getNumMissConfermate() && tipoPrelievo == PRELIEVO_SU_UDC_REPARTO) {
+					esecuzionePianiCarico.setPianoInRiposizionamento((YPianoCaricoToyota) esecuzionePianiCarico.getElencoRighe().get(0).getTestata()); //.Me lo porto nella pagina successiva
+					pagina = RIPOSIZ_UDC_MAGAZZINO;
+				}
+			}
+		}
 
+	}
+
+	protected String formPaginaCancella = "ConfermaCancellazione";
+
+	protected void paginaCancella() {
+		int dim = esecuzioneMissioni.getElencoMissioni().size();
+		if (esecuzioneMissioni.getNumMissConfermate() < dim) {
+			if (conferma(getTForm(formPaginaCancella))) {    // Chiedi conferma.
+				if (cancellazione()) {                              // Cancella ...
+					try {
+						ConnectionManager.rollback();
+						messaggio(true, ResourceLoader.getString(RESOURCES,"operazioneKo") + " " + ResourceLoader.getString(RESOURCES, "vediPC"));
+					} catch (Exception ex) {
+						ex.printStackTrace(Trace.excStream);
+					}
+					pagina = MENU;
+				} else {
+					try {
+						ConnectionManager.commit();
+					} catch (SQLException ex) {
+						ex.printStackTrace(Trace.excStream);
+						pagina = CANCELLA;
+						return;
+					}
+					pagina = UDC_NR_RITORNO;         // ... ed esce.
+				}
+			} else {                    // Non cancella e torna alle missioni.
+				flagIndietro = false;
+				esecuzioneMissioni.setPosMiss(-1);
+				cercaMissioneAvanti();
+				pagina = ESECUZIONE_CARICO;
+			}
+		} else {
+			//pagina = UDC_NR_RITORNO;                   // Passerebbe direttamente alla pagina conclusiva ma
+			//			ErrorMessage err = trattaLista(); //  riprova a fare il prelievo rilanciando il processo.
+			//			dim = 0;
+			//			if (err == null)
+			//dim = esecuzioneMissioni.getElencoMissioni().size();
+			//if (dim > 0)
+			pagina = ESECUZIONE_CARICO;
+		}
+	}
+
+	protected boolean cancellazione() {
+		return esecuzioneMissioni.annullaMissioniInEsec(false);
 	}
 
 	/**
@@ -247,17 +338,25 @@ public class YProcessaListeCaricoRf extends LogisRF {
 
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected int visualizzaMissione() {
-		YPianoCaricoToyotaRiga m = esecuzionePianiCarico.getRigaPianoCaricoInConferma();
+		ErrorMessage errore = null;
+		YPianoCaricoToyotaRiga riga = esecuzionePianiCarico.getRigaPianoCaricoInConferma();
+		Missione m = esecuzioneMissioni.getMissInConferma();
 		try {
-			if (m.isOnDB()) {   // Se era su DB è possibile che ci siano stati interventi dall'esterno.
-				m.retrieve(PersistentObject.NO_LOCK);
-				if (m.getStatoRiga() != StatoRigaToyota.APERTA)
+			if (riga.isOnDB()) {   // Se era su DB è possibile che ci siano stati interventi dall'esterno.
+				riga.retrieve(PersistentObject.NO_LOCK);
+				if (riga.getStatoRiga() != StatoRigaToyota.APERTA)
 					return CONFERMA;
 			}
+			TestataLista tl = (TestataLista) TestataLista.elementWithKey(TestataLista.class, KeyHelper.buildObjectKey(new String[] {
+					riga.getMissione().getCodiceSocieta(),riga.getMissione().getTestataRigaLista()
+			}), PersistentObject.NO_LOCK);
+			Vector liste = new Vector();
+			liste.add(tl);
+			caricaListeInEsecuzione(liste);
 			TForm form = getTForm(formPaginaEsecuzioneCarico);
-			settaDatiForm(form, m);
+			settaDatiForm(form, riga);
 			sendForm(form);
 			TForm risposta = readInput();
 			boolean chkTastoFunc = this.chkTastoFunc(risposta);
@@ -275,6 +374,7 @@ public class YProcessaListeCaricoRf extends LogisRF {
 				if (chkTastoFunc)
 					//Fix 15944 messaggio(false, "NON hai confermato la missione: lascia il materiale al posto oppure spostalo con la funzione dedicata..");
 					messaggio(false, ResourceLoader.getString(RESOURCES, "msg0025"));
+				// elencoMatricole.clear();//11.06.19
 				return CLR;
 			}
 			if (risposta.getKeyPressed().equals(TForm.KEY_F7) &&
@@ -282,6 +382,7 @@ public class YProcessaListeCaricoRf extends LogisRF {
 				if (chkTastoFunc)
 					//Fix 15944 messaggio(false, "NON hai confermato la missione: lascia il materiale al posto oppure spostalo con la funzione dedicata..");
 					messaggio(false, ResourceLoader.getString(RESOURCES, "msg0025"));
+				//elencoMatricole.clear();//11.06.19
 				return PREC_MISS;
 			}
 			if (risposta.getKeyPressed().equals(TForm.KEY_F9) &&
@@ -289,8 +390,9 @@ public class YProcessaListeCaricoRf extends LogisRF {
 				if (chkTastoFunc)
 					//Fix 15944 messaggio(false, "NON hai confermato la missione: lascia il materiale al posto oppure spostalo con la funzione dedicata.");
 					messaggio(false, ResourceLoader.getString(RESOURCES, "msg0025"));
-				esecuzionePianiCarico.getElencoBidoneMissioniSaltate().removeElement(m);
-				esecuzionePianiCarico.getElencoBidoneMissioniSaltate().addElement(m);
+				esecuzioneMissioni.getElencoBidoneMissioniSaltate().removeElement(m);
+				esecuzioneMissioni.getElencoBidoneMissioniSaltate().addElement(m);
+				// elencoMatricole.clear();//11.06.19
 				return PROX_MISS;
 			}
 			if (risposta.getKeyPressed().equals(TForm.KEY_F4) &&
@@ -298,6 +400,7 @@ public class YProcessaListeCaricoRf extends LogisRF {
 				if (chkTastoFunc)
 					//Fix 15944 messaggio(false, "NON hai confermato la missione: lascia il materiale al posto oppure spostalo con la funzione dedicata..");
 					messaggio(false, ResourceLoader.getString(RESOURCES, "msg0025"));
+				// elencoMatricole.clear();//11.06.19
 				return PREC_N_MISS;
 			}
 			if (risposta.getKeyPressed().equals(TForm.KEY_F6) &&
@@ -305,22 +408,454 @@ public class YProcessaListeCaricoRf extends LogisRF {
 				if (chkTastoFunc)
 					//Fix 15944 messaggio(false, "NON hai confermato la missione: lascia il materiale al posto oppure spostalo con la funzione dedicata..");
 					messaggio(false, ResourceLoader.getString(RESOURCES, "msg0025"));
-				esecuzionePianiCarico.getElencoBidoneMissioniSaltate().removeElement(m);
-				esecuzionePianiCarico.getElencoBidoneMissioniSaltate().addElement(m);
+				esecuzioneMissioni.getElencoBidoneMissioniSaltate().removeElement(m);
+				esecuzioneMissioni.getElencoBidoneMissioniSaltate().addElement(m);
+				//elencoMatricole.clear();//11.06.19
 				return NEXT_N_MISS;
 			}
-			if (risposta.getKeyPressed().equals(TForm.KEY_F3) &&
-					gestioneUdsInCorso) {                                 // Richiesta nuova UDS.
-				if (chkTastoFunc)
-					//Fix 15944 messaggio(false, "NON hai confermato la missione: lascia il materiale al posto oppure spostalo con la funzione dedicata..");
-					messaggio(false, ResourceLoader.getString(RESOURCES, "msg0025"));
-				return NUOVA_UDS;
+			//		      if (gestioneNote &&
+			//		          risposta.getKeyPressed().equals(TForm.KEY_F5)) {
+			//		        gestioneInfoMissione(m);                              // Gestione informazioni ulteriori.
+			//		        return RIPETI;
+			//		      }
+			if (risposta.getKeyPressed().equals(TForm.KEY_F1) ||    // Conferma missione.
+					//(risposta.getKeyPressed().equals(TForm.KEY_F8) && gestioneUdsInCorso) ||  // Spezza UdS.
+					(risposta.getKeyPressed().equals(TForm.KEY_F3))) {
+				String barcode = risposta.getTField("BarcodeTxt").getValue();
+				String qtaConfermata = risposta.getTField("QtaConfermataTxt").getValue();
+				errore = testBarcode(barcode);
+				//18.03.14 - inizio
+				// se non è stata inserita la qtaConfermata eventualmente la prendo dall'etichetta barcode
+				if (qtaConfermata.equals("") || qtaConfermata.equals("0")){
+					if (esecuzioneMissioni.getQtaConfermata() != null &&
+							esecuzioneMissioni.getQtaConfermata().compareTo(new BigDecimal(0)) > 0)
+						qtaConfermata = esecuzioneMissioni.getQtaConfermata().toString();
+				}
+				//18.03.14 - fine
+				if (errore != null) {
+					messaggio(true, errore.getLongText());
+					return ERRORE;
+				}
+				m = (Missione) esecuzioneMissioni.getMissInConferma();  
+				Missione mi = null;                                     //  siccome potrebbe essere cambiata
+				if (m.isOnDB()) {
+					String keyMiss = m.getKey();
+					try {
+						mi = Missione.elementWithKey(keyMiss, PersistentObject.OPTIMISTIC_LOCK);
+					} catch (SQLException ex) {
+						ex.printStackTrace(Trace.excStream);
+						//Fix 15944 messaggio(true, "Missione persa !");
+						messaggio(true, ResourceLoader.getString(RESOURCES, "msg0026"));
+						return ERRORE;
+					}
+				} else
+					mi = m;
+				if (mi == null) {
+					messaggio(true, ResourceLoader.getString(RESOURCES,"errChiuMiss") + " "  + ResourceLoader.getString(RESOURCES, "vediPC"));
+					return ERR_GRAVE;
+				}
+				BigDecimal qta = new BigDecimal(0);
+				/*if (esecuzioneMissioni.getflagGestCatasta() &&
+						esecuzioneMissioni.getElencoSaldiCom().size() > 0) {
+					boolean ripeti = false;
+					ripeti = gestioneCatasta(mi,qtaConfermata);//07.07.04
+					if (ripeti)
+						return RIPETI;
+					qta = mi.getQta1Evasa();
+				} else {*/
+				try {
+					qta = new BigDecimal(qtaConfermata);
+				} catch (Exception ex) {
+					ex.printStackTrace(Trace.excStream);
+					messaggio(true, ResourceLoader.getString(RESOURCES,"qtaNumero") + " " + ResourceLoader.getString(RESOURCES,"qtaOk"));
+					return ERRORE;
+				}
+				qta = qta.multiply(esecuzioneMissioni.getCoefMovim());//29.11.04
+				//}
+				if (qta == null ||
+						qta.compareTo(new BigDecimal(0)) < 0) {  // Il valore non può essere < 0.
+					messaggio(true, ResourceLoader.getString(RESOURCES,"qtaNoNegativa") + " " + ResourceLoader.getString(RESOURCES,"qtaOk"));
+					return ERRORE;
+				}
+				BigDecimal qtaPrm = new BigDecimal(0);
+				BigDecimal qtaSec = new BigDecimal(0);
+
+				if (qta.compareTo(new BigDecimal(0)) == 0)
+					qtaPrm = new BigDecimal(0);
+				else
+					//05.02.08 - fine
+					qtaPrm = mi.getArticolo().gestioneQta2(qta);//10.09.07
+				/*while (qtaPrm == null) {    // Richiesta della qta in UM primaria
+					String res = paginaQtaUM(mi,qta);//20.08.07
+					//03.08.07 - fine
+					if (res.equals(ESCI + ""))
+						return CLR;
+					if (res.equals(INDIETRO + ""))
+						return RIPETI;
+					try {
+						qtaPrm = new BigDecimal(res);//03.08.07
+					} catch (Exception ex) {
+						ex.printStackTrace(Trace.excStream);
+						messaggio(true, ResourceLoader.getString(RESOURCES,"qtaNumero") + " " + ResourceLoader.getString(RESOURCES,"qtaOk"));
+						qtaPrm = null;//03.08.07
+					}
+				}*/
+				//20.08.07 - inizio
+				//05.02.08 - inizio
+				if (qta.compareTo(new BigDecimal(0)) == 0)
+					qtaSec = new BigDecimal(0);
+				else
+					//05.02.08 - fine
+					qtaSec = mi.getArticolo().gestioneQta3(qta);//10.09.07
+				/*while (qtaSec == null) { // Richiesta della qta in UM secondaria
+					String res = paginaQtaUM(mi,qta);
+					if (res.equals(ESCI + ""))
+						return CLR;
+					if (res.equals(INDIETRO + ""))
+						return RIPETI;
+					try {
+						qtaSec = new BigDecimal(res);
+					}
+					catch (Exception ex) {
+						ex.printStackTrace(Trace.excStream);
+						messaggio(true, ResourceLoader.getString(RESOURCES, "qtaNumero") + " " + ResourceLoader.getString(RESOURCES, "qtaOk"));
+						qtaSec = null;
+					}
+				}*/
+				//20.08.07 - fine
+				if (mi.getSaldo() == null) {
+					//Fix 15944 messaggio(true, "Il saldo e' stato cancellato. Missione non confermabile.");
+					messaggio(true, ResourceLoader.getString(RESOURCES, "msg0043"));
+					return ERRORE;
+				}
+				if (mi.getTipoMissione() == Missione.SPOSTAMENTO &&
+						mi.getCodiceMappaUdcInv() != null &&     // In caso di spostamento, se la UdC destin.
+						!mi.getCodiceMappaUdcInv().equals("")) { //  non c'è più, trasferisco la sorgente.
+					if (mi.getMappaUdcInv() != null) {
+						try {
+							if (!mi.getMappaUdcInv().retrieve(PersistentObject.NO_LOCK))
+								mi.setMappaUdcInv(mi.getMappaUdc());
+						} catch (SQLException ex) {
+							ex.printStackTrace(Trace.excStream);
+						}
+					} else
+						mi.setMappaUdcInv(mi.getMappaUdc());
+				}
+				//05.05.18 - inizio
+				//in caso di prelievo parziale ricreo subito la missione per la qtà residua
+				//Vector err = trattaMissione(mi, qta, qtaPrm, qtaSec);
+				Vector err = new Vector();
+				boolean prelievoParziale = (qta.compareTo(mi.getQta1Richiesta()) < 0);
+				if (prelievoParziale){
+					//09.05.19 - inizio
+					//err = spezzaMissione(mi, qta, qtaPrm, qtaSec);
+					//avviso che la qtà è diversa da quella richiesta, chiedo conferma per proseguire 
+					//(è lo stesso controllo presente in trattaMissione(), ho dovuto anticiparlo prima della creazione della missione figlia)
+					//if (qta.compareTo(mi.getQta1Richiesta().min(mi.getSaldo().getQta1())) != 0) {//14.03.23 nel caso catasta la condizione poteva essere falsa e quindi non faceva niente, negli altri casi era superfluo perché comunque siamo nel caso prelievo parziale
+					boolean conf = false;
+					try {
+						conf = conferma(false, ResourceLoader.getString(RESOURCES, "cnf0005"));
+					}
+					catch (Exception ex) {
+						ex.printStackTrace(Trace.excStream);
+					}
+					if (!conf)
+						err.add(new ErrorMessage("LOGIST0039"));
+					else {
+						//11.06.19 - inizio
+						/*if (gestioneMatricola){
+							try {
+								elencoMatricole = paginaMatricola(mi.getArticolo(), 
+										mi.getLotto1(),
+										mi.getLotto2(),
+										qta,
+										elencoMatricole,
+										mi.getCodiceMagLogico(),//15.07.19
+										esecuzioneMissioni);//09.09.20
+							} catch (Exception e) {
+								e.printStackTrace();
+								err.add(new ErrorMessage("LOGIS01054",e.getMessage()));
+								return ERRORE;
+							}
+							if (elencoMatricole.size() < qta.intValue()){//uscito con CTLX, le matricole acquisite vanno conservate
+								return RIPETI;
+							}
+						}*/
+						//11.06.19 - fine
+						err = spezzaMissione(mi, qta, qtaPrm, qtaSec);
+						riga.setMissione(mi); //.Setto sulla riga la nuova missione creata per il residuo
+					}
+					//}//14.03.23
+				}
+				//09.05.19 - fine
+				else
+					err = trattaMissione(mi, qta, qtaPrm, qtaSec);
+				//05.05.18 - fine
+				if (err.size() == 0 ||
+						(err.size() == 1 && err.elementAt(0) instanceof String)) {
+					//elencoMatricole.clear();//11.06.19
+					if (!prelievoParziale){
+						esecuzioneMissioni.setTlAbbassamento(null);  // Annullo la testata di abbassamento che avevo creato
+						m.setStatoMissione(Missione.TERMINATA);
+					}
+					if (err.size() == 1){
+						messaggio(false, new ErrorMessage((String)err.elementAt(0)).getLongText());
+					}
+					form.getTField("UDSTxt").setValue("");
+
+					riga.setQuantitaPrelevataUmPrm(mi.getQta1Evasa());
+					if(!prelievoParziale)
+						riga.setStatoPrelievo(StatoPrelievoRigaToyota.PRELEVATA);
+					else
+						riga.setStatoPrelievo(StatoPrelievoRigaToyota.PRELEVATA_PARZIALMENTE);
+
+					int rc = riga.save();
+					if(rc > 0) {
+						ConnectionManager.commit();
+					}else {
+						ConnectionManager.rollback();
+					}
+
+					//05.05.18 - inizio
+					/*if (risposta.getKeyPressed().equals(TForm.KEY_F3)){
+						paginaChiudiTipoUds();
+						if (esecuzioneMissioni.getTipoUds() != null)
+							esecuzioneMissioni.getTestataUds().setTipoUds(esecuzioneMissioni.getTipoUds());
+						paginaDimensioniUds();
+					}*/
+					if (prelievoParziale)
+						return RIPETI;
+					else
+						return CONFERMA;
+					//05.05.18 - fine
+				} else {
+					messaggio(true, ((ErrorMessage) err.elementAt(0)).getLongText());
+					form.getTField("UDSTxt").setValue("");
+					ConnectionManager.rollback();//05.11.21
+					return ERRORE;
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace(Trace.excStream);
 			return ERR_GRAVE;
 		}
 		return ERRORE;
+	}
+
+	protected ErrorMessage testBarcode(String barcode) {
+		if (barcode.trim().equals(""))
+			return new ErrorMessage("LOGIS01054", ResourceLoader.getString(RESOURCES,"mancaBarcode"));
+		esecuzioneMissioni.getMissInConferma().setChiaveOperazioneMovimento(KeyHelper.buildObjectKey(new String[] {esecuzioneMissioni.getMissInConferma().getCodiceMagFisico(), esecuzioneMissioni.getMissInConferma().getCodiceOperazioneMovimento()}));
+		esecuzioneMissioni.getMissInConferma().setChiaveUbicazione(KeyHelper.buildObjectKey(new String[] {esecuzioneMissioni.getMissInConferma().getCodiceMagFisico(), esecuzioneMissioni.getMissInConferma().getCodiceUbicazione()}));
+		esecuzioneMissioni.setCampoVariabile(barcode.trim());
+		return esecuzioneMissioni.checkCampoVariabile();
+	}
+
+	@SuppressWarnings("rawtypes")
+	protected Vector spezzaMissione(Missione m, BigDecimal qtaConfermata) throws Exception {
+		return spezzaMissione(m, qtaConfermata, new BigDecimal(0), new BigDecimal(0));
+	}
+
+	@SuppressWarnings("rawtypes")
+	protected Vector trattaMissione(Missione mi, BigDecimal qta) {
+		return trattaMissione(mi, qta, new BigDecimal(0), new BigDecimal(0));
+	}
+
+	/**
+	 * Esegue delle operazioni sulla missione. Nello standard la conferma.
+	 * Alimenta anche l'UdS corrente, se abilitato.
+	 * Ridefinire se necessario.
+	 *
+	 * @param mi missione in conferma.
+	 * @param qta quantità effettivamente confermata.
+	 *
+	 * @return Vector elenco degli errori. Vuoto se tutto è OK.
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	protected Vector trattaMissione(Missione mi,
+			BigDecimal qta,
+			BigDecimal qtaPrm,
+			BigDecimal qtaSec) {
+		// Non è necessario controllare le altre qta siccome:
+		//  - se sono non gestite o costanti, ovvio
+		//  - se sono variabili, la richiesta calcolata teoricamente difficilmente sarà corretta con la realtà
+		if (qta.compareTo(mi.getQta1Richiesta().min(mi.getSaldo().getQta1())) != 0) {
+			boolean conf = false;
+			if (qta.compareTo(mi.getSaldo().getQta1()) <= 0){//18.07.16 - qta diversa dalla richiesta ma non maggiore del saldo 
+				try {
+					//Fix 15944 conf = conferma(false, "Quantita confermata diversa da quella richiesta. Sei sicuro?" );
+					conf = conferma(false, ResourceLoader.getString(RESOURCES, "cnf0005") );
+				} catch (Exception ex) {
+					ex.printStackTrace(Trace.excStream);
+				}
+			}
+			//18.07.16 - inizio
+			// chiedo conferma nel caso in cui la qta è maggiore del saldo
+			else {
+				try {
+					//conf = conferma(false, "Quantita maggiore di quella del saldo. Sei sicuro?");
+					conf = conferma(false, ResourceLoader.getString(RESOURCES, "msg0067") );//27.10.17
+				} catch (Exception ex) {
+					ex.printStackTrace(Trace.excStream);
+				}
+				if (conf)
+					mi.setControlloGiacenza(false);
+			}
+			//18.07.16 - fine	
+			if (!conf){
+				Vector v = new Vector();
+				//Fix 15944 v.addElement(new ErrorMessage("LOGIS01054", "Missione non confermata"));
+				v.addElement(new ErrorMessage("LOGIST0039"));
+				return v;
+			}
+		}
+		if (gestioneUdsInCorso &&
+				qta.compareTo(new BigDecimal(0)) > 0 &&
+				esecuzioneMissioni.getTestataUds() != null) {
+			mi.setTestataUds(esecuzioneMissioni.getTestataUds());   // Scarica su questa UdS
+			//udsGenerate = true;                                     //  il materiale prelevato.
+		}
+		return esecuzioneMissioni.confermaMissione(mi, qta, qtaPrm, qtaSec);
+	}
+
+	/**
+	 * Spezza in due la missione: la figlia viene confermata.
+	 *
+	 * @param m Missione madre
+	 * @param qtaConfermata Q.tà in conferma sulla prima parte.
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	protected Vector spezzaMissione(Missione m,
+			BigDecimal qtaConfermata,
+			BigDecimal qta2Confermata,
+			BigDecimal qta3Confermata) throws Exception {
+		Vector errori = new Vector();
+		Missione missFiglia = (Missione) Factory.createObject(Missione.class);    // Missione figlia
+		missFiglia.setCodiceMagFisico(m.getCodiceMagFisico());
+		missFiglia.setCodiceOperazioneMovimento(m.getCodiceOperazioneMovimento());
+		missFiglia.setTipoMissione(m.getTipoMissione());
+		missFiglia.setChiaveRigaLista(m.getChiaveRigaLista());
+		missFiglia.setArticolo(m.getArticolo());
+		missFiglia.setSaldo(m.getSaldo());
+		missFiglia.setChiavePostazione(m.getChiavePostazione());
+		missFiglia.setChiaveOperatore(m.getChiaveOperatore());
+		for (int i = 0; i < m.getLotto().length; i++)
+			missFiglia.setLotto(m.getLotto(i),i);
+		missFiglia.setDataScadenza(m.getDataScadenza());
+		missFiglia.setUmBase(m.getUmBase());
+		missFiglia.setUmBase1(m.getUmBase1());//10.03.11
+		missFiglia.setUmBase2(m.getUmBase2());
+		missFiglia.setSegno(m.getSegno());
+		missFiglia.setCodiceStatistico(m.getCodiceStatistico());
+		missFiglia.setConfezione(m.getConfezione());
+		missFiglia.setMagLogico(m.getMagLogico());
+		missFiglia.setSocieta(m.getSocieta());
+		missFiglia.setPianificazioneLista(m.getPianificazioneLista());
+		missFiglia.setAllestimentoDoc(m.getAllestimentoDoc());
+		missFiglia.setDestinatario(m.getDestinatario());
+		missFiglia.setMagLogicoInv(m.getMagLogicoInv());
+		missFiglia.setCodiceUdm(m.getCodiceUdm());
+		missFiglia.setCodiceUdmInverso(m.getCodiceUdmInverso());
+		missFiglia.setScomparto(m.getScomparto());
+		missFiglia.setSottoUbicazione(m.getSottoUbicazione());
+		missFiglia.setMappaUdc(m.getMappaUdc());
+		missFiglia.setChiaveUbicazione(m.getChiaveUbicazione());
+		missFiglia.setChiaveUbicazioneInv(m.getChiaveUbicazioneInv());//04.03.11
+		missFiglia.setQta1Richiesta(qtaConfermata);
+		missFiglia.setQta2Richiesta(qta2Confermata);
+		missFiglia.setQta3Richiesta(qta3Confermata);
+		missFiglia.setParzializzazione(m.getParzializzazione());
+		missFiglia.setNumUdm(m.getNumUdm());
+		missFiglia.setSvuotamentoUdc(m.getSvuotamentoUdc());
+		missFiglia.setNumEsecuzione(m.getNumEsecuzione());
+		missFiglia.setSequenza(m.getSequenza());
+		missFiglia.setChiaveAreaLavoro(m.getChiaveAreaLavoro());
+		missFiglia.setTipoMacchina(m.getTipoMacchina());
+		missFiglia.setTsEsecuzione(m.getTsEsecuzione());
+		missFiglia.setStatoMissione(m.getStatoMissione());
+		//Fix 15944 missFiglia.setNote("Missione frazionata");
+		missFiglia.setNote(ResourceLoader.getString(RESOURCES, "txt0004")); //Fix 15944
+		try {
+			missFiglia.setCodice(Numeratore.getProgr(m.getMagFisico().getTipoNumeratoreMissione().getCodice()));
+		} catch (SQLException ex) {
+			ex.printStackTrace(Trace.excStream);
+			//Fix 15944 errori.addElement(new ErrorMessage("LOGIS01054", "Errore nella creazione della missione spezzata. " + ex.getMessage()));
+			errori.addElement(new ErrorMessage("LOGIST0117", ex.getMessage()));
+			return errori;
+		} catch (NumeratoreMaxProgrException ex) {
+			ex.printStackTrace(Trace.excStream);
+			//Fix 15944 errori.addElement(new ErrorMessage("LOGIS01054", "Errore nella creazione della missione spezzata. " + ex.getMessage()));
+			errori.addElement(new ErrorMessage("LOGIST0117", ex.getMessage()));
+			return errori;
+		} catch (NumeratoreNotFoundException ex) {
+			ex.printStackTrace(Trace.excStream);
+			//Fix 15944 errori.addElement(new ErrorMessage("LOGIS01054", "Errore nella creazione della missione spezzata. " + ex.getMessage()));
+			errori.addElement(new ErrorMessage("LOGIST0117", ex.getMessage()));
+			return errori;
+		} catch (InstantiationException ex) {
+			ex.printStackTrace(Trace.excStream);
+			//Fix 15944 errori.addElement(new ErrorMessage("LOGIS01054", "Errore nella creazione della missione spezzata. " + ex.getMessage()));
+			errori.addElement(new ErrorMessage("LOGIST0117", ex.getMessage()));
+			return errori;
+		} catch (ClassNotFoundException ex) {
+			ex.printStackTrace(Trace.excStream);
+			//Fix 15944 errori.addElement(new ErrorMessage("LOGIS01054", "Errore nella creazione della missione spezzata. " + ex.getMessage()));
+			errori.addElement(new ErrorMessage("LOGIST0117", ex.getMessage()));
+			return errori;
+		} catch (IllegalAccessException ex) {
+			ex.printStackTrace(Trace.excStream);
+			//Fix 15944 errori.addElement(new ErrorMessage("LOGIS01054", "Errore nella creazione della missione spezzata. " + ex.getMessage()));
+			errori.addElement(new ErrorMessage("LOGIST0117", ex.getMessage()));
+			return errori;
+		} catch (NumeratoreNotValidException ex) {
+			ex.printStackTrace(Trace.excStream);
+			//Fix 15944 errori.addElement(new ErrorMessage("LOGIS01054", "Errore nella creazione della missione spezzata. " + ex.getMessage()));
+			errori.addElement(new ErrorMessage("LOGIST0117", ex.getMessage()));
+			return errori;
+		} catch (NumeratoreMaxException ex) {
+			ex.printStackTrace(Trace.excStream);
+			//Fix 15944 errori.addElement(new ErrorMessage("LOGIS01054", "Errore nella creazione della missione spezzata. " + ex.getMessage()));
+			errori.addElement(new ErrorMessage("LOGIST0117", ex.getMessage()));
+			return errori;
+		}
+		m.setQta1Richiesta(m.getQta1Richiesta().subtract(qtaConfermata));
+		m.setQta2Richiesta(m.getQta2Richiesta().subtract(qta2Confermata));
+		m.setQta3Richiesta(m.getQta3Richiesta().subtract(qta3Confermata));
+		//14.03.23 - inizio
+		//		if (saldoOriginale != null) {
+		//			m.setSaldo(saldoOriginale);
+		//			m.setUbicazione(saldoOriginale.getUbicazione());
+		//			m.setMappaUdc(saldoOriginale.getMappaUdc());
+		//		}
+		//14.03.23 - fine
+		int r = ErrorCodes.NO_ROWS_UPDATED;
+		try {
+			r = m.save();   // Commit fatta dalla conferma missione figlia.
+		} catch (SQLException e) {
+			e.printStackTrace(Trace.excStream);
+			//Fix 15944 errori.addElement(new ErrorMessage("LOGIS01054", "Errore nel salvataggio della missione origine."));
+			errori.addElement(new ErrorMessage("LOGIST0118"));
+			return errori;
+		}
+		if (r < ErrorCodes.NO_ROWS_UPDATED) {   // Errore nella save della miss. madre.
+			try {
+				ConnectionManager.rollback();
+			} catch (SQLException e) {
+				e.printStackTrace(Trace.excStream);
+				//Fix 15944 errori.addElement(new ErrorMessage("LOGIS01054", "Errore nel salvataggio della missione origine."));
+				errori.addElement(new ErrorMessage("LOGIST0118"));
+				return errori;
+			}
+			//Fix 15944 errori.addElement(new ErrorMessage("LOGIS01054", "Errore nel salvataggio della missione origine."));
+			errori.addElement(new ErrorMessage("LOGIST0118"));
+			return errori;
+		}
+		errori = trattaMissione(missFiglia, qtaConfermata, qta2Confermata, qta3Confermata);
+		if (errori.size() == 0) {    // Sostiuisco la missione originaria con quella aggiornata.
+			esecuzioneMissioni.getElencoMissioni().removeElementAt(esecuzioneMissioni.getPosMiss());
+			esecuzioneMissioni.getElencoMissioni().add(esecuzioneMissioni.getPosMiss(), m);
+		}
+		return errori;
 	}
 
 	protected void settaDatiForm(TForm form, YPianoCaricoToyotaRiga riga) {
@@ -368,7 +903,36 @@ public class YProcessaListeCaricoRf extends LogisRF {
 
 		form.getTField("UMVal").setValue(formato(m.getArticolo().getUmBase(), 2));
 		form.getTField("CodiceArticoloVal").setValue(formato(m.getArticolo().getCodice(), 17));
-		form.getTField("DescrArticoloVal").setValue(formato(m.getArticolo().getDescrizione(), 21));
+		if(m.getArticolo().getDescrizione().length() > 21) {
+			form.getTField("VersioneLbl").setVisible(true);
+			String descEx = m.getArticolo().getDescrizione();
+			String firstPart = descEx.substring(0,21);
+			String lastPart = descEx.substring(21,descEx.length());
+			form.getTField("DescrArticoloVal").setValue(firstPart);
+			form.getTField("VersioneLbl").setValue(lastPart); //.Uso questo campo per mettere gli eventuali altri chars
+		}else {
+			form.getTField("DescrArticoloVal").setValue(m.getArticolo().getDescrizione());
+			form.getTField("VersioneLbl").setVisible(false);
+		}
+
+		form.getTField("NumeroRiferimentoLbl").setValue(ResourceLoader.getString(RES_FILE, "visualizzaMissioneUds.NumeroRiferimento.label"));
+
+		if(riga.getNumeroRiferimento() != null) {
+			form.getTField("NumeroRiferimento").setVisible(true);
+			form.getTField("NumeroRiferimentoLbl").setVisible(true);
+			form.getTField("NumeroRiferimento").setValue(riga.getNumeroRiferimento());
+		}else {
+			form.getTField("NumeroRiferimento").setVisible(false);
+			form.getTField("NumeroRiferimentoLbl").setValue("");
+			form.getTField("NumeroRiferimento").setValue("");
+		}
+		
+		form.getTField("RagioneSocialeCli").setValue("");
+
+		if(riga.getCliente() != null) {
+			form.getTField("RagioneSocialeCli").setVisible(true);
+			form.getTField("RagioneSocialeCli").setValue(formato(riga.getCliente().getRagioneSociale(), 21));
+		}
 
 		form.getTField("UbicSaldoVal").setValue(formato(m.getSaldo().getCodiceUbicazione(), 17));
 		form.getTField("UbicDestVal").setValue(formato(m.getCodiceUbicazioneInv(), 17));
@@ -377,7 +941,7 @@ public class YProcessaListeCaricoRf extends LogisRF {
 		form.getTField("QtaGiacienzaVal").setValue(formattaBigDec(m.getSaldo().getQta1()));
 		BigDecimal qtaDisp = m.getSaldo().calcolaDisponibile().add(m.getQta1Richiesta().min(m.getSaldo().getQta1()));
 		form.getTField("QtaDisponibileVal").setValue(formattaBigDec(qtaDisp));
-		form.getTField("QtaRichiestaVal").setValue(formattaBigDec(m.getQta1Richiesta()));
+		form.getTField("QtaRichiestaVal").setValue(formattaBigDec((riga.getResiduoDaPrelevare())));
 
 		form.getTField("QtaConfermataTxt").setVisible(true);
 		form.getTField("QtaConfermataLbl").setVisible(true);
@@ -452,10 +1016,10 @@ public class YProcessaListeCaricoRf extends LogisRF {
 	}
 
 	protected String formatoPosizione() {
-		int numMiss = esecuzionePianiCarico.getPosMiss() + 1;
+		int numMiss = esecuzioneMissioni.getPosMiss() + 1;
 		String res = "";
 		res = "> " + ResourceLoader.getString(RESOURCES, "visualizzaMissioneUds.Missione.label") + " ";
-		res += numMiss + "/" + esecuzionePianiCarico.getElencoRighe().size();
+		res += numMiss + "/" + esecuzioneMissioni.getElencoMissioni().size();
 		if (res.length() > 16) {
 			res = res.substring(0, 16);
 		}
@@ -489,10 +1053,10 @@ public class YProcessaListeCaricoRf extends LogisRF {
 	protected boolean cercaMissioneIndietro() {
 		boolean trovato = false;
 		// Cerca la prossima missione in esecuzione da confermare ...
-		for (int i = esecuzionePianiCarico.getPosMiss() - 1; i >= 0; i--) {
-			YPianoCaricoToyotaRiga m = (YPianoCaricoToyotaRiga) esecuzionePianiCarico.getElencoRighe().elementAt(i);
-			if (m.getStatoRiga() == StatoRigaToyota.APERTA) {
-				esecuzionePianiCarico.setPosMiss(i);
+		for (int i = esecuzioneMissioni.getPosMiss() - 1; i >= 0; i--) {
+			Missione m = (Missione) esecuzioneMissioni.getElencoMissioni().elementAt(i);
+			if (m.getStatoMissione() == Missione.ESECUZIONE) {
+				esecuzioneMissioni.setPosMiss(i);
 				trovato = true;
 				break;
 			}
@@ -501,11 +1065,10 @@ public class YProcessaListeCaricoRf extends LogisRF {
 		if (!trovato)         // ... missione non trovato => stop.
 			return false;
 		// ... trovata. Ne cerca altre per il 'flagIndietro'.
-		for (int i = esecuzionePianiCarico.getPosMiss() - 1; i >= 0 && naviga; i--) {
-			YPianoCaricoToyotaRiga m = (YPianoCaricoToyotaRiga) esecuzionePianiCarico.getElencoRighe().elementAt(i);
-			if (m.getStatoRiga() == StatoRigaToyota.APERTA) {
-				esecuzionePianiCarico.setPosMiss(i);
-				trovato = true;
+		for (int i = esecuzioneMissioni.getPosMiss() - 1; i >= 0 && naviga; i--) {
+			Missione m = (Missione) esecuzioneMissioni.getElencoMissioni().elementAt(i);
+			if (m.getStatoMissione() == Missione.ESECUZIONE) {
+				flagIndietro = naviga && true;
 				break;
 			}
 		}
@@ -517,12 +1080,12 @@ public class YProcessaListeCaricoRf extends LogisRF {
 	 */
 	protected boolean cercaMissioneAvanti() {
 		boolean trovato = false;
-		int dim = esecuzionePianiCarico.getElencoRighe().size();
+		int dim = esecuzioneMissioni.getElencoMissioni().size();
 		// Cerca la prossima missione in esecuzione da confermare ...
-		for (int i = esecuzionePianiCarico.getPosMiss() + 1; i < dim; i++) {
-			YPianoCaricoToyotaRiga m = (YPianoCaricoToyotaRiga) esecuzionePianiCarico.getElencoRighe().elementAt(i);
-			if (m.getStatoRiga() == StatoRigaToyota.APERTA) {
-				esecuzionePianiCarico.setPosMiss(i);
+		for (int i = esecuzioneMissioni.getPosMiss() + 1; i < dim; i++) {
+			Missione m = (Missione) esecuzioneMissioni.getElencoMissioni().elementAt(i);
+			if (m.getStatoMissione() == Missione.ESECUZIONE) {
+				esecuzioneMissioni.setPosMiss(i);
 				trovato = true;
 				break;
 			}
@@ -531,11 +1094,10 @@ public class YProcessaListeCaricoRf extends LogisRF {
 		if (!trovato)
 			return false;     // ... nessuna missione in esecuzione trovata => stop.
 		// ... trovata. Cerca eventuali altre missioni in esec. per il 'flagAvanti'.
-		for (int i = esecuzionePianiCarico.getPosMiss() + 1; i < dim && naviga; i++) {
-			YPianoCaricoToyotaRiga m = (YPianoCaricoToyotaRiga) esecuzionePianiCarico.getElencoRighe().elementAt(i);
-			if (m.getStatoRiga() == StatoRigaToyota.APERTA) {
-				esecuzionePianiCarico.setPosMiss(i);
-				trovato = true;
+		for (int i = esecuzioneMissioni.getPosMiss() + 1; i < dim && naviga; i++) {
+			Missione m = (Missione) esecuzioneMissioni.getElencoMissioni().elementAt(i);
+			if (m.getStatoMissione() == Missione.ESECUZIONE) {
+				flagAvanti = naviga && true;
 				break;
 			}
 		}
@@ -549,23 +1111,23 @@ public class YProcessaListeCaricoRf extends LogisRF {
 	protected boolean saltaIndietroMissioni() {
 		boolean trovato = false;
 		int saltate = 0;
-		int lastExec = esecuzionePianiCarico.getPosMiss() - 1;
-		for (int i = esecuzionePianiCarico.getPosMiss() - 1; i >= 0 && !trovato; i--) {
-			YPianoCaricoToyotaRiga m = (YPianoCaricoToyotaRiga) esecuzionePianiCarico.getElencoRighe().elementAt(i);
-			if (m.getStatoRiga() == StatoRigaToyota.APERTA) {
+		int lastExec = esecuzioneMissioni.getPosMiss() - 1;
+		for (int i = esecuzioneMissioni.getPosMiss() - 1; i >= 0 && !trovato; i--) {
+			Missione m = (Missione) esecuzioneMissioni.getElencoMissioni().elementAt(i);
+			if (m.getStatoMissione() == Missione.ESECUZIONE) {
 				saltate++;
 				lastExec = i;
 				if (saltate == SALTO_MISSIONI ||
 						i == 0) {
-					esecuzionePianiCarico.setPosMiss(i);
+					esecuzioneMissioni.setPosMiss(i);
 					trovato = true;
 					break;
 				}
 			}
 		}
 		if (!trovato &&
-				lastExec < esecuzionePianiCarico.getPosMiss() - 1) {
-			esecuzionePianiCarico.setPosMiss(lastExec);
+				lastExec < esecuzioneMissioni.getPosMiss() - 1) {
+			esecuzioneMissioni.setPosMiss(lastExec);
 			trovato = true;
 		}
 		flagIndietro = false;
@@ -573,9 +1135,9 @@ public class YProcessaListeCaricoRf extends LogisRF {
 			return false;
 		}
 		// ... trovata. Ne cerca altre per il 'flagIndietro'.
-		for (int i = esecuzionePianiCarico.getPosMiss() - 1; i >= 0 && naviga; i--) {
-			YPianoCaricoToyotaRiga m = (YPianoCaricoToyotaRiga) esecuzionePianiCarico.getElencoRighe().elementAt(i);
-			if (m.getStatoRiga() == StatoRigaToyota.APERTA) {
+		for (int i = esecuzioneMissioni.getPosMiss() - 1; i >= 0 && naviga; i--) {
+			Missione m = (Missione) esecuzioneMissioni.getElencoMissioni().elementAt(i);
+			if (m.getStatoMissione() == Missione.ESECUZIONE) {
 				flagIndietro = naviga && true;
 				break;
 			}
@@ -588,33 +1150,33 @@ public class YProcessaListeCaricoRf extends LogisRF {
 	 */
 	protected boolean saltaAvantiMissioni() {
 		boolean trovato = false;
-		int dim = esecuzionePianiCarico.getElencoRighe().size();
+		int dim = esecuzioneMissioni.getElencoMissioni().size();
 		int saltate = 0;
 		int lastExec = 0;
-		for (int i = esecuzionePianiCarico.getPosMiss() + 1; i < dim; i++) {
-			YPianoCaricoToyotaRiga m = (YPianoCaricoToyotaRiga) esecuzionePianiCarico.getElencoRighe().elementAt(i);
-			if (m.getStatoRiga() == StatoRigaToyota.APERTA) {
+		for (int i = esecuzioneMissioni.getPosMiss() + 1; i < dim; i++) {
+			Missione m = (Missione) esecuzioneMissioni.getElencoMissioni().elementAt(i);
+			if (m.getStatoMissione() == Missione.ESECUZIONE) {
 				saltate++;
 				lastExec = i;
 				if (saltate == SALTO_MISSIONI ||
 						i == (dim - 1)) {
-					esecuzionePianiCarico.setPosMiss(i);
+					esecuzioneMissioni.setPosMiss(i);
 					trovato = true;
 					break;
 				}
 			}
 		}
 		if (!trovato && lastExec > 0) {
-			esecuzionePianiCarico.setPosMiss(lastExec);
+			esecuzioneMissioni.setPosMiss(lastExec);
 			trovato = true;
 		}
 		flagAvanti = false;
 		if (!trovato)
 			return false;     // ... nessuna missione in esecuzione trovata => stop.
 		// ... trovata. Cerca eventuali altre missioni in esec. per il 'flagAvanti'.
-		for (int i = esecuzionePianiCarico.getPosMiss() + 1; i < dim && naviga; i++) {
-			YPianoCaricoToyotaRiga m = (YPianoCaricoToyotaRiga) esecuzionePianiCarico.getElencoRighe().elementAt(i);
-			if (m.getStatoRiga() == StatoRigaToyota.APERTA) {
+		for (int i = esecuzioneMissioni.getPosMiss() + 1; i < dim && naviga; i++) {
+			Missione m = (Missione) esecuzioneMissioni.getElencoMissioni().elementAt(i);
+			if (m.getStatoMissione() == Missione.ESECUZIONE) {
 				flagAvanti = naviga && true;
 				break;
 			}
@@ -671,17 +1233,17 @@ public class YProcessaListeCaricoRf extends LogisRF {
 
 	public String formPaginaUdcNumeroRitorno = "paginaUdcNumeroRitorno";
 
-	@SuppressWarnings("rawtypes")
 	protected void paginaUdcNumeroRitorno() {
 		TForm form = getTForm(formPaginaUdcNumeroRitorno);
 		try {
+			esecuzionePianiCarico.getElencoRighe().clear();
 			form.getTField("FieldUdc").setValue("");
 			form.getTField("FieldNumeroRitorno").setValue("");
 			sendForm(form);
 			TForm risposta = readInput();
 			if (risposta.getKeyPressed().equals(TForm.KEY_ESC) ||
 					risposta.getKeyPressed().equals(TForm.KEY_CTL_X)) {
-				pagina = UDC_NR_RITORNO;
+				pagina = SELEZIONE;
 				esecuzionePianiCarico.setPianoInRiposizionamento(null); //.Svuoto il piano
 				esecuzionePianiCarico.setMappaUdc(null); //.Svuoto la mappa sparata
 				return;
@@ -699,7 +1261,7 @@ public class YProcessaListeCaricoRf extends LogisRF {
 		return;
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected ErrorMessage testPaginaUdcNumeroRitorno(String udc, String numeroRitorno) throws Exception {
 		if(udc.isEmpty() && numeroRitorno.isEmpty()) {
 			return new ErrorMessage("YLOGIS0003");
@@ -741,7 +1303,7 @@ public class YProcessaListeCaricoRf extends LogisRF {
 						YPianoCaricoToyotaRiga riga = (YPianoCaricoToyotaRiga) iterRighe.next();
 						if(riga.getStatoPrelievo() < StatoPrelievoRigaToyota.PRELEVATA && riga.getStatoRiga() == StatoRigaToyota.APERTA) {
 							tutteChiuse = false;
-							if(riga.getPrelevabile()) {
+							if(riga.getPrelevabile() && riga.getMissione().getStatoMissione() != Missione.TERMINATA) {
 								esecuzionePianiCarico.getElencoRighe().add(riga);
 							}
 						}
@@ -751,6 +1313,7 @@ public class YProcessaListeCaricoRf extends LogisRF {
 						pagina = RIPOSIZ_UDC_MAGAZZINO;
 					}else {
 						pagina = ESECUZIONE_CARICO;
+						tipoPrelievo = PRELIEVO_SU_UDC_REPARTO;
 					}
 				}
 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e) {
@@ -760,15 +1323,45 @@ public class YProcessaListeCaricoRf extends LogisRF {
 		}
 		//.Altrimenti verifico se esistono delle righe con StatoPrelievo < 2, StatoRiga A su piani di carico con reparto/udc scelti
 		else if(numeroRitorno != null && !numeroRitorno.isEmpty()) {
-			YPianoCaricoToyotaRiga riga = esecuzionePianiCarico.recuperaRigaPianoCaricoApertaFromNumRitorno(
+			List<YPianoCaricoToyotaRiga> righe = esecuzionePianiCarico.recuperaRigaPianoCaricoApertaFromNumRitorno(
 					numeroRitorno);
-			if(riga != null && riga.getPrelevabile()) {
-				esecuzionePianiCarico.getElencoRighe().add(riga);
-				pagina = ESECUZIONE_CARICO;
-			}else {
-				messaggio(false, "Non sono presenti piani di carico aperti per il numero di ritorno sparato");
-				pagina = UDC_NR_RITORNO;
+			for (Iterator iterator = righe.iterator(); iterator.hasNext();) {
+				YPianoCaricoToyotaRiga riga = (YPianoCaricoToyotaRiga) iterator.next();
+				if(riga != null && riga.getPrelevabile() && riga.getMissione().getStatoMissione() != Missione.TERMINATA) {
+					esecuzionePianiCarico.getElencoRighe().add(riga);
+
+				}
 			}
+			pagina = ESECUZIONE_CARICO;
+			tipoPrelievo = PRELIEVO_SU_RIFERIMENTO;
+		}else {
+			messaggio(false, "Non sono presenti piani di carico aperti per il numero di ritorno sparato");
+			pagina = UDC_NR_RITORNO;
+		}
+		//.Se la pagina e' la visualizzazione delle missioni le devo mettere in esecuzione
+		if(pagina == ESECUZIONE_CARICO && esecuzionePianiCarico.getElencoRighe().size() > 0) {
+			esecuzioneMissioni.getElencoMissioni().clear();
+			esecuzioneMissioni.getElencoMissioniDB().clear();
+			esecuzionePianiCarico.setRigaPianoCaricoInConferma(null);
+			try {
+				for (Iterator iterator = esecuzionePianiCarico.getElencoRighe().iterator(); iterator.hasNext();) {
+					YPianoCaricoToyotaRiga riga = (YPianoCaricoToyotaRiga) iterator.next();
+					Missione m = riga.getMissione();
+
+					m.setStatoMissione(Missione.ESECUZIONE);
+
+					m.save();
+
+					esecuzioneMissioni.getElencoMissioniDB().add(m);
+					esecuzioneMissioni.getElencoMissioni().add(m);
+				}
+				ConnectionManager.commit();
+			}catch (SQLException e) {
+				e.printStackTrace(Trace.excStream);
+				ConnectionManager.rollback();
+				messaggio(true, e.getMessage());
+			}
+			esecuzioneMissioni.setPosMiss(0);
 		}
 		return null;
 	}
@@ -840,6 +1433,105 @@ public class YProcessaListeCaricoRf extends LogisRF {
 	protected Vector caricaRepartiServitiAgv() {
 		esecuzionePianiCarico.riempiElencoRepartiServitiAgv();
 		return esecuzionePianiCarico.getElencoRepartiServitiAgv();
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	protected ErrorMessage caricaListeInEsecuzione(Vector lista) {
+		ErrorMessage error = null;
+		boolean postUds = esecuzioneMissioni.isAbilPrepUds();
+		boolean gestUds = postUds;
+		esecuzioneMissioni.getElencoTestate().removeAllElements();
+		int i = 0;
+		for (Iterator iterator = lista.iterator(); iterator.hasNext();) {
+			Object obj = iterator.next();
+			if (obj instanceof TestataLista) {
+				TestataLista lis = (TestataLista) obj;
+				esecuzioneMissioni.getElencoTestate().addElement(lis);
+				if (postUds) {      // Postazione abilitata.
+					boolean lisAbilUds = checkGestioneUds(lis);
+					if (i == 0)             // La prima lista fissa la condizione. Le altre devono rispettare
+						gestUds = lisAbilUds; //  questa. NON ammetto comportamenti misti.
+					else {
+						if (lisAbilUds != gestUds) {    // Errore.
+							if (lisAbilUds)
+								//Fix 15944 error = new ErrorMessage("LOGIS01054", "Lista " + lis.getCodice() + " con UdS gestibile in picking, diversamente dalle precedenti.");
+								error = new ErrorMessage("LOGIST0097", lis.getCodice());
+							else
+								//Fix 15944 error = new ErrorMessage("LOGIS01054", "Lista " + lis.getCodice() + " con UdS NON gestibile in picking, diversamente dalle precedenti.");
+								error = new ErrorMessage("LOGIST0098", lis.getCodice());
+						}
+					}
+				}
+			}
+			if (obj instanceof PianificazioneLista) {
+				gestUds = false;  // Non gestisce l'UdS in fase di prelievo, per cui si deve allestire
+				//  al termine di esso. Utile per effettuare poi la ventilazione.
+				if (postUds) {      // Postazione abilitata.
+					boolean lisAbilUds = checkGestioneUds((PianificazioneLista) obj);
+					if (i == 0)             // La prima lista fissa la condizione. Le altre devono rispettare
+						gestUds = lisAbilUds; //  questa. NON ammetto comportamenti misti.
+					else {
+						if (lisAbilUds != gestUds) {    // Errore.
+							if (lisAbilUds)
+								//Fix 15944 error = new ErrorMessage("LOGIS01054", "Preparazione " + ((PianificazioneLista) obj).getCodice() + " con UdS gestibile in picking, diversamente dalle precedenti.");
+								error = new ErrorMessage("LOGIST0103", String.valueOf(((PianificazioneLista) obj).getCodice()));
+							else
+								//Fix 15944 error = new ErrorMessage("LOGIS01054", "Preparazione " + ((PianificazioneLista) obj).getCodice() + " con UdS NON gestibile in picking, diversamente dalle precedenti.");
+								error = new ErrorMessage("LOGIST0104", String.valueOf(((PianificazioneLista) obj).getCodice()));
+						}
+					}
+				}
+				esecuzioneMissioni.getElencoTestate().addElement(obj);
+			}
+			i++;
+		}
+		if (error != null)
+			return error;
+		esecuzioneMissioni.setAbilPrepUds(gestUds);
+		if (esecuzioneMissioni.getElencoTestate().size() == 0)
+			//Fix 15944 return new ErrorMessage("LOGIS01054", "Selezionare almeno una lista dall'elenco proposto.");
+			return new ErrorMessage("LOGIST0105");
+		return null;
+	}
+
+	protected boolean checkGestioneUds(TestataLista lista) {
+		if (lista.getFlagUds() &&
+				lista.getFlagPickPack()) {
+			//13.03.09 - inizio
+			if (esecuzioneMissioni.getPostazione().getAbilPostazioniTipoLista().size() == 0)
+				return esecuzioneMissioni.getPostazione().getFlagPickPack();
+			//13.03.09 - fine
+			for (int i = 0; i < esecuzioneMissioni.getPostazione().getAbilPostazioniTipoLista().size(); i++) {
+				AbilPostazioneTipoLista aptl = (AbilPostazioneTipoLista) esecuzioneMissioni.getPostazione().getAbilPostazioniTipoLista().get(i);
+				if (aptl.getChiaveTipoLista().equals(lista.getChiaveTipoLista())) {
+					return aptl.getFlagPickPack();
+				}
+			}
+		}
+		return false;
+	}
+
+	protected boolean checkGestioneUds(PianificazioneLista piano) {
+		piano.riempiElencoTestata(false);
+		boolean abil = false;
+		for (int j = 0; j < piano.getElencoTestate().size() && !abil; j++) {
+			TestataLista lista = (TestataLista) piano.getElencoTestate().elementAt(j);
+			if (lista.getFlagUds() &&
+					lista.getFlagPickPack()) {
+				//28.01.22 - inizio
+				if (esecuzioneMissioni.getPostazione().getAbilPostazioniTipoLista().size() == 0)
+					return esecuzioneMissioni.getPostazione().getFlagPickPack();
+				//28.01.22 - fine
+				for (int i = 0; i < esecuzioneMissioni.getPostazione().getAbilPostazioniTipoLista().size(); i++) {
+					AbilPostazioneTipoLista aptl = (AbilPostazioneTipoLista) esecuzioneMissioni.getPostazione().getAbilPostazioniTipoLista().get(i);
+					if (aptl.getChiaveTipoLista().equals(lista.getChiaveTipoLista())) {
+						abil = aptl.getFlagPickPack();
+						break;
+					}
+				}
+			}
+		}
+		return abil;
 	}
 
 	@Override

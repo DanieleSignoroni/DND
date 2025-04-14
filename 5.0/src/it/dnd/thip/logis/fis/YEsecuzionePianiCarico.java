@@ -3,6 +3,8 @@ package it.dnd.thip.logis.fis;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import com.thera.thermfw.base.Trace;
@@ -53,20 +55,6 @@ public class YEsecuzionePianiCarico {
 			+ "WHERE R.ID_AZIENDA = ? "
 			+ "AND Y.SERVITO_LOGISTICA = ? "; 
 	public static CachedStatement cSelezionaRepartiServitiLogistica = new CachedStatement(STMT_SELECT_REPARTI_LOGISITCA);
-
-	public static final String STMT_SELECT_RIGA_PIANO_CARICO_FROM_NUM_RIT = "SELECT "
-			+ "	R.* "
-			+ "FROM "
-			+ "	THIPPERS.YPIANO_CARICO_TOYOTA_RIG R "
-			+ "INNER JOIN THIPPERS.YPIANO_CARICO_TOYOTA_TES T "
-			+ "ON R.ID_AZIENDA = T.ID_AZIENDA "
-			+ "AND R.ID_ANNO_DOC = T.ID_ANNO_DOC "
-			+ "AND R.ID_NUMERO_DOC = T.ID_NUMERO_DOC "
-			+ "WHERE R.ID_AZIENDA = ? AND T.STATO_UDC = ? "
-			+ "AND R.NUM_RITORNO_ATV = ? "
-			+ "AND R.STATO_PRL_RIGA < ? "
-			+ "AND R.STATO_RIGA = ? AND T.R_COD_MAPPA_UDC = ? AND T.R_REPARTO = ?";
-	public static CachedStatement cSelezionaRigaPianoCaricoApertaNumeroRitorno = new CachedStatement(STMT_SELECT_RIGA_PIANO_CARICO_FROM_NUM_RIT);
 
 	@SuppressWarnings("rawtypes")
 	protected Vector elencoRepartiServitiAgv = new Vector();
@@ -217,27 +205,36 @@ public class YEsecuzionePianiCarico {
 		}
 	}
 
-	public YPianoCaricoToyotaRiga recuperaRigaPianoCaricoApertaFromNumRitorno(String numeroRitorno) {
+	public List<YPianoCaricoToyotaRiga> recuperaRigaPianoCaricoApertaFromNumRitorno(String numeroRitorno) {
+		List<YPianoCaricoToyotaRiga> righe = new ArrayList<YPianoCaricoToyotaRiga>();
 		ResultSet rs = null;
 		try{
-			PreparedStatement ps = cSelezionaRigaPianoCaricoApertaNumeroRitorno.getStatement();
-			Database db = ConnectionManager.getCurrentDatabase();
-			db.setString(ps, 1, Azienda.getAziendaCorrente());
-			db.setString(ps, 2, String.valueOf(StatoPrelievoUdcToyota.RICEVUTA));
-			db.setString(ps, 3, numeroRitorno);
-			db.setString(ps, 4, String.valueOf(StatoPrelievoRigaToyota.PRELEVATA));
-			db.setString(ps, 5, String.valueOf(StatoRigaToyota.APERTA));
-			db.setString(ps, 6, getMappaUdc().getCodice());
-			db.setString(ps, 7, getReparto().getIdReparto());
-			rs = ps.executeQuery();
+			String select = "SELECT "
+					+ "	R.* "
+					+ "FROM "
+					+ "	THIPPERS.YPIANO_CARICO_TOYOTA_RIG R "
+					+ "INNER JOIN THIPPERS.YPIANO_CARICO_TOYOTA_TES T "
+					+ "ON R.ID_AZIENDA = T.ID_AZIENDA "
+					+ "AND R.ID_ANNO_DOC = T.ID_ANNO_DOC "
+					+ "AND R.ID_NUMERO_DOC = T.ID_NUMERO_DOC "
+					+ "WHERE R.ID_AZIENDA = '"+Azienda.getAziendaCorrente()+"' AND T.STATO_UDC = '"+StatoPrelievoUdcToyota.RICEVUTA+"' "
+					+ "AND R.STATO_PRL_RIGA < '"+StatoPrelievoRigaToyota.PRELEVATA+"' "
+					+ "AND R.STATO_RIGA = '"+StatoRigaToyota.APERTA+"' AND T.R_REPARTO = '"+getReparto().getIdReparto()+"' ";
+			select += "AND R.NUM_RITORNO_ATV = '"+numeroRitorno+"' ";
+			if(getMappaUdc() != null) {
+				select += "AND R.R_COD_MAPPA_UDC = '"+getMappaUdc().getCodice()+"' ";
+			}
+			CachedStatement cs = new CachedStatement(select);
+			rs = cs.executeQuery();
 			if (rs.next()){
-				return YPianoCaricoToyotaRiga.elementWithKey(KeyHelper.buildObjectKey(new String[] {
+				righe.add(YPianoCaricoToyotaRiga.elementWithKey(KeyHelper.buildObjectKey(new String[] {
 						rs.getString(YPianoCaricoToyotaRigaTM.ID_AZIENDA),
 						rs.getString(YPianoCaricoToyotaRigaTM.ID_ANNO_DOC),
 						rs.getString(YPianoCaricoToyotaRigaTM.ID_NUMERO_DOC),
 						rs.getString(YPianoCaricoToyotaRigaTM.ID_RIGA_DOC),
-				}), PersistentObject.NO_LOCK);
+				}), PersistentObject.NO_LOCK));
 			}
+			cs.free();
 		} catch (SQLException e) {
 			e.printStackTrace(Trace.excStream);
 		}finally{
@@ -248,7 +245,7 @@ public class YEsecuzionePianiCarico {
 				e.printStackTrace(Trace.excStream);
 			}
 		}
-		return null;
+		return righe;
 	}
 
 }
