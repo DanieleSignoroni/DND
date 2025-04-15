@@ -1242,10 +1242,7 @@ public class YProcessaListeCaricoRf extends LogisRF {
 	protected void paginaRiposizionamentoUdcMagazzino() {
 		TForm form = getTForm(formPaginaRiposizionamentoUdcMagazzino);
 		try {
-			String txt = "Sono terminati i prelievi per sull'UDC "+esecuzionePianiCarico.getCodiceMappaUdc();
-			txt += "-";
-			txt += "Premere F1 se si vuole riposizionare l'UDC a magazzino";
-			form.getTField("LblIntestazione").setValue(txt);
+			form.getTField("Label3").setValue(esecuzionePianiCarico.getCodiceMappaUdc());
 			sendForm(form);
 			TForm risposta = readInput();
 			if (risposta.getKeyPressed().equals(TForm.KEY_ESC) ||

@@ -67,7 +67,22 @@
         <field Name="TastoF1" Sequence="2" Row="1" Column="16" Width="5" Height="1" Visible="true" Value="F1=OK" SourceType="all" AcceptValueMode="enter" Mandatory="false" RESId="paginaUdcNumeroRitorno_TastoF1">
             <type Display="output" Size="21" Scale="0" Justify="left">com.thera.thermfw.type.StringType</type>
         </field>
-        <field Name="LblIntestazione" Sequence="11" Row="5" Column="1" Width="20" Height="1" Visible="true" Value="&gt;&gt;&gt;&gt; PRESENTAZIONE" SourceType="all" AcceptValueMode="enter" Mandatory="false" RESId="paginaUdcNumeroRitorno_LblIntestazione">
+        <field Name="Label0" Sequence="3" Row="3" Column="1" Width="18" Height="1" Visible="true" Value="Sono terminati i" SourceType="all" AcceptValueMode="enter" Mandatory="false" RESId="paginaRiposizUdcMagazzino_Label0">
+            <type Display="output" Size="21" Scale="0" Justify="left">com.thera.thermfw.type.StringType</type>
+        </field>
+        <field Name="Label2" Sequence="4" Row="4" Column="1" Width="16" Height="1" Visible="true" SourceType="all" Value="prelievi per l'UDC" AcceptValueMode="enter" Mandatory="false" RESId="paginaRiposizUdcMagazzino_Label2">
+            <type Display="output" Size="21" Scale="0" Justify="left">com.thera.thermfw.type.StringType</type>
+        </field>
+        <field Name="Label3" Sequence="5" Row="5" Column="1" Width="10" Height="1" Visible="true" SourceType="all" AcceptValueMode="enter" Mandatory="false">
+            <type Display="output" Size="21" Scale="0" Justify="left">com.thera.thermfw.type.StringType</type>
+        </field>
+        <field Name="Label5" Sequence="6" Row="6" Column="1" Width="20" Height="1" Visible="true" Value="Premere F1 se si" SourceType="all" AcceptValueMode="enter" Mandatory="false" RESId="paginaRiposizUdcMagazzino_Label5">
+            <type Display="output" Size="21" Scale="0" Justify="left">com.thera.thermfw.type.StringType</type>
+        </field>
+        <field Name="Label6" Sequence="7" Row="7" Column="1" Width="15" Height="1" Visible="true" Value="vuole riposizionare" SourceType="all" AcceptValueMode="enter" Mandatory="false" RESId="paginaRiposizUdcMagazzino_Label6">
+            <type Display="output" Size="21" Scale="0" Justify="left">com.thera.thermfw.type.StringType</type>
+        </field>
+        <field Name="Label7" Sequence="8" Row="8" Column="1" Width="15" Height="1" Visible="true" Value="l'UDC a magazzino" SourceType="all" AcceptValueMode="enter" Mandatory="false" RESId="paginaRiposizUdcMagazzino_Label7">
             <type Display="output" Size="21" Scale="0" Justify="left">com.thera.thermfw.type.StringType</type>
         </field>
     </form>
