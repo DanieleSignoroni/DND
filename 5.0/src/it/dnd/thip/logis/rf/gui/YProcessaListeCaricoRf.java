@@ -344,7 +344,8 @@ public class YProcessaListeCaricoRf extends LogisRF {
 		YPianoCaricoToyotaRiga riga = esecuzionePianiCarico.getRigaPianoCaricoInConferma();
 		Missione m = esecuzioneMissioni.getMissInConferma();
 		try {
-			if (riga.isOnDB()) {   // Se era su DB è possibile che ci siano stati interventi dall'esterno.
+			if (m.isOnDB() && riga.isOnDB()) {   // Se era su DB è possibile che ci siano stati interventi dall'esterno.
+				m.retrieve(PersistentObject.NO_LOCK);
 				riga.retrieve(PersistentObject.NO_LOCK);
 				if (riga.getStatoRiga() != StatoRigaToyota.APERTA)
 					return CONFERMA;
@@ -612,7 +613,7 @@ public class YProcessaListeCaricoRf extends LogisRF {
 					}
 					form.getTField("UDSTxt").setValue("");
 
-					riga.setQuantitaPrelevataUmPrm(mi.getQta1Evasa());
+					riga.setQuantitaPrelevataUmPrm(riga.getQuantitaPrelevataUmPrm().add(qtaPrm));
 					if(!prelievoParziale)
 						riga.setStatoPrelievo(StatoPrelievoRigaToyota.PRELEVATA);
 					else
@@ -985,7 +986,7 @@ public class YProcessaListeCaricoRf extends LogisRF {
 		form.getTField("QtaRichiestaVal").setValue(formattaBigDec((riga.getResiduoDaPrelevare())));
 
 		form.getTField("BarcodeTxt").setValue("");
-		
+
 		form.getTField("QtaConfermataTxt").setVisible(true);
 		form.getTField("QtaConfermataLbl").setVisible(true);
 		form.getTField("QtaConfermataTxt").setValue("0");
@@ -1393,18 +1394,19 @@ public class YProcessaListeCaricoRf extends LogisRF {
 		if(pagina == ESECUZIONE_CARICO && esecuzionePianiCarico.getElencoRighe().size() > 0) {
 			esecuzioneMissioni.getElencoMissioni().clear();
 			esecuzioneMissioni.getElencoMissioniDB().clear();
-			esecuzionePianiCarico.setRigaPianoCaricoInConferma(null);
 			try {
 				for (Iterator iterator = esecuzionePianiCarico.getElencoRighe().iterator(); iterator.hasNext();) {
 					YPianoCaricoToyotaRiga riga = (YPianoCaricoToyotaRiga) iterator.next();
 					Missione m = riga.getMissione();
+					if(m.getStatoMissione() != Missione.ESECUZIONE) {
 
-					m.setStatoMissione(Missione.ESECUZIONE);
+						m.setStatoMissione(Missione.ESECUZIONE);
 
-					m.save();
+						m.save();
 
-					esecuzioneMissioni.getElencoMissioniDB().add(m);
-					esecuzioneMissioni.getElencoMissioni().add(m);
+						esecuzioneMissioni.getElencoMissioniDB().add(m);
+						esecuzioneMissioni.getElencoMissioni().add(m);
+					}
 				}
 				ConnectionManager.commit();
 			}catch (SQLException e) {
