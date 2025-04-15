@@ -249,7 +249,7 @@ public class YProcessaListeCaricoRf extends LogisRF {
 			pagina = MENU;
 		else {
 			if(pagina != CANCELLA) {
-				if(dim == esecuzionePianiCarico.getNumMissConfermate() && tipoPrelievo == PRELIEVO_SU_RIFERIMENTO) {
+				if(dim == esecuzioneMissioni.getNumMissConfermate() && tipoPrelievo == PRELIEVO_SU_RIFERIMENTO) {
 					try {
 						String msg = "Sono terminati i prelievi relativi all'ordine "+esecuzionePianiCarico.getRigaPianoCaricoInConferma().getNumeroRiferimento();
 						if(esecuzionePianiCarico.getRigaPianoCaricoInConferma().getCliente() != null) {
@@ -260,7 +260,7 @@ public class YProcessaListeCaricoRf extends LogisRF {
 						e.printStackTrace(Trace.excStream);
 					}
 					pagina = UDC_NR_RITORNO;
-				}else if(dim == esecuzionePianiCarico.getNumMissConfermate() && tipoPrelievo == PRELIEVO_SU_UDC_REPARTO) {
+				}else if(dim == esecuzioneMissioni.getNumMissConfermate() && tipoPrelievo == PRELIEVO_SU_UDC_REPARTO) {
 					esecuzionePianiCarico.setPianoInRiposizionamento((YPianoCaricoToyota) esecuzionePianiCarico.getElencoRighe().get(0).getTestata()); //.Me lo porto nella pagina successiva
 					pagina = RIPOSIZ_UDC_MAGAZZINO;
 				}
@@ -984,6 +984,8 @@ public class YProcessaListeCaricoRf extends LogisRF {
 		form.getTField("QtaDisponibileVal").setValue(formattaBigDec(qtaDisp));
 		form.getTField("QtaRichiestaVal").setValue(formattaBigDec((riga.getResiduoDaPrelevare())));
 
+		form.getTField("BarcodeTxt").setValue("");
+		
 		form.getTField("QtaConfermataTxt").setVisible(true);
 		form.getTField("QtaConfermataLbl").setVisible(true);
 		form.getTField("QtaConfermataTxt").setValue("0");

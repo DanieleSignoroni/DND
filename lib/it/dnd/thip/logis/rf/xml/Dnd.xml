@@ -56,7 +56,7 @@
         <field Name="LblNumeroRitorno" Sequence="5" Row="10" Column="1" Width="10" Height="1" Visible="true" Value="Num Rit.:" SourceType="all" AcceptValueMode="enter" Mandatory="false" RESId="paginaUdcNumeroRitorno_LblNumeroRitorno">
             <type Display="output" Size="21" Scale="0" Justify="left">com.thera.thermfw.type.StringType</type>
         </field>
-        <field Name="FieldNumeroRitorno" Sequence="6" Row="10" Column="13" Width="10" Height="1" Visible="true" Mandatory="false" SourceType="all" AcceptValueMode="enter">
+        <field Name="FieldNumeroRitorno" Sequence="6" Row="10" Column="13" Width="15" Height="1" Visible="true" Mandatory="false" SourceType="all" AcceptValueMode="enter">
             <type Display="input" Size="21" Scale="0" Justify="left">com.thera.thermfw.type.StringType</type>
         </field>
     </form>
