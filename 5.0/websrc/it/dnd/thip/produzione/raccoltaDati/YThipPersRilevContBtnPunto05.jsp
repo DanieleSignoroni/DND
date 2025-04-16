@@ -1,9 +1,9 @@
 <td align="left">
-	<button id="YChiamataUdcBut" class="btnFooter" type="button"
+	<button style="display:none;" id="YChiamataUdcBut" class="btnFooter" type="button"
 		onclick="ychiamataUdcAction()">Chiamata UDC</button>
 </td>
 <td align="left">
-	<button id="YRiposizionamentoUdcBut" class="btnFooter" type="button"
+	<button style="display:none;" id="YRiposizionamentoUdcBut" class="btnFooter" type="button"
 		onclick="yRiposizionamentoUdcAction()">Riposizionamento UDC</button>
 </td>
 <script>
