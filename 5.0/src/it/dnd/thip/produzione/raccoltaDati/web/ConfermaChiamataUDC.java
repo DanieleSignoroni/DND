@@ -30,12 +30,10 @@ import it.thera.thip.base.articolo.Articolo;
 import it.thera.thip.base.azienda.Azienda;
 import it.thera.thip.base.azienda.Reparto;
 import it.thera.thip.logis.fis.MappaUdc;
-import it.thera.thip.logis.fis.MissioneTM;
 import it.thera.thip.logis.fis.RigaMovimento;
 import it.thera.thip.logis.fis.RigaMovimentoTM;
 import it.thera.thip.logis.fis.Saldo;
 import it.thera.thip.logis.fis.SaldoTM;
-import it.thera.thip.produzione.ordese.AttivitaEsecutivaTM;
 import it.thera.thip.produzione.raccoltaDati.RilevDatiPrdTS;
 import it.thera.thip.produzione.raccoltaDati.web.AzionePaginaTS;
 
@@ -52,7 +50,7 @@ import it.thera.thip.produzione.raccoltaDati.web.AzionePaginaTS;
 /*
  * Revisions:
  * Number   Date        Owner    Description
- * 71XXX    16/04/2025  DSSOF3   Prima stesura
+ * 71923    16/04/2025  DSSOF3   Prima stesura
  */
 
 public class ConfermaChiamataUDC extends Check {
@@ -134,7 +132,6 @@ public class ConfermaChiamataUDC extends Check {
 						if(!saldi.isEmpty()) {
 							se.getRequest().setAttribute("ListaSaldi", saldi);
 						}else {
-							//.Cerco l'UDC storica
 							RigaMovimento rM = trovaRigaMovimentoStorico(articolo.getIdArticolo());
 							se.getRequest().setAttribute("RigaMovimentoStorico", rM);
 						}

@@ -25,7 +25,7 @@ import it.thera.thip.produzione.raccoltaDati.web.RilevDatiPrdTSDataCollector;
 /*
  * Revisions:
  * Number   Date        Owner    Description
- * 71XXX    16/04/2025  DSSOF3   Prima stesura
+ * 71923    16/04/2025  DSSOF3   Prima stesura
  */
 
 public class AzioneRilevazioneFunzioniUdcTS extends FillObject {

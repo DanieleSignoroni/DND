@@ -42,7 +42,7 @@ import it.thera.thip.vendite.proposteEvasione.CreaMessaggioErrore;
 /*
  * Revisions:
  * Number   Date        Owner    Description
- * 71XXX    16/04/2025  DSSOF3   Prima stesura
+ * 71923    16/04/2025  DSSOF3   Prima stesura
  */
 
 public class ConfermaRiposizionamentoUDC extends Check {

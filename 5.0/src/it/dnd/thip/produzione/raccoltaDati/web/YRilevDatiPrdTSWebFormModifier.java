@@ -14,7 +14,6 @@ import com.thera.thermfw.web.WebElement;
 
 import it.dnd.thip.logis.fis.YEsecuzionePianiCarico;
 import it.thera.thip.base.azienda.Reparto;
-import it.thera.thip.logis.fis.MappaUdc;
 import it.thera.thip.logis.fis.RigaMovimento;
 import it.thera.thip.logis.fis.Saldo;
 import it.thera.thip.produzione.ordese.PersDatiPrdUtenteRilev;
@@ -35,7 +34,7 @@ import it.thera.thip.produzione.raccoltaDati.web.RilevDatiPrdTSWebFormModifier;
 /*
  * Revisions:
  * Number   Date        Owner    Description
- * 71XXX    15/04/2025  DSSOF3   Prima stesura
+ * 71923    15/04/2025  DSSOF3   Prima stesura
  */
 
 public class YRilevDatiPrdTSWebFormModifier extends RilevDatiPrdTSWebFormModifier {

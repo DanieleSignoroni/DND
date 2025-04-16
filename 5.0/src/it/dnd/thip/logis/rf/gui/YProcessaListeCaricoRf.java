@@ -63,7 +63,7 @@ import it.thera.thip.produzione.ordese.AttivitaEsecutivaTM;
 /*
  * Revisions:
  * Number   Date        Owner    Description
- * 71XXX    10/04/2025  DSSOF3   Prima stesura
+ * 71923    10/04/2025  DSSOF3   Prima stesura
  */
 
 public class YProcessaListeCaricoRf extends LogisRF {

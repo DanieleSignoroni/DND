@@ -40,7 +40,7 @@ import it.thera.thip.logis.fis.MappaUdc;
 /*
  * Revisions:
  * Number   Date        Owner    Description
- * 71XXX    10/04/2025  DSSOF3   Prima stesura
+ * 71923    10/04/2025  DSSOF3   Prima stesura
  */
 
 public class YEsecuzionePianiCarico {

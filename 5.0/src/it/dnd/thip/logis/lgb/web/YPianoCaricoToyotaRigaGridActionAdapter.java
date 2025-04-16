@@ -30,7 +30,7 @@ import it.thera.thip.base.documenti.web.DocumentoNavigazioneWeb;
 /*
  * Revisions:
  * Number   Date        Owner    Description
- * 71XXX    09/04/2025  DSSOF3   Prima stesura
+ * 71923    09/04/2025  DSSOF3   Prima stesura
  */
 
 public class YPianoCaricoToyotaRigaGridActionAdapter extends DocumentoGridActionAdapter {
