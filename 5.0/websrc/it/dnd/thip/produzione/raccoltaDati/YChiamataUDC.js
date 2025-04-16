@@ -11,10 +11,16 @@ function RilevDatiPrdTSOL() {
 function selectReparto(index) {
 	var className = eval("document.forms[0].thClassName.value");
 	eval("document.forms[0]." + idFromName['IdOperatore']).value = document.getElementById("IdOperatore" + index).value;
-	runActionDirect('RIPOSIZIONA_UDC_SCELTA_OPERATORE', 'action_submit', className, null, 'same', 'no');
+	runActionDirect('CHIAMATA_UDC_SCELTA_OPERATORE', 'action_submit', className, null, 'same', 'no');
 }
 
 function conferma() {
 	var className = eval("document.forms[0].thClassName.value");
-	runActionDirect('CONFERMA_RIPOSIZIONAMENTO_UDC', 'action_submit', className, null, 'same', 'no');
+	runActionDirect('CONFERMA_CHIAMATA_UDC', 'action_submit', className, null, 'same', 'no');
+}
+
+function selectUDC(index){
+	var className = eval("document.forms[0].thClassName.value");
+	eval("document.forms[0]." + idFromName['BollaLavorazione']).value = document.getElementById("CodMappaUDC" + index).value;
+	runActionDirect('CHIAMATA_UDC_SCELTA_UDC', 'action_submit', className, null, 'same', 'no');
 }

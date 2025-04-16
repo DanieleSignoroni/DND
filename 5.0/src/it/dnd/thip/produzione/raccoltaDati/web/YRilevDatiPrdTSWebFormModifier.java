@@ -1,7 +1,11 @@
 package it.dnd.thip.produzione.raccoltaDati.web;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.servlet.jsp.JspWriter;
 
@@ -10,6 +14,9 @@ import com.thera.thermfw.web.WebElement;
 
 import it.dnd.thip.logis.fis.YEsecuzionePianiCarico;
 import it.thera.thip.base.azienda.Reparto;
+import it.thera.thip.logis.fis.MappaUdc;
+import it.thera.thip.logis.fis.RigaMovimento;
+import it.thera.thip.logis.fis.Saldo;
 import it.thera.thip.produzione.ordese.PersDatiPrdUtenteRilev;
 import it.thera.thip.produzione.raccoltaDati.RilevDatiPrdTS;
 import it.thera.thip.produzione.raccoltaDati.web.RilevDatiPrdTSWebFormModifier;
@@ -38,7 +45,7 @@ public class YRilevDatiPrdTSWebFormModifier extends RilevDatiPrdTSWebFormModifie
 		super.writeFormEndElements(out);
 		RilevDatiPrdTS bo = (RilevDatiPrdTS) getBODataCollector().getBo();
 		String action = (String) getRequest().getAttribute("Action");
-		if (action != null && (action.equals(YRilevDatiPrdTSFormActionAdapter.RIPOSIZIONA_UDC))) {
+		if (action != null && (action.equals(YRilevDatiPrdTSFormActionAdapter.RIPOSIZIONA_UDC) || action.equals(YRilevDatiPrdTSFormActionAdapter.CHIAMATA_UDC))) {
 			if(getRequest().getAttribute("DisplayReparti") != null && getRequest().getAttribute("DisplayReparti").equals("N")) {
 				String idReparto = (String) getRequest().getAttribute("IdReparto");
 				out.println("<script>");
@@ -47,6 +54,9 @@ public class YRilevDatiPrdTSWebFormModifier extends RilevDatiPrdTSWebFormModifie
 				out.println("</script>");
 			}else {
 				displaySceltaReparti(out, bo);
+				out.println("<script>");
+				out.println("parent.document.getElementById('Conferma').style.display = displayNone;"); //.Qui il btn di conferma non dev'esserci
+				out.println("</script>");
 			}
 		}else if(action != null && (action.equals(YRilevDatiPrdTSFormActionAdapter.RIPOSIZIONA_UDC_SCELTA_OPERATORE))) {
 			out.println("<script>");
@@ -56,7 +66,94 @@ public class YRilevDatiPrdTSWebFormModifier extends RilevDatiPrdTSWebFormModifie
 			out.println("document.getElementById('BollaLavorazione').style.background = mCo;");
 			out.println("document.getElementById('BollaLavorazione').focus();");
 			out.println("</script>");
+		}else if(action != null && (action.equals(YRilevDatiPrdTSFormActionAdapter.CHIAMATA_UDC_SCELTA_OPERATORE))) {
+			out.println("<script>");
+			out.println("document.getElementById('BollaLavorazione').parentNode.parentNode.style.display = displayBlock;");
+			out.println("document.getElementById('IdArticolo').parentNode.parentNode.style.display = displayBlock;");
+			out.println("document.getElementById('Titolo').parentNode.parentNode.style.display = displayBlock;");
+			out.println("parent.document.getElementById('Conferma').style.display = displayBlock;");
+			out.println("document.getElementById('BollaLavorazione').style.background = mCo;");
+			out.println("document.getElementById('IdArticolo').style.background = mCo;");
+			out.println("document.getElementById('BollaLavorazione').focus();");
+			out.println("</script>");
+		}else if(action != null && action.equals(YRilevDatiPrdTSFormActionAdapter.CHIAMATA_UDC_LISTA_UDC)) {
+			out.println("<script>");
+			out.println("document.getElementById('BollaLavorazione').parentNode.parentNode.style.display = displayBlock;");
+			out.println("document.getElementById('IdArticolo').parentNode.parentNode.style.display = displayBlock;");
+			out.println("document.getElementById('Titolo').parentNode.parentNode.style.display = displayBlock;");
+			out.println("parent.document.getElementById('Conferma').style.display = displayBlock;");
+			out.println("document.getElementById('BollaLavorazione').style.background = mCo;");
+			out.println("document.getElementById('IdArticolo').style.background = mCo;");
+			out.println("document.getElementById('BollaLavorazione').focus();");
+			out.println("</script>");
+			displayListaUDC(out,bo);
 		}
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	protected void displayListaUDC(JspWriter out, RilevDatiPrdTS bo) throws IOException {
+		HashMap<Object,BigDecimal> list = new HashMap<Object, BigDecimal>();
+		if(getRequest().getAttribute("ListaSaldi") != null) {
+			ArrayList<Saldo> saldi = (ArrayList<Saldo>) getRequest().getAttribute("ListaSaldi");
+			for (Iterator iterator = saldi.iterator(); iterator.hasNext();) {
+				Saldo saldo = (Saldo) iterator.next();
+				list.put(saldo, saldo.getQta1());
+			}
+		}else if(getRequest().getAttribute("RigaMovimentoStorico") != null) {
+			RigaMovimento rM = (RigaMovimento) getRequest().getAttribute("RigaMovimentoStorico");
+			list.put(rM, rM.getQta1());
+		}
+		String width = "\"width:117px\"";
+		if(bo.getPersDatiPrdUtenteRilev().getRisoluzioneVideo()== PersDatiPrdUtenteRilev.RISOL_800_600) {
+			width = "\"width:100px\"" ;
+		}
+		out.println("<table cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%\">");
+		out.println("<tr valign=\"top\">");
+		out.println("<td style=\"height:0px\"></td>");
+		out.println("<tr>");
+		out.println("<td width=\"15px\"></td>");
+		out.println("<td>");
+		out.println("<td>");
+		out.println("  <table id=\"extraTable\" cellpadding=\"1\" cellspacing=\"3\" class=\"monitorListTable\">");
+		out.println("  <tr>");
+		out.println("    <th class=\"cell\" >Mappa UDC</th>");
+		out.println("    <th class=\"cell\" >Quantita'</th>");
+		out.println("  </tr>");
+		int index = 0;
+		for (Map.Entry<Object,BigDecimal> entry : list.entrySet()) {
+			String codMappaUdc = null;
+			if(entry.getKey() instanceof Saldo) {
+				codMappaUdc = ((Saldo)entry.getKey()).getCodiceMappaUdc();
+			}else if(entry.getKey() instanceof RigaMovimento) {
+				codMappaUdc = ((RigaMovimento)entry.getKey()).getMappaUdc().getCodice();
+			}
+			BigDecimal val = entry.getValue();
+			out.println("    <tr>");
+			out.println("    <td class=\"cell\" id=\"CodMappaUdcTD" + index +"\" nowrap=\"true\" >"+codMappaUdc+"</td>");
+			out.println("    <td class=\"cell\" nowrap=\"true\" >"+val+"</td>");
+			out.println("    <td class=\"cell\" ><button type=\"button\" onclick=\"setCurrentEvent(event);selectUDC(" + index + ")\" style="+ width +">Conferma</button></td>");
+			out.println("    <td class=\"cell\" style=\"display:none\"><input type =\"text\" id=\"CodMappaUDC" + index + "\" value='" + WebElement.formatStringForHTML(codMappaUdc) + "' /></td>"); //Fix 14725
+			out.println("   </tr>");
+			index++;
+		}
+		out.println("  </table>");
+		out.println("</td>");
+		out.println("</tr>");
+		out.println("<tr>"); //Fix 13264
+		out.println("<td colspan=\"5\" style=\"height:100%\"></td>"); //Fix 13264
+		out.println("</tr>");
+		out.println("<tr>");
+		out.println("<td width=\"5px\">");//Fix 13175
+		out.println("</td>");//Fix 13175
+		out.println("<td colspan=\"5\">");
+		out.println("<table cellpadding=\"3\" cellspacing=\"3\">"); //Fix 13574
+		out.println("<tr>");
+		out.println("<td><label class=\"labelError\" id=\"ErroriList\"></label></td>");
+		out.println("</tr>");
+		out.println("</table>");
+		out.println("</td>");
+		out.println("</tr>");
+		out.println("</table>");
 	}
 
 	@SuppressWarnings("rawtypes")
