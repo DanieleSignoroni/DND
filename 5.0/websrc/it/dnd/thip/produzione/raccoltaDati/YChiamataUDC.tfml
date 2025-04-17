@@ -11,6 +11,7 @@
         onLoadPresent="yes"
         jsLibraryName="it/dnd/thip/produzione/raccoltaDati/YChiamataUDC.js">
 
+				<textinput name="IdMateriale1" classAD="IdMateriale1"/>
 				<textinput name="BollaLavorazione" classAD="BollaLavorazione"/>
 				<textinput name="IdOperatore" classAD="IdOperatore"/>
 				<textinput name="IdArticolo" classAD="IdArticolo"/>

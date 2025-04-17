@@ -1342,7 +1342,7 @@ public class YProcessaListeCaricoRf extends LogisRF {
 		if(udc != null && !udc.isEmpty()) {
 			String where = " "+YPianoCaricoToyotaTM.ID_AZIENDA+" = '"+Azienda.getAziendaCorrente()+"' "
 					+ "AND "+YPianoCaricoToyotaTM.R_REPARTO+" = '"+esecuzionePianiCarico.getReparto().getIdReparto()+"' "
-					+ "AND "+YPianoCaricoToyotaTM.R_COD_MAPPA_UDC+" = '"+udc+"' ";
+					+ "AND "+YPianoCaricoToyotaTM.R_COD_MAPPA_UDC+" = '"+udc+"' AND "+YPianoCaricoToyotaTM.STATO_UDC+" = '"+StatoPrelievoUdcToyota.RICEVUTA+"' ";
 			try {
 				Vector piani = YPianoCaricoToyota.retrieveList(where, "", false);
 				if(piani.size() == 0) {

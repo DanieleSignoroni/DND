@@ -48,7 +48,7 @@ public class YRilevDatiPrdTSWebFormModifier extends RilevDatiPrdTSWebFormModifie
 			if(getRequest().getAttribute("DisplayReparti") != null && getRequest().getAttribute("DisplayReparti").equals("N")) {
 				String idReparto = (String) getRequest().getAttribute("IdReparto");
 				out.println("<script>");
-				out.println("document.getElementById('BollaLavorazione').parentNode.parentNode.style.display = displayBlock;");
+				out.println("document.getElementById('IdMateriale1').parentNode.parentNode.style.display = displayBlock;");
 				out.println("document.forms[0].IdOperatore.value = '"+idReparto+"';");
 				out.println("</script>");
 			}else {
@@ -59,31 +59,31 @@ public class YRilevDatiPrdTSWebFormModifier extends RilevDatiPrdTSWebFormModifie
 			}
 		}else if(action != null && (action.equals(YRilevDatiPrdTSFormActionAdapter.RIPOSIZIONA_UDC_SCELTA_OPERATORE))) {
 			out.println("<script>");
-			out.println("document.getElementById('BollaLavorazione').parentNode.parentNode.style.display = displayBlock;");
+			out.println("document.getElementById('IdMateriale1').parentNode.parentNode.style.display = displayBlock;");
 			out.println("document.getElementById('Titolo').parentNode.parentNode.style.display = displayBlock;");
 			out.println("parent.document.getElementById('Conferma').style.display = displayBlock;");
-			out.println("document.getElementById('BollaLavorazione').style.background = mCo;");
-			out.println("document.getElementById('BollaLavorazione').focus();");
+			out.println("document.getElementById('IdMateriale1').style.background = mCo;");
+			out.println("document.getElementById('IdMateriale1').focus();");
 			out.println("</script>");
 		}else if(action != null && (action.equals(YRilevDatiPrdTSFormActionAdapter.CHIAMATA_UDC_SCELTA_OPERATORE))) {
 			out.println("<script>");
-			out.println("document.getElementById('BollaLavorazione').parentNode.parentNode.style.display = displayBlock;");
+			out.println("document.getElementById('IdMateriale1').parentNode.parentNode.style.display = displayBlock;");
 			out.println("document.getElementById('IdArticolo').parentNode.parentNode.style.display = displayBlock;");
 			out.println("document.getElementById('Titolo').parentNode.parentNode.style.display = displayBlock;");
 			out.println("parent.document.getElementById('Conferma').style.display = displayBlock;");
-			out.println("document.getElementById('BollaLavorazione').style.background = mCo;");
+			out.println("document.getElementById('IdMateriale1').style.background = mCo;");
 			out.println("document.getElementById('IdArticolo').style.background = mCo;");
-			out.println("document.getElementById('BollaLavorazione').focus();");
+			out.println("document.getElementById('IdMateriale1').focus();");
 			out.println("</script>");
 		}else if(action != null && action.equals(YRilevDatiPrdTSFormActionAdapter.CHIAMATA_UDC_LISTA_UDC)) {
 			out.println("<script>");
-			out.println("document.getElementById('BollaLavorazione').parentNode.parentNode.style.display = displayBlock;");
+			out.println("document.getElementById('IdMateriale1').parentNode.parentNode.style.display = displayBlock;");
 			out.println("document.getElementById('IdArticolo').parentNode.parentNode.style.display = displayBlock;");
 			out.println("document.getElementById('Titolo').parentNode.parentNode.style.display = displayBlock;");
 			out.println("parent.document.getElementById('Conferma').style.display = displayBlock;");
-			out.println("document.getElementById('BollaLavorazione').style.background = mCo;");
+			out.println("document.getElementById('IdMateriale1').style.background = mCo;");
 			out.println("document.getElementById('IdArticolo').style.background = mCo;");
-			out.println("document.getElementById('BollaLavorazione').focus();");
+			out.println("document.getElementById('IdMateriale1').focus();");
 			out.println("</script>");
 			displayListaUDC(out,bo);
 		}
@@ -132,6 +132,9 @@ public class YRilevDatiPrdTSWebFormModifier extends RilevDatiPrdTSWebFormModifie
 			out.println("    <td class=\"cell\" nowrap=\"true\" >"+val+"</td>");
 			out.println("    <td class=\"cell\" ><button type=\"button\" onclick=\"setCurrentEvent(event);selectUDC(" + index + ")\" style="+ width +">Conferma</button></td>");
 			out.println("    <td class=\"cell\" style=\"display:none\"><input type =\"text\" id=\"CodMappaUDC" + index + "\" value='" + WebElement.formatStringForHTML(codMappaUdc) + "' /></td>"); //Fix 14725
+			if(entry.getKey() instanceof Saldo) {
+				out.println("    <td class=\"cell\" style=\"display:none\"><input type =\"text\" id=\"SaldoKey" + index + "\" id=\"SaldoKey" + index + "\" value='" + WebElement.formatStringForHTML(((Saldo)entry.getKey()).getCodice()) + "' /></td>"); //Fix 14725
+			}
 			out.println("   </tr>");
 			index++;
 		}

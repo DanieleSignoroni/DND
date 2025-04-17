@@ -11,7 +11,7 @@
         onLoadPresent="yes"
         jsLibraryName="it/dnd/thip/produzione/raccoltaDati/YRiposizionamentoUDC.js">
 
-				<textinput name="BollaLavorazione" classAD="BollaLavorazione"/>
+				<textinput name="IdMateriale1" classAD="IdMateriale1"/>
 				<textinput name="IdOperatore" classAD="IdOperatore"/>
   </form>
 

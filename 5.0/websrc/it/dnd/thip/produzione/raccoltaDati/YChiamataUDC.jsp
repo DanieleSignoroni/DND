@@ -110,6 +110,15 @@
   RilevDatiPrdTSIdOperatore.write(out); 
 %>
 
+		<% 
+  WebTextInput RilevDatiPrdTSBollaLavorazione =  
+     new com.thera.thermfw.web.WebTextInput("RilevDatiPrdTS", "BollaLavorazione"); 
+  RilevDatiPrdTSBollaLavorazione.setParent(RilevDatiPrdTSForm); 
+%>
+<input class="<%=RilevDatiPrdTSBollaLavorazione.getClassType()%>" id="<%=RilevDatiPrdTSBollaLavorazione.getId()%>" maxlength="<%=RilevDatiPrdTSBollaLavorazione.getMaxLength()%>" name="<%=RilevDatiPrdTSBollaLavorazione.getName()%>" size="<%=RilevDatiPrdTSBollaLavorazione.getSize()%>" type="Hidden"><% 
+  RilevDatiPrdTSBollaLavorazione.write(out); 
+%>
+
 		<table class="repartoTable">
 			<!--Fix 13264 -->
 			<!--Fix 13574 -->
@@ -139,12 +148,12 @@
 						<tr style="display: none">
 							<td nowrap><label>UDC</label></td>
 							<td colspan="2"><% 
-  WebTextInput RilevDatiPrdTSBollaLavorazione =  
-     new com.thera.thermfw.web.WebTextInput("RilevDatiPrdTS", "BollaLavorazione"); 
-  RilevDatiPrdTSBollaLavorazione.setParent(RilevDatiPrdTSForm); 
+  WebTextInput RilevDatiPrdTSIdMateriale1 =  
+     new com.thera.thermfw.web.WebTextInput("RilevDatiPrdTS", "IdMateriale1"); 
+  RilevDatiPrdTSIdMateriale1.setParent(RilevDatiPrdTSForm); 
 %>
-<input class="<%=RilevDatiPrdTSBollaLavorazione.getClassType()%>" id="<%=RilevDatiPrdTSBollaLavorazione.getId()%>" maxlength="<%=RilevDatiPrdTSBollaLavorazione.getMaxLength()%>" name="<%=RilevDatiPrdTSBollaLavorazione.getName()%>" size="<%=RilevDatiPrdTSBollaLavorazione.getSize()%>" type="text"><% 
-  RilevDatiPrdTSBollaLavorazione.write(out); 
+<input class="<%=RilevDatiPrdTSIdMateriale1.getClassType()%>" id="<%=RilevDatiPrdTSIdMateriale1.getId()%>" maxlength="<%=RilevDatiPrdTSIdMateriale1.getMaxLength()%>" name="<%=RilevDatiPrdTSIdMateriale1.getName()%>" size="<%=RilevDatiPrdTSIdMateriale1.getSize()%>" type="text"><% 
+  RilevDatiPrdTSIdMateriale1.write(out); 
 %>
 </td>
 						</tr>

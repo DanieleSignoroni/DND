@@ -21,6 +21,9 @@ function conferma() {
 
 function selectUDC(index){
 	var className = eval("document.forms[0].thClassName.value");
-	eval("document.forms[0]." + idFromName['BollaLavorazione']).value = document.getElementById("CodMappaUDC" + index).value;
+	eval("document.forms[0]." + idFromName['IdMateriale1']).value = document.getElementById("CodMappaUDC" + index).value;
+	if(document.getElementById("SaldoKey" + index) != null && document.getElementById("SaldoKey" + index) != undefined){
+		eval("document.forms[0]." + idFromName['BollaLavorazione']).value = document.getElementById("SaldoKey" + index).value;
+	}
 	runActionDirect('CHIAMATA_UDC_SCELTA_UDC', 'action_submit', className, null, 'same', 'no');
 }

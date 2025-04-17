@@ -21,7 +21,9 @@ import com.thera.thermfw.web.servlet.BaseServlet;
 import com.thera.thermfw.web.servlet.Check;
 
 import it.dnd.thip.logis.lgb.StatoPrelievoUdcToyota;
+import it.dnd.thip.logis.lgb.StatoRigaToyota;
 import it.dnd.thip.logis.lgb.YPianoCaricoToyota;
+import it.dnd.thip.logis.lgb.YPianoCaricoToyotaRiga;
 import it.dnd.thip.logis.lgb.YPianoCaricoToyotaTM;
 import it.thera.thip.base.azienda.Azienda;
 import it.thera.thip.logis.fis.MappaUdc;
@@ -75,12 +77,14 @@ public class ConfermaRiposizionamentoUDC extends Check {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public void actionOnObject(BODataCollector boDC, ServletEnvironment se) {
-		boDC.getComponent("BollaLavorazione").getComponentManager().setCheckMode(BaseBOComponentManager.CHECK_NEVER); //.Evito il controllo 
+		boDC.getComponent("IdMateriale1").getComponentManager().setCheckMode(BaseBOComponentManager.CHECK_NEVER); //.Evito il controllo 
 		boDC.getComponent("IdOperatore").getComponentManager().setCheckMode(BaseBOComponentManager.CHECK_NEVER); //.Evito il controllo
 		boDC.getComponent("IdOperatore").getComponentManager().setMandatory(false); //.Di default su hdr e' mandatory quindi spengo
-		boDC.getComponent("BollaLavorazione").getComponentManager().setMandatory(true); //.Rendo il mio campo udc mandatory
+		boDC.getComponent("IdMateriale1").getComponentManager().setMandatory(false); //.Rendo il mio campo udc mandatory
 		String idReparto = (String) boDC.getComponent("IdOperatore").getValue(); //.Prendo il valore prima della check dato che sto usando un campo fittizio
+		String udc = (String) boDC.getComponent("IdMateriale1").getValue();
 		boDC.getComponent("IdOperatore").setValue(""); //.Svuoto cosi da evitare errori su Proxy
+		boDC.getComponent("IdMateriale1").setValue(""); //.Svuoto cosi da evitare errori su Proxy
 		RilevDatiPrdTS bo = (RilevDatiPrdTS) boDC.getBo();
 		if (boDC.check() != BODataCollector.OK) {
 			bo.setIdOperatore(idReparto);
@@ -90,7 +94,6 @@ public class ConfermaRiposizionamentoUDC extends Check {
 			}
 			se.addErrorMessages(boDC.getErrorList().getErrors());
 		}else {
-			String udc = bo.getBollaLavorazione();
 			MappaUdc mappa = null;
 			try {
 				mappa = MappaUdc.elementWithKey(udc, PersistentObject.NO_LOCK);
@@ -110,6 +113,11 @@ public class ConfermaRiposizionamentoUDC extends Check {
 					}else {
 						YPianoCaricoToyota pianoInRiposizionamento = (YPianoCaricoToyota) piani.get(0);
 						pianoInRiposizionamento.setStatoUdc(StatoPrelievoUdcToyota.PRONTA_PER_REINTEGRO);
+						Iterator iterRighe = pianoInRiposizionamento.getRighe().iterator();
+						while(iterRighe.hasNext()) {
+							YPianoCaricoToyotaRiga riga = (YPianoCaricoToyotaRiga) iterRighe.next();
+							riga.setStatoRiga(StatoRigaToyota.CHIUSA);
+						}
 						int rc = pianoInRiposizionamento.save();
 						if(rc > 0) {
 							ConnectionManager.commit();

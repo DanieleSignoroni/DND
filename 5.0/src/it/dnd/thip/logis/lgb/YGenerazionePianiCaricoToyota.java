@@ -102,7 +102,7 @@ public class YGenerazionePianiCaricoToyota extends BatchRunnable implements Auth
 			+ "	LMISSIONE.COD_MAG_FISICO, "
 			+ "	LMISSIONE.COD_UBICAZIONE, "
 			+ "	ORD_ESEC_ATV.R_REPARTO "
-			+ "HAVING SUM(COALESCE(LMISSIONE.QTA1_RIC,0)) = SUM(LLISTA_RIGA.QTA1_RIC) ";
+			+ "HAVING SUM(COALESCE(LMISSIONE.QTA1_RIC, 0)) = SUM(LLISTA_RIGA.QTA1_RIC) AND (SUM(COALESCE(LMISSIONE.QTA1_RIC, 0)) - SUM(COALESCE(LMISSIONE.QTA1_EVASA, 0))) > 0 ";
 	public CachedStatement cSelectPianiCaricoTyotaTes = new CachedStatement(STMT_PIANI_CARICO_TOYOTA_TES);
 
 	public static final String STMT_PIANO_CARICO_TOYOTA_APERTO = "SELECT "

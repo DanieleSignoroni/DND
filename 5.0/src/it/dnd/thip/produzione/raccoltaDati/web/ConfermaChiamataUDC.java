@@ -64,7 +64,7 @@ public class ConfermaChiamataUDC extends Check {
 			+ "	U.CODICE = S.COD_MAPPA_UDC "
 			+ "WHERE "
 			+ "	S.COD_ARTICOLO = ? "
-			+ "	AND S.COD_SOCIETA = ?";
+			+ "	AND S.COD_SOCIETA = ? AND S."+SaldoTM.QTA1+" > 0 ";
 	public static CachedStatement cElencoUdcArticoloConGiacenza = new CachedStatement(STMT_ELENCO_UDC_ARTICOLO_CON_GIACENZA);
 
 	public static final String STMT_MOVIMENTO_QTA_0_STORICO = "SELECT "
@@ -107,25 +107,26 @@ public class ConfermaChiamataUDC extends Check {
 	public void actionOnObject(BODataCollector boDC, ServletEnvironment se) {
 		String action = se.getRequest().getParameter(ACTION);
 		if(action.equals(YRilevDatiPrdTSFormActionAdapter.CONFERMA_CHIAMATA_UDC)) {
-			boDC.getComponent("BollaLavorazione").getComponentManager().setCheckMode(BaseBOComponentManager.CHECK_NEVER); //.Evito il controllo 
+			boDC.getComponent("IdMateriale1").getComponentManager().setCheckMode(BaseBOComponentManager.CHECK_NEVER); //.Evito il controllo 
 			boDC.getComponent("IdOperatore").getComponentManager().setCheckMode(BaseBOComponentManager.CHECK_NEVER); //.Evito il controllo
 
 			boDC.getComponent("IdOperatore").getComponentManager().setMandatory(false); //.Di default su hdr e' mandatory quindi spengo
 
 			String idReparto = (String) boDC.getComponent("IdOperatore").getValue(); //.Prendo il valore prima della check dato che sto usando un campo fittizio
+			String udc = (String) boDC.getComponent("IdMateriale1").getValue();
 			boDC.getComponent("IdOperatore").setValue(""); //.Svuoto cosi da evitare errori su Proxy
+			boDC.getComponent("IdMateriale1").setValue(""); //.Svuoto cosi da evitare errori su Proxy
 
 			RilevDatiPrdTS bo = (RilevDatiPrdTS) boDC.getBo();
 			bo.setIdOperatore(idReparto);
 			if (boDC.check() != BODataCollector.OK) {
 				for (Iterator iterator = boDC.getErrorList().getErrors().iterator(); iterator.hasNext();) {
 					ErrorMessage em = (ErrorMessage) iterator.next();
-					em.addComponent("UDC", "UDC", boDC.getComponent("IdOperatore")); //.Cambio la label al campo 'BollaLavorazione'
+					em.addComponent("UDC", "UDC", boDC.getComponent("IdOperatore")); //.Cambio la label al campo 'IdMateriale1'
 				}
 				se.addErrorMessages(boDC.getErrorList().getErrors());
 			}else {
-				String udc = bo.getBollaLavorazione();
-				if(bo.getIdArticolo() != null) {
+				if(bo.getIdArticolo() != null && udc == null) {
 					Articolo articolo = bo.getArticolo();
 					if(articolo != null) {
 						ArrayList<Saldo> saldi = elencoSaldiArticoloUdc(articolo.getIdArticolo());
@@ -150,6 +151,22 @@ public class ConfermaChiamataUDC extends Check {
 					}
 					if(mappa == null) {
 						boDC.getErrorList().addError((new ErrorMessage("YLOGIS0001")));
+					}else {
+						try {
+							YPianoCaricoToyota pianoCarico = generaTestataPianoCarico(mappa, 
+									(Reparto) Reparto.elementWithKey(Reparto.class, KeyHelper.buildObjectKey(new String[] {
+											Azienda.getAziendaCorrente(),idReparto
+									}), PersistentObject.NO_LOCK));
+							pianoCarico.setUbicazionestock(mappa.getUbicazione());
+							int rc = pianoCarico.save();
+							if(rc > 0) {
+								ConnectionManager.commit();
+							}else {
+								ConnectionManager.rollback();
+							}
+						}catch (SQLException e) {
+							e.printStackTrace(Trace.excStream);
+						}
 					}
 				}else {
 					boDC.getErrorList().addError((new ErrorMessage("BAS0000078","Almeno uno dei due campi va valorizzato")));
@@ -158,11 +175,31 @@ public class ConfermaChiamataUDC extends Check {
 			}
 		}else if(action.equals(YRilevDatiPrdTSFormActionAdapter.CHIAMATA_UDC_SCELTA_UDC)) {
 			String idReparto = (String) boDC.getComponent("IdOperatore").getValue();
-			String codMappaUDC = (String) boDC.getComponent("BollaLavorazione").getValue();
-			boolean stop = true;
+			String codMappaUDC = (String) boDC.getComponent("IdMateriale1").getValue();
+			String codiceSaldo = (String) boDC.getComponent("BollaLavorazione").getValue();
+			try {
+				Saldo saldo = Saldo.elementWithKey(KeyHelper.buildObjectKey(new String[] {
+						Azienda.getAziendaCorrente(),codiceSaldo
+				}), PersistentObject.NO_LOCK);
+				YPianoCaricoToyota pianoCarico = generaTestataPianoCarico(MappaUdc.elementWithKey(codMappaUDC, PersistentObject.NO_LOCK), 
+						(Reparto) Reparto.elementWithKey(Reparto.class, KeyHelper.buildObjectKey(new String[] {
+								Azienda.getAziendaCorrente(),idReparto
+						}), PersistentObject.NO_LOCK));
+				if(saldo != null) {
+					pianoCarico.setUbicazionestock(saldo.getUbicazione());
+				}
+				int rc = pianoCarico.save();
+				if(rc > 0) {
+					ConnectionManager.commit();
+				}else {
+					ConnectionManager.rollback();
+				}
+			}catch (SQLException e) {
+				e.printStackTrace(Trace.excStream);
+			}
 		}
 	}
-	
+
 	public YPianoCaricoToyota generaTestataPianoCarico(MappaUdc udc, Reparto reparto) {
 		YPianoCaricoToyota pianoCarico = (YPianoCaricoToyota) Factory.createObject(YPianoCaricoToyota.class);
 		pianoCarico.setIdCodiceUdc(udc.getCodice());
@@ -243,7 +280,7 @@ public class ConfermaChiamataUDC extends Check {
 		ResultSet rs = null;
 		RigaMovimento riga = null;
 		try{
-			PreparedStatement ps = cElencoUdcArticoloConGiacenza.getStatement();
+			PreparedStatement ps = cMovimentoStoricoQta0.getStatement();
 			Database db = ConnectionManager.getCurrentDatabase();
 			db.setString(ps, 1, Azienda.getAziendaCorrente());
 			db.setString(ps, 2, idArticolo);

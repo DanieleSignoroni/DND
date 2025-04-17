@@ -121,19 +121,18 @@
 				<td width="15px"></td>
 				<td>
 					<table cellpadding="3" cellspacing="3">
-						<!--Fix 12841 fine-->
 						<tr style="display:none">
 							<td colspan="2"><label id="Titolo" style="font-weight:bold;">REINTEGRO MANUALE UDC</label></td>
 						</tr>
 						<tr style="display: none">
 							<td nowrap><label>UDC</label></td>
 							<td colspan="2"><% 
-  WebTextInput RilevDatiPrdTSBollaLavorazione =  
-     new com.thera.thermfw.web.WebTextInput("RilevDatiPrdTS", "BollaLavorazione"); 
-  RilevDatiPrdTSBollaLavorazione.setParent(RilevDatiPrdTSForm); 
+  WebTextInput RilevDatiPrdTSIdMateriale1 =  
+     new com.thera.thermfw.web.WebTextInput("RilevDatiPrdTS", "IdMateriale1"); 
+  RilevDatiPrdTSIdMateriale1.setParent(RilevDatiPrdTSForm); 
 %>
-<input class="<%=RilevDatiPrdTSBollaLavorazione.getClassType()%>" id="<%=RilevDatiPrdTSBollaLavorazione.getId()%>" maxlength="<%=RilevDatiPrdTSBollaLavorazione.getMaxLength()%>" name="<%=RilevDatiPrdTSBollaLavorazione.getName()%>" size="<%=RilevDatiPrdTSBollaLavorazione.getSize()%>" type="text"><% 
-  RilevDatiPrdTSBollaLavorazione.write(out); 
+<input class="<%=RilevDatiPrdTSIdMateriale1.getClassType()%>" id="<%=RilevDatiPrdTSIdMateriale1.getId()%>" maxlength="<%=RilevDatiPrdTSIdMateriale1.getMaxLength()%>" name="<%=RilevDatiPrdTSIdMateriale1.getName()%>" size="<%=RilevDatiPrdTSIdMateriale1.getSize()%>" type="text"><% 
+  RilevDatiPrdTSIdMateriale1.write(out); 
 %>
 </td>
 						</tr>
