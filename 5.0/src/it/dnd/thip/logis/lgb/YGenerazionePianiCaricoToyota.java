@@ -53,8 +53,9 @@ import it.thera.thip.vendite.documentoVE.DocumentoVenditaRigaTM;
 
 /*
  * Revisions:
- * Number   Date        Owner    Description
- * 71923    08/04/2025  DSSOF3   Prima stesura
+ * Number   Date        Owner   Description
+ * 71923    08/04/2025  DSSOF3  Prima stesura
+ * 71923	29/04/2025	AGSOF3	Esclusione ubicazioni con tipo gestione pers = default
  */
 
 public class YGenerazionePianiCaricoToyota extends BatchRunnable implements Authorizable {
@@ -92,10 +93,18 @@ public class YGenerazionePianiCaricoToyota extends BatchRunnable implements Auth
 			+ "	AND ORD_ESEC_ATV.ID_ANNO_ORD = PIANI_PRL_TES.ID_ANNO_ORD "
 			+ "	AND ORD_ESEC_ATV.ID_NUMERO_ORD = PIANI_PRL_TES.ID_NUMERO_ORD "
 			+ "	AND ORD_ESEC_ATV.ID_RIGA_ATTIVITA = PIANI_PRL_TES.ID_RIGA_ATTIVITA "
+			+ "LEFT OUTER JOIN THIPPERS.YLUBICAZIONE LUBI ON "//AGSOF3 aggiunta JOIN su THIPPERS.YLUBICAZIONE
+			+ "	LUBI.COD_MAG_FISICO = LMISSIONE.COD_MAG_FISICO "
+			+ "	AND LUBI.CODICE = LMISSIONE.COD_UBICAZIONE "
+			+ "INNER JOIN THIPPERS.YREPARTI REP ON  "
+			+ "	REP.ID_AZIENDA = ORD_ESEC_ATV.ID_AZIENDA "
+			+ "	AND REP.ID_REPARTO = ORD_ESEC_ATV.R_REPARTO "
 			+ "WHERE "
 			+ "	PIANI_PRL_TES.ID_AZIENDA = ? "
 			+ "	AND LLISTA_TESTA.COD_TIPO_LISTA = ? "
 			+ "	AND LMISSIONE.COD_MAPPA_UDC IS NOT NULL "
+			+ " AND LUBI.TIPO_GESTIONE_PERS <> '"+TipoGestioneUbicazione.DEFAULT+"' " //AGSOF3 scarto le ubicazioni con tipo gestione default
+			+ " AND REP.SERVITO_LOGISTICA = '"+Column.TRUE_CHAR+"' " 
 			+ "GROUP BY "
 			+ "	PIANI_PRL_TES.ID_AZIENDA, "
 			+ "	LMISSIONE.COD_MAPPA_UDC, "
