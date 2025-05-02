@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE TDDML SYSTEM "../../../TDDML.dtd">
+<TDDML>
+  <!-- YARTICOLI_CLI (YARTIC0): Gestione articoli cliente; -->
+  <CreateTable schema="THIPPERS" name="YARTICOLI_CLI" shortname="YARTIC0">
+    <Column name="ID_AZIENDA" shortname="ID_AZIENDA" type="char" length="3" nullable="no"/>
+    <Column name="ID_NUMERATORE" shortname="ID_NUMERAT" type="integer" nullable="no"/>
+    <Column name="NR_PEZZI_BAULETTO" shortname="NR_PEZZI_B" type="integer" nullable="yes"/>
+    <Column name="NR_PEZZI_UDS" shortname="NR_PEZZI_U" type="integer" nullable="yes"/>
+    <Column name="R_TIPO_UDS" shortname="R_TIPO_UDS" type="char" length="8" nullable="yes"/>
+  </CreateTable>
+  <CreateIndex schema="THIPPERS" name="YARTICOLI_CLI_I01" tabschema="THIPPERS" tabname="YARTICOLI_CLI" shortname="YARTIC_I02" unique="yes">
+    <IndexCol name="ID_AZIENDA" order="Asc"/>
+    <IndexCol name="ID_NUMERATORE" order="Asc"/>
+  </CreateIndex>
+  <AlterTable schema="THIPPERS" name="YARTICOLI_CLI">
+    <AddPrimaryKey>
+      <PrimaryKey>
+        <ColumnRef name="ID_AZIENDA"/>
+        <ColumnRef name="ID_NUMERATORE"/>
+      </PrimaryKey>
+    </AddPrimaryKey>
+  </AlterTable>
+  <Comment>
+    <CommentTable schema="THIPPERS" name="YARTICOLI_CLI" text="Gestione articoli cliente">
+      <CommentColumn name="ID_AZIENDA" text="Azienda"/>
+      <CommentColumn name="ID_NUMERATORE" text="Codice Articolo"/>
+      <CommentColumn name="NR_PEZZI_BAULETTO" text="Nr. pezzi per bauletto"/>
+      <CommentColumn name="NR_PEZZI_UDS" text="Nr. pezzi per UDS"/>
+      <CommentColumn name="R_TIPO_UDS" text="Tipo UDS"/>
+    </CommentTable>
+    <CommentIndex schema="THIPPERS" name="YARTICOLI_CLI_I01" text="Primary Key"/>
+  </Comment>
+  <Grant schema="THIPPERS" name="YARTICOLI_CLI"/>
+</TDDML>

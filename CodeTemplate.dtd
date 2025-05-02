@@ -32,7 +32,9 @@
 <!ATTLIST UserCode
       TYPE (methods | attributes | classes) #IMPLIED>
 <!ENTITY templateVersion "1.0">
-<!ENTITY className "YPianoCaricoToyotaRiga">
+<!ENTITY className "YArticoloCliente">
 <!ENTITY bracesPosition "Up">
 <!ENTITY blockIndent "2">
-<!ENTITY ref1 "YPianoCaricoToyotaRigaPO">
+<!ENTITY ref1 "YArticoloClienteTM">
+<!ENTITY ref2 "YArticoloCliente">
+<!ENTITY ref3 "">
