@@ -439,24 +439,26 @@ label.write(out); }%>
         </tr>
         <!-- SOF3	71XXX	Inizio -->
         <tr>
+        <td></td>
 	<td>
 							  <% 
   WebCheckBox RilevDatiPrdTSYNonGestirePicking =  
-     new com.thera.thermfw.web.WebCheckBox("RilevDatiPrdTS", "YNonGestirePicking"); 
+     new com.thera.thermfw.web.WebCheckBox("YRilevDatiPrdTS", "YNonGestirePicking"); 
 			RilevDatiPrdTSYNonGestirePicking.setParent(RilevDatiPrdTSForm); 
 %>
 <input id="<%=RilevDatiPrdTSYNonGestirePicking.getId()%>" name="<%=RilevDatiPrdTSYNonGestirePicking.getName()%>" type="checkbox" value="Y"><%
+RilevDatiPrdTSYNonGestirePicking.setOnClick("nonGestirePicking()");
 RilevDatiPrdTSYNonGestirePicking.write(out); 
 %>
 	</td>
         </tr>
         <tr>
-        	 <td nowrap><%{  WebLabelCompound label = new com.thera.thermfw.web.WebLabelCompound(null, null, "RilevDatiPrdTS", "YIdTipoUds", null); 
+        	 <td nowrap><%{  WebLabelCompound label = new com.thera.thermfw.web.WebLabelCompound(null, null, "YRilevDatiPrdTS", "YIdTipoUds", null); 
    label.setParent(RilevDatiPrdTSForm); 
 %><label class="<%=label.getClassType()%>" for="YIdTipoUds"><%label.write(out);%></label><%}%></td>
 <td><% 
   WebTextInput RilevDatiPrdTSYIdTipoUds =  
-     new com.thera.thermfw.web.WebTextInput("RilevDatiPrdTS", "YIdTipoUds"); 
+     new com.thera.thermfw.web.WebTextInput("YRilevDatiPrdTS", "YIdTipoUds"); 
 		RilevDatiPrdTSYIdTipoUds.setParent(RilevDatiPrdTSForm); 
 %>
 <input class="<%=RilevDatiPrdTSYIdTipoUds.getClassType()%>" id="<%=RilevDatiPrdTSYIdTipoUds.getId()%>" maxlength="<%=RilevDatiPrdTSYIdTipoUds.getMaxLength()%>" name="<%=RilevDatiPrdTSYIdTipoUds.getName()%>" size="25" tabindex="-1"><% 
@@ -465,12 +467,12 @@ RilevDatiPrdTSYIdTipoUds.write(out);
 </td> 
         </tr>
 <tr>
-        	 <td nowrap><%{  WebLabelCompound label = new com.thera.thermfw.web.WebLabelCompound(null, null, "RilevDatiPrdTS", "YNumeroPzBauletto", null); 
+        	 <td nowrap><%{  WebLabelCompound label = new com.thera.thermfw.web.WebLabelCompound(null, null, "YRilevDatiPrdTS", "YNumeroPzBauletto", null); 
    label.setParent(RilevDatiPrdTSForm); 
 %><label class="<%=label.getClassType()%>" for="YNumeroPzBauletto"><%label.write(out);%></label><%}%></td>
 <td><% 
   WebTextInput RilevDatiPrdTSYNumeroPzBauletto =  
-     new com.thera.thermfw.web.WebTextInput("RilevDatiPrdTS", "YNumeroPzBauletto"); 
+     new com.thera.thermfw.web.WebTextInput("YRilevDatiPrdTS", "YNumeroPzBauletto"); 
 		RilevDatiPrdTSYNumeroPzBauletto.setParent(RilevDatiPrdTSForm); 
 %>
 <input class="<%=RilevDatiPrdTSYNumeroPzBauletto.getClassType()%>" id="<%=RilevDatiPrdTSYNumeroPzBauletto.getId()%>" maxlength="<%=RilevDatiPrdTSYNumeroPzBauletto.getMaxLength()%>" name="<%=RilevDatiPrdTSYNumeroPzBauletto.getName()%>" size="25" tabindex="-1"><% 
@@ -479,12 +481,12 @@ RilevDatiPrdTSYNumeroPzBauletto.write(out);
 </td> 
         </tr>
 <tr>
-        	 <td nowrap><%{  WebLabelCompound label = new com.thera.thermfw.web.WebLabelCompound(null, null, "RilevDatiPrdTS", "YNumeroPzUds", null); 
+        	 <td nowrap><%{  WebLabelCompound label = new com.thera.thermfw.web.WebLabelCompound(null, null, "YRilevDatiPrdTS", "YNumeroPzUds", null); 
    label.setParent(RilevDatiPrdTSForm); 
 %><label class="<%=label.getClassType()%>" for="YNumeroPzUds"><%label.write(out);%></label><%}%></td>
 <td><% 
   WebTextInput RilevDatiPrdTSYNumeroPzUds =  
-     new com.thera.thermfw.web.WebTextInput("RilevDatiPrdTS", "YNumeroPzUds"); 
+     new com.thera.thermfw.web.WebTextInput("YRilevDatiPrdTS", "YNumeroPzUds"); 
 		RilevDatiPrdTSYNumeroPzUds.setParent(RilevDatiPrdTSForm); 
 %>
 <input class="<%=RilevDatiPrdTSYNumeroPzUds.getClassType()%>" id="<%=RilevDatiPrdTSYNumeroPzUds.getId()%>" maxlength="<%=RilevDatiPrdTSYNumeroPzUds.getMaxLength()%>" name="<%=RilevDatiPrdTSYNumeroPzUds.getName()%>" size="25" tabindex="-1"><% 
