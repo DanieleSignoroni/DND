@@ -4,11 +4,11 @@ RilevDatiPrdTSOL = function() {
 	oldRilevDatiPrdTSOL();
 	parent.document.getElementById('YRiposizionamentoUdcBut').style.display = displayNone;
 	parent.document.getElementById('YChiamataUdcBut').style.display = displayNone;
-	parent.document.getElementById('YGeneraUdsAuto').style.display = displayBlock; //71XXX
-	parent.document.getElementById('YGeneraUdsMan').style.display = displayBlock; //71XXX
+	parent.document.getElementById('YGeneraUdsAuto').style.display = displayBlock; //71946
+	parent.document.getElementById('YGeneraUdsMan').style.display = displayBlock; //71946
 }
 
-//71XXX Inizio
+//71946 Inizio
 
 function nonGestirePicking() {
 	var nonGestirePicking = document.forms[0].YNonGestirePicking.checked;
@@ -35,4 +35,4 @@ function yGeneraUdsManAction(){
 	runActionDirect('GEN_UDS_MANUALE', 'action_submit', className, null, 'same', 'no');
 }
 
-//71XXX Fine
+//71946 Fine

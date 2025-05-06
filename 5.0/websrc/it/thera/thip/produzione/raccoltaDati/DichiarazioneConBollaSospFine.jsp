@@ -437,7 +437,7 @@ label.write(out); }%>
 %>
 </td> <!-- Fix 13175 -->
         </tr>
-        <!-- SOF3	71XXX	Inizio -->
+        <!-- SOF3	71946	Inizio -->
         <tr>
         <td></td>
 	<td>
@@ -494,7 +494,7 @@ RilevDatiPrdTSYNumeroPzUds.write(out);
 %>
 </td> 
         </tr>
-        <!-- SOF3	71XXX	Fine -->
+        <!-- SOF3	71946	Fine -->
 				<tr>
 		  	  <td colspan="3"><label class="labelError" id="ErroriList"></label></td>
 		  	</tr>

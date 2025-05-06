@@ -8,6 +8,22 @@ import it.thera.thip.base.articolo.ArticoloDatiProduz;
 import it.thera.thip.base.azienda.Azienda;
 import it.thera.thip.logis.fis.TipoUds;
 
+/**
+ * <p></p>
+ *
+ * <p>
+ * Company: Softre Solutions<br>
+ * Author: Daniele Signoroni<br>
+ * Date: 06/05/2025
+ * </p>
+ */
+
+/*
+ * Revisions:
+ * Number   Date        Owner    Description
+ * 71946    06/05/2025  DSSOF3   Prima stesura
+ */
+
 public class YArticoloDatiProduz extends ArticoloDatiProduz {
 
 	protected Integer iNrPezziBauletto;

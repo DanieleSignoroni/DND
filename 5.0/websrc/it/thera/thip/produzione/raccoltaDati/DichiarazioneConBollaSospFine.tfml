@@ -103,12 +103,12 @@
 				<checkbox name="RicalcoloQuantitaVers20" classAD="RicalcoloQuantitaVers20"/>
 				<!-- Fix 39680 Fine -->
 				
-				<!-- SOF3 Fix 71XXX Inizio -->
+				<!-- SOF3 Fix 71946 Inizio -->
 				<checkbox name="YNonGestirePicking" classAD="YNonGestirePicking"/>
 				<textinput name="YNumeroPzBauletto" classAD="YNumeroPzBauletto"/>
 				<textinput name="YNumeroPzUds" classAD="YNumeroPzUds"/>
 				<textinput name="YIdTipoUds" classAD="YIdTipoUds"/>
-				<!-- SOF3 Fix 71XXX Inizio -->
+				<!-- SOF3 Fix 71946 Inizio -->
   </form>
 
 </tfml>

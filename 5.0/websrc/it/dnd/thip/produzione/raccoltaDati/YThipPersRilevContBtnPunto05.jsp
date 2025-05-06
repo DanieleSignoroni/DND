@@ -6,7 +6,7 @@
 	<button style="display:none;" id="YRiposizionamentoUdcBut" class="btnFooter" type="button"
 		onclick="yRiposizionamentoUdcAction()">Riposizionamento UDC</button>
 </td>
-<!-- 71XXX Inizio -->
+<!-- 71946 Inizio -->
 <td align="left">
 	<button style="display:none;" id="YGeneraUdsAuto" class="btnFooter" type="button"
 		onclick="yGeneraUdsAutoAction()">Genera UDS Automaticamente</button>
@@ -15,7 +15,7 @@
 	<button style="display:none;" id="YGeneraUdsMan" class="btnFooter" type="button"
 		onclick="yGeneraUdsManAction()">Genera UDS manualmente</button>
 </td>
-<!-- 71XXX Fine -->
+<!-- 71946 Fine -->
 <script>
 function ychiamataUdcAction(){
 	var rilframe = document.getElementById('rilframe');
@@ -26,7 +26,7 @@ function yRiposizionamentoUdcAction(){
 	var rilframe = document.getElementById('rilframe');
 	rilframe.contentWindow.yRiposizionamentoUdcAction();
 }
-//71XXX Inizio
+//71946 Inizio
 function yGeneraUdsAutoAction(){
 	var rilframe = document.getElementById('rilframe');
 	rilframe.contentWindow.yGeneraUdsAutoAction();
@@ -35,5 +35,5 @@ function yGeneraUdsManAction(){
 	var rilframe = document.getElementById('rilframe');
 	rilframe.contentWindow.yGeneraUdsManAction();
 }
-//71XXX	Fine
+//71946	Fine
 </script>

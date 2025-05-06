@@ -24,7 +24,7 @@ import it.thera.thip.produzione.raccoltaDati.web.RilevDatiPrdTSDataCollector;
 /*
  * Revisions:
  * Number   Date        Owner    Description
- * 71XXX    06/05/2025  DSSOF3   Prima stesura
+ * 71946    06/05/2025  DSSOF3   Prima stesura
  */
 
 public class YRilevDatiPrdTSDataCollector extends RilevDatiPrdTSDataCollector {
@@ -37,7 +37,7 @@ public class YRilevDatiPrdTSDataCollector extends RilevDatiPrdTSDataCollector {
 		YRilevDatiPrdTS bo = (YRilevDatiPrdTS) getBo();
 		if(action != null && action.equals(YRilevDatiPrdTSFormActionAdapter.GENERA_UDS_AUTOMATICAMENTE)) {
 			getComponentManager("YIdTipoUds").setMandatory(true);
-			getComponentManager("YNumeroPzBauletto").setMandatory(true);
+			//getComponentManager("YNumeroPzBauletto").setMandatory(true);
 			getComponentManager("YNumeroPzUds").setMandatory(true);
 		}
 		Vector errors = super.runCheckAll();

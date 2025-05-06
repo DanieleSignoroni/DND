@@ -24,6 +24,7 @@ import it.thera.thip.produzione.raccoltaDati.web.RilevDatiPrdTSFormActionAdapter
  * Revisions:
  * Number   Date        Owner    Description
  * 71923    16/04/2025  DSSOF3   Prima stesura
+ * 71946	02/05/2025	DSSOF3	 Gestione nuove azioni, sistemazione settaggio azione su request
  */
 
 public class YRilevDatiPrdTSFormActionAdapter extends RilevDatiPrdTSFormActionAdapter {
@@ -40,8 +41,8 @@ public class YRilevDatiPrdTSFormActionAdapter extends RilevDatiPrdTSFormActionAd
 	public static final String RIPOSIZIONA_UDC_SCELTA_OPERATORE = "RIPOSIZIONA_UDC_SCELTA_OPERATORE";
 	public static final String CONFERMA_RIPOSIZIONAMENTO_UDC = "CONFERMA_RIPOSIZIONAMENTO_UDC";
 
-	public static final String GENERA_UDS_AUTOMATICAMENTE = "GEN_UDS_AUTOMATICA"; //71XXX
-	public static final String GENERA_UDS_MANUALMENTE = "GEN_UDS_MANUALE"; //71XXX
+	public static final String GENERA_UDS_AUTOMATICAMENTE = "GEN_UDS_AUTOMATICA"; //71946
+	public static final String GENERA_UDS_MANUALMENTE = "GEN_UDS_MANUALE"; //71946
 
 	@Override
 	protected void otherActions(ClassADCollection cadc, ServletEnvironment se) throws ServletException, IOException {
@@ -60,9 +61,9 @@ public class YRilevDatiPrdTSFormActionAdapter extends RilevDatiPrdTSFormActionAd
 			azioneConfermaRiposizionamentoUDC(azione,se);
 		}else if(azione.equals(CONFERMA_CHIAMATA_UDC) || azione.equals(CHIAMATA_UDC_SCELTA_UDC)) {
 			azioneConfermaChiamataUDC(azione,se);
-		}else if(azione.equals(GENERA_UDS_AUTOMATICAMENTE)) { //71XXX
+		}else if(azione.equals(GENERA_UDS_AUTOMATICAMENTE)) { //71946
 			azioneGeneraUdsAutomaticamente(azione,se);
-		}else if(azione.equals(GENERA_UDS_MANUALMENTE)) { //71XXX
+		}else if(azione.equals(GENERA_UDS_MANUALMENTE)) { //71946
 			azioneGeneraUdsManualmente(azione,se);
 		}else {
 			super.otherActions(cadc, se);
@@ -92,12 +93,12 @@ public class YRilevDatiPrdTSFormActionAdapter extends RilevDatiPrdTSFormActionAd
 	}
 
 	protected void azioneConfermaRiposizionamentoUDC(String azione, ServletEnvironment se) throws ServletException, IOException {
-		se.getRequest().setAttribute("Action", azione);
+		se.getRequest().setAttribute("Action", azione); //71946
 		se.sendRequest(getServletContext(),  se.getServletPath() + "it.dnd.thip.produzione.raccoltaDati.web.ConfermaRiposizionamentoUDC", true);
 	}
 
 	protected void azioneConfermaChiamataUDC(String azione, ServletEnvironment se) throws ServletException, IOException {
-		se.getRequest().setAttribute("Action", azione);
+		se.getRequest().setAttribute("Action", azione); //71946
 		se.sendRequest(getServletContext(),  se.getServletPath() + "it.dnd.thip.produzione.raccoltaDati.web.ConfermaChiamataUDC", true);
 	}
 

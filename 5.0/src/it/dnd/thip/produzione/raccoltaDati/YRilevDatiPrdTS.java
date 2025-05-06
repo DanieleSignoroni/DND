@@ -41,7 +41,7 @@ import it.thera.thip.produzione.raccoltaDati.RilevazioneDatiProdTes;
 /*
  * Revisions:
  * Number   Date        Owner    Description
- * 71XXX    02/05/2025  DSSOF3   Prima stesura
+ * 71946    02/05/2025  DSSOF3   Prima stesura
  */
 
 public class YRilevDatiPrdTS extends RilevDatiPrdTS {

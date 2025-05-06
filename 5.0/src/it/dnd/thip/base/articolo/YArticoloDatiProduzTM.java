@@ -6,6 +6,22 @@ import com.thera.thermfw.base.SystemParam;
 
 import it.thera.thip.base.articolo.ArticoloDatiProduzTM;
 
+/**
+ * <p></p>
+ *
+ * <p>
+ * Company: Softre Solutions<br>
+ * Author: Daniele Signoroni<br>
+ * Date: 06/05/2025
+ * </p>
+ */
+
+/*
+ * Revisions:
+ * Number   Date        Owner    Description
+ * 71946    06/05/2025  DSSOF3   Prima stesura
+ */
+
 public class YArticoloDatiProduzTM extends ArticoloDatiProduzTM {
 
 	public static final String NR_PEZZI_BAULETTO = "NR_PEZZI_BAULETTO";

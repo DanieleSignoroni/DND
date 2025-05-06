@@ -19,7 +19,7 @@ import it.thera.thip.base.documenti.TipoGestione;
 /*
  * Revisions:
  * Number   Date        Owner    Description
- * 71XXX    06/05/2025  DSSOF3   Prima stesura
+ * 71946    06/05/2025  DSSOF3   Prima stesura
  */
 
 public class YGestioneUdsPickingProdDC extends WebEnhDataCollector {

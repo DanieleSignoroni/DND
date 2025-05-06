@@ -7,12 +7,20 @@ import com.thera.thermfw.base.SystemParam;
 import it.thera.thip.base.articolo.ArticoloTM;
 
 /**
- * 
- * <h1>Softre Solutions</h1>
- * <br>
- * @author Andrea Gatta 05/12/2024
- * <br><br>
- * <b>71725	AGSOF3	05/12/2024</b>    <p>Aggiunta campo Stato inserimento modello produttivo</p>
+ * <p></p>
+ *
+ * <p>
+ * Company: Softre Solutions<br>
+ * Author: Andrea Gatta<br>
+ * Date: 05/12/2024
+ * </p>
+ */
+
+/*
+ * Revisions:
+ * Number   Date        Owner    Description
+ * 71725    05/12/2024  AGSOF3   Aggiunta campo Stato inserimento modello produttivo
+ * 71946	02/05/2025	DSSOF3	 Aggiunta campi
  */
 
 

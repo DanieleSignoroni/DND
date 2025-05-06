@@ -37,6 +37,7 @@ import it.thera.thip.produzione.raccoltaDati.web.RilevDatiPrdTSWebFormModifier;
  * Revisions:
  * Number   Date        Owner    Description
  * 71923    15/04/2025  DSSOF3   Prima stesura
+ * 71946	02/05/2025	DSSOF3	 Gestione nuove azioni
  */
 
 public class YRilevDatiPrdTSWebFormModifier extends RilevDatiPrdTSWebFormModifier {
@@ -46,7 +47,7 @@ public class YRilevDatiPrdTSWebFormModifier extends RilevDatiPrdTSWebFormModifie
 		super.writeHeadElements(out);
 		YRilevDatiPrdTS bo = (YRilevDatiPrdTS) getBODataCollector().getBo();
 		String action = (String) getRequest().getAttribute("Action");
-		if(action != null && action.equals(RilevDatiPrdTSFormActionAdapter.PRODUZIONE)) {
+		if(action != null && action.equals(RilevDatiPrdTSFormActionAdapter.PRODUZIONE)) { //71946
 			boolean isListaPPREL = ((YRilevDatiPrdTS)bo).isAttivitaEsecutivaSuListaPPREL();
 			if(isListaPPREL) {
 				bo.valorizzaDatiPickingAutomatico();
@@ -102,7 +103,7 @@ public class YRilevDatiPrdTSWebFormModifier extends RilevDatiPrdTSWebFormModifie
 			out.println("document.getElementById('IdMateriale1').focus();");
 			out.println("</script>");
 			displayListaUDC(out,bo);
-		}else if(action != null && action.equals(RilevDatiPrdTSFormActionAdapter.PRODUZIONE)) {
+		}else if(action != null && action.equals(RilevDatiPrdTSFormActionAdapter.PRODUZIONE)) { //71946
 			boolean isListaPPREL = ((YRilevDatiPrdTS)bo).isAttivitaEsecutivaSuListaPPREL();
 			if(!isListaPPREL) {
 				out.println("<script>");
@@ -110,6 +111,13 @@ public class YRilevDatiPrdTSWebFormModifier extends RilevDatiPrdTSWebFormModifie
 				out.println("document.getElementById('YNumeroPzUds').parentNode.parentNode.style.display = displayNone;");
 				out.println("document.getElementById('YNumeroPzBauletto').parentNode.parentNode.style.display = displayNone;");
 				out.println("document.getElementById('YNonGestirePicking').parentNode.parentNode.style.display = displayNone;");
+				out.println("</script>");
+			}else {
+				//Li metto come mandatory
+				out.println("<script>");
+				out.println("setFieldMandatory('YIdTipoUds',true);");
+				out.println("setFieldMandatory('YNumeroPzUds',true);");
+				out.println("setFieldMandatory('YNumeroPzBauletto',true);");
 				out.println("</script>");
 			}
 		}
