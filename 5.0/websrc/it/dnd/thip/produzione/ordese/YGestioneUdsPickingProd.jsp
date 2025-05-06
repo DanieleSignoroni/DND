@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-                      "file:///W:\PthDev\Projects\Panthera\DND\WebContent\dtd/xhtml1-transitional.dtd">
+                      "file:///K:/Thip/5.1.0/websrcsvil/dtd/xhtml1-transitional.dtd">
 <html>
 <!-- WIZGEN Therm 2.0.0 as Form - multiBrowserGen = true -->
 <%=WebGenerator.writeRuntimeInfo()%>
@@ -35,6 +35,7 @@
   YGestioneUdsPickingProdForm.setJSTypeList(jsList); 
   YGestioneUdsPickingProdForm.setHeader("it.thera.thip.cs.PantheraHeader.jsp"); 
   YGestioneUdsPickingProdForm.setFooter("com.thera.thermfw.common.Footer.jsp"); 
+  YGestioneUdsPickingProdForm.setWebFormModifierClass("it.dnd.thip.produzione.ordese.web.YGestioneUdsPickingProdFormModifer"); 
   YGestioneUdsPickingProdForm.setDeniedAttributeModeStr("hideNone"); 
   int mode = YGestioneUdsPickingProdForm.getMode(); 
   String key = YGestioneUdsPickingProdForm.getKey(); 

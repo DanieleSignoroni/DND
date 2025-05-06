@@ -4,6 +4,7 @@
     name="YGestioneUdsPickingProdForm"
     locktype="nolock"
     errorList="yes" menubar="yes" toolbar="yes" submitReset="none"
+    webFormModifierClass="it.dnd.thip.produzione.ordese.web.YGestioneUdsPickingProdFormModifer"
     jsLibraryName="it/dnd/thip/produzione/ordese/YGestioneUdsPickingProd.js"
     onLoadPresent="yes"
     header="com.thera.thermfw.common.Header.jsp"

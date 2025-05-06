@@ -70,9 +70,9 @@ public class YRilevDatiPrdTSFormActionAdapter extends RilevDatiPrdTSFormActionAd
 		}
 	}
 
-	protected void azioneGeneraUdsManualmente(String azione, ServletEnvironment se) {
+	protected void azioneGeneraUdsManualmente(String azione, ServletEnvironment se) throws ServletException, IOException {
 		se.getRequest().setAttribute("Action", azione);
-		
+		se.sendRequest(getServletContext(),  se.getServletPath() + "it.dnd.thip.produzione.raccoltaDati.web.AzioneGeneraUdsManualmente", true);
 	}
 
 	protected void azioneGeneraUdsAutomaticamente(String azione, ServletEnvironment se) throws ServletException, IOException {

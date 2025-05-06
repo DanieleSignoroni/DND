@@ -19,6 +19,7 @@ import it.dnd.thip.base.articolo.YArticoloCliente;
 import it.dnd.thip.produzione.ordese.YGestioneUdsPickingProd;
 import it.dnd.thip.produzione.ordese.YGestioneUdsPickingProdTM;
 import it.thera.thip.base.articolo.ArticoloCliente;
+import it.thera.thip.base.generale.IntegrazioneThipLogis;
 import it.thera.thip.cs.DatiComuniEstesi;
 import it.thera.thip.logis.fis.RigaUds;
 import it.thera.thip.logis.fis.TestataUds;
@@ -46,40 +47,53 @@ import it.thera.thip.produzione.raccoltaDati.RilevazioneDatiProdTes;
 
 public class YRilevDatiPrdTS extends RilevDatiPrdTS {
 
-	public static final String STMT_IS_ATV_ESEC_P_PRE = "SELECT "
-			+ "	P.* "
-			+ "FROM "
-			+ "	THIP.PIANI_PRL_TES P "
-			+ "INNER JOIN LOGIS.LLISTA_TESTA T "
-			+ "ON P.ID_AZIENDA = T.COD_SOCIETA "
-			+ "AND P.R_COD_LISTA = T.CODICE "
-			+ "WHERE P.ID_AZIENDA = ? "
-			+ "AND P.ID_ANNO_ORD = ? "
-			+ "AND P.ID_NUMERO_ORD = ? "
-			+ "AND P.ID_RIGA_ATTIVITA = ? "
-			+ "AND T.COD_TIPO_LISTA = ?";
-	protected static CachedStatement cAtvEsecSuListaPPREL = new CachedStatement(STMT_IS_ATV_ESEC_P_PRE);
+	public static final String STMT_IS_ATV_ESEC_PVEN_L = "SELECT 1 FROM THIP.ORD_ESEC OE "
+			+ "INNER JOIN THIP.ORD_VEN_RIG OVR "
+			+ "ON OE.ID_AZIENDA = OVR.ID_AZIENDA "
+			+ "AND OE.R_ANNO_ORD_CLI = OVR.ID_ANNO_ORD "
+			+ "AND OE.R_NUMERO_ORD_CLI = OVR.ID_NUMERO_ORD "
+			+ "AND OE.R_RIGA_ORD_CLI = OVR.ID_RIGA_ORD "
+			+ "INNER JOIN THIP.DOC_VEN_RIG DVR "
+			+ "ON DVR.ID_AZIENDA = OE.ID_AZIENDA "
+			+ "AND DVR.R_ANNO_ORD = OVR.ID_ANNO_ORD "
+			+ "AND DVR.R_NUMERO_ORD = OVR.ID_NUMERO_ORD "
+			+ "AND DVR.R_RIGA_ORD = OVR.ID_RIGA_ORD "
+			+ "INNER JOIN LOGIS.LLISTA_RIGA LR  "
+			+ "ON LR.COD_SOCIETA = OE.ID_AZIENDA "
+			+ "AND LR.COD_LISTA = CONCAT('"+IntegrazioneThipLogis.VENDITA+"',TRIM(DVR.ID_ANNO_DOC),DVR.ID_NUMERO_DOC) "
+			+ "AND LR.NUM_RIGA_HOST = DVR.ID_RIGA_DOC "
+			+ "INNER JOIN LOGIS.LLISTA_TESTA LT "
+			+ "ON LR.COD_SOCIETA = LT.COD_SOCIETA "
+			+ "AND LR.COD_LISTA = LT.CODICE "
+			+ "WHERE OE.ID_AZIENDA = ? "
+			+ "AND OE.ID_ANNO_ORD = ? "
+			+ "AND OE.ID_NUMERO_ORD = ? "
+			+ "AND LT.COD_TIPO_LISTA = ?";
+	protected static CachedStatement cAttivitaSuOrdineEsecutivoPVENL = new CachedStatement(STMT_IS_ATV_ESEC_PVEN_L);
 
-	public static final String STMT_RIGA_LISTA = "SELECT  "
-			+ "	R.* "
-			+ "FROM  "
-			+ "	THIP.PIANI_PRL_TES P "
-			+ "INNER JOIN LOGIS.LLISTA_TESTA T  "
-			+ "	ON "
-			+ "	P.ID_AZIENDA = T.COD_SOCIETA "
-			+ "	AND P.R_COD_LISTA = T.CODICE "
-			+ "INNER JOIN LOGIS.LLISTA_RIGA R "
-			+ "ON "
-			+ "	R.COD_SOCIETA = T.COD_SOCIETA "
-			+ "	AND R.COD_LISTA = T.CODICE "
-			+ "WHERE "
-			+ "	P.ID_AZIENDA = ? "
-			+ "	AND P.ID_ANNO_ORD = ? "
-			+ "	AND P.ID_NUMERO_ORD = ? "
-			+ "	AND P.ID_RIGA_ATTIVITA = ? "
-			+ "	AND T.COD_TIPO_LISTA = ? "
-			+ "	AND R.NUM_RIGA_HOST = ?";
-	protected static CachedStatement cRigaListaFromRilevazione = new CachedStatement(STMT_RIGA_LISTA);
+	public static final String STMT_RIGA_LISTA_ATV_OE_PVENL = "SELECT LR.* FROM THIP.ORD_ESEC OE "
+			+ "INNER JOIN THIP.ORD_VEN_RIG OVR "
+			+ "ON OE.ID_AZIENDA = OVR.ID_AZIENDA "
+			+ "AND OE.R_ANNO_ORD_CLI = OVR.ID_ANNO_ORD "
+			+ "AND OE.R_NUMERO_ORD_CLI = OVR.ID_NUMERO_ORD "
+			+ "AND OE.R_RIGA_ORD_CLI = OVR.ID_RIGA_ORD "
+			+ "INNER JOIN THIP.DOC_VEN_RIG DVR "
+			+ "ON DVR.ID_AZIENDA = OE.ID_AZIENDA "
+			+ "AND DVR.R_ANNO_ORD = OVR.ID_ANNO_ORD "
+			+ "AND DVR.R_NUMERO_ORD = OVR.ID_NUMERO_ORD "
+			+ "AND DVR.R_RIGA_ORD = OVR.ID_RIGA_ORD "
+			+ "INNER JOIN LOGIS.LLISTA_RIGA LR  "
+			+ "ON LR.COD_SOCIETA = OE.ID_AZIENDA "
+			+ "AND LR.COD_LISTA = CONCAT('"+IntegrazioneThipLogis.VENDITA+"',TRIM(DVR.ID_ANNO_DOC),DVR.ID_NUMERO_DOC) "
+			+ "AND LR.NUM_RIGA_HOST = DVR.ID_RIGA_DOC "
+			+ "INNER JOIN LOGIS.LLISTA_TESTA LT "
+			+ "ON LR.COD_SOCIETA = LT.COD_SOCIETA "
+			+ "AND LR.COD_LISTA = LT.CODICE "
+			+ "WHERE OE.ID_AZIENDA = ? "
+			+ "AND OE.ID_ANNO_ORD = ? "
+			+ "AND OE.ID_NUMERO_ORD = ? "
+			+ "AND LT.COD_TIPO_LISTA = ? ";
+	protected static CachedStatement cRigaListaAttivitaSuOrdineEsecutivoPVENL = new CachedStatement(STMT_RIGA_LISTA_ATV_OE_PVENL);
 
 	public static final String STMT_QTA_IMBALLATA = "SELECT "
 			+ "	SUM(QUANTITA) "
@@ -148,7 +162,7 @@ public class YRilevDatiPrdTS extends RilevDatiPrdTS {
 		int rcConvalida = super.convalidaRilevazione(testata, rc, genDoc);
 
 		//.Se la lista e' P/PREL devo generare le UDS automaticamente
-		if(rcConvalida > 0 && isAttivitaEsecutivaSuListaPPREL() && !isYNonGestirePicking()) {
+		if(rcConvalida > 0 && checkAttivitaEsecutivaSuListaPVENL() && !isYNonGestirePicking()) {
 			int rcUds = generaUdsLogistica(testata);
 			if(rcUds >= 0)
 				rcConvalida += rcUds;
@@ -222,19 +236,18 @@ public class YRilevDatiPrdTS extends RilevDatiPrdTS {
 		setYNumeroPzUds(nrPziUds);
 	}
 
-	public boolean isAttivitaEsecutivaSuListaPPREL() {
+	public boolean checkAttivitaEsecutivaSuListaPVENL() {
 		if(getAttivitaEsecutiva() == null)
 			return false;
 		PreparedStatement ps = null;
 		ResultSet resultSet = null;
 		try {
-			ps = cAtvEsecSuListaPPREL.getStatement();
+			ps = cAttivitaSuOrdineEsecutivoPVENL.getStatement();
 			Database db = ConnectionManager.getCurrentDatabase();
 			db.setString(ps, 1, getIdAzienda());
 			db.setString(ps, 2, getIdAnnoOrdine());
 			db.setString(ps, 3, getIdNumeroOrdine());
-			db.setString(ps, 4, getIdRigaAttivita().toString());
-			db.setString(ps, 5, "P/PREL");
+			db.setString(ps, 4, "P/VENL");
 			resultSet =  ps.executeQuery();
 			if(resultSet.next()){
 				return true;
@@ -250,14 +263,12 @@ public class YRilevDatiPrdTS extends RilevDatiPrdTS {
 		PreparedStatement ps = null;
 		ResultSet resultSet = null;
 		try {
-			ps = cRigaListaFromRilevazione.getStatement();
+			ps = cRigaListaAttivitaSuOrdineEsecutivoPVENL.getStatement();
 			Database db = ConnectionManager.getCurrentDatabase();
 			db.setString(ps, 1, getIdAzienda());
 			db.setString(ps, 2, getIdAnnoOrdine());
 			db.setString(ps, 3, getIdNumeroOrdine());
-			db.setString(ps, 4, getIdRigaAttivita().toString());
-			db.setString(ps, 5, "P/PREL");
-			db.setString(ps, 6, getIdRigaAttivita().toString());
+			db.setString(ps, 4, "P/VENL");
 			resultSet =  ps.executeQuery();
 			if(resultSet.next()){
 				rl = RigaLista.elementWithKey(KeyHelper.buildObjectKey(new String[] {

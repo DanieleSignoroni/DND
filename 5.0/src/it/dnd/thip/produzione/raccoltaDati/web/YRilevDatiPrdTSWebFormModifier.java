@@ -48,7 +48,7 @@ public class YRilevDatiPrdTSWebFormModifier extends RilevDatiPrdTSWebFormModifie
 		YRilevDatiPrdTS bo = (YRilevDatiPrdTS) getBODataCollector().getBo();
 		String action = (String) getRequest().getAttribute("Action");
 		if(action != null && action.equals(RilevDatiPrdTSFormActionAdapter.PRODUZIONE)) { //71946
-			boolean isListaPPREL = ((YRilevDatiPrdTS)bo).isAttivitaEsecutivaSuListaPPREL();
+			boolean isListaPPREL = ((YRilevDatiPrdTS)bo).checkAttivitaEsecutivaSuListaPVENL();
 			if(isListaPPREL) {
 				bo.valorizzaDatiPickingAutomatico();
 				getBODataCollector().setBo(bo);
@@ -104,7 +104,7 @@ public class YRilevDatiPrdTSWebFormModifier extends RilevDatiPrdTSWebFormModifie
 			out.println("</script>");
 			displayListaUDC(out,bo);
 		}else if(action != null && action.equals(RilevDatiPrdTSFormActionAdapter.PRODUZIONE)) { //71946
-			boolean isListaPPREL = ((YRilevDatiPrdTS)bo).isAttivitaEsecutivaSuListaPPREL();
+			boolean isListaPPREL = ((YRilevDatiPrdTS)bo).checkAttivitaEsecutivaSuListaPVENL();
 			if(!isListaPPREL) {
 				out.println("<script>");
 				out.println("document.getElementById('YIdTipoUds').parentNode.parentNode.style.display = displayNone;");

@@ -75,7 +75,7 @@ public abstract class YGestioneUdsPickingProdPO extends EntitaAzienda implements
 
 	public YGestioneUdsPickingProdPO() {
 		setStatoUds(PACKING_IN_CORSO);
-		setTrasmessoLinea(true);
+		setTrasmessoLinea(false);
 		setIdAzienda(Azienda.getAziendaCorrente());
 	}
 

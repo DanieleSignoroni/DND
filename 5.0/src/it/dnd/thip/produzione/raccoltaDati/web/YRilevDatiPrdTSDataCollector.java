@@ -40,9 +40,13 @@ public class YRilevDatiPrdTSDataCollector extends RilevDatiPrdTSDataCollector {
 			//getComponentManager("YNumeroPzBauletto").setMandatory(true);
 			getComponentManager("YNumeroPzUds").setMandatory(true);
 		}
+		if(action != null && action.equals(YRilevDatiPrdTSFormActionAdapter.GENERA_UDS_MANUALMENTE)) {
+			getComponentManager("YIdTipoUds").setMandatory(true);
+		}
 		Vector errors = super.runCheckAll();
 		if(action != null && jspName != null && jspName.indexOf("DichiarazioneConBollaSospFine.jsp") > 0 && bo.getTipoTimbratura() == RilevazioneDatiProdRig.FINE
-				&& bo.isAttivitaEsecutivaSuListaPPREL() && !action.equals(YRilevDatiPrdTSFormActionAdapter.GENERA_UDS_AUTOMATICAMENTE)) {
+				&& bo.checkAttivitaEsecutivaSuListaPVENL() && !action.equals(YRilevDatiPrdTSFormActionAdapter.GENERA_UDS_AUTOMATICAMENTE)
+				&& !action.equals(YRilevDatiPrdTSFormActionAdapter.GENERA_UDS_MANUALMENTE)) {
 			RigaLista rl = bo.getRigaListaCollegataRilevazione();
 			if(rl != null) {
 				BigDecimal qtaImballata = bo.getSommaQuantitaImballataPickingProduzione(rl, DatiComuniEstesi.ANNULLATO);
