@@ -13,6 +13,7 @@ import com.thera.thermfw.common.ErrorMessage;
 import com.thera.thermfw.persist.ConnectionManager;
 import com.thera.thermfw.persist.Factory;
 import com.thera.thermfw.persist.KeyHelper;
+import com.thera.thermfw.persist.PersistentObject;
 import com.thera.thermfw.web.ServletEnvironment;
 import com.thera.thermfw.web.servlet.BaseServlet;
 import com.thera.thermfw.web.servlet.Check;
@@ -20,10 +21,11 @@ import com.thera.thermfw.web.servlet.Check;
 import it.dnd.thip.produzione.ordese.YGestioneUdsPickingProd;
 import it.dnd.thip.produzione.raccoltaDati.YRilevDatiPrdTS;
 import it.thera.thip.cs.DatiComuniEstesi;
-import it.thera.thip.logis.bas.Numeratore;
+import it.thera.thip.logis.bas.NumeratoreMaxException;
 import it.thera.thip.logis.bas.NumeratoreMaxProgrException;
 import it.thera.thip.logis.bas.NumeratoreNotFoundException;
 import it.thera.thip.logis.bas.NumeratoreNotValidException;
+import it.thera.thip.logis.fis.TipoUds;
 import it.thera.thip.logis.lgb.RigaLista;
 import it.thera.thip.produzione.raccoltaDati.RilevDatiPrdTS;
 import it.thera.thip.produzione.raccoltaDati.web.AzionePaginaTS;
@@ -78,12 +80,13 @@ public class AzioneGeneraUdsAutomaticamente extends Check {
 						));
 			}
 			RigaLista rl = bo.getRigaListaCollegataRilevazione();
+			TipoUds tipoUds = TipoUds.elementWithKey(bo.getYIdTipoUds(), PersistentObject.NO_LOCK);
 			int rc = 0;
 			for(int i = 0; i < numeroUds; i++) {
 				YGestioneUdsPickingProd uds = (YGestioneUdsPickingProd) Factory.createObject(YGestioneUdsPickingProd.class);
 				uds.setNumeroRitorno(bo.getAttivitaEsecutiva().getNumeroRitorno());
 				try {
-					uds.setIdUds(Numeratore.getNextProgr("UDS001"));
+					uds.setIdUds(tipoUds.getTipoCodice().dammiProssimoCodice());
 					uds.setIdTipoUds(bo.getYIdTipoUds());
 					uds.setQuantita(new BigDecimal(bo.getYNumeroPzUds()));
 					if(rl != null) {
@@ -95,7 +98,7 @@ public class AzioneGeneraUdsAutomaticamente extends Check {
 					if(rcUds < 0)
 						rc = rcUds;
 				} catch (NumeratoreMaxProgrException | NumeratoreNotFoundException | InstantiationException
-						| ClassNotFoundException | IllegalAccessException | NumeratoreNotValidException | SQLException e) {
+						| ClassNotFoundException | IllegalAccessException | NumeratoreNotValidException | SQLException | NumeratoreMaxException e) {
 					if(e instanceof SQLException)
 						se.addErrorMessage(CreaMessaggioErrore.daRcAErrorMessage(rc, (SQLException) e));
 					e.printStackTrace(Trace.excStream);

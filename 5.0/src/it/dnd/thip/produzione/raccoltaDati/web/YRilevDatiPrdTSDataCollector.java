@@ -35,13 +35,13 @@ public class YRilevDatiPrdTSDataCollector extends RilevDatiPrdTSDataCollector {
 		String action = (String)getServletEnvironment().getRequest().getAttribute("Action");
 		String jspName = (String)getServletEnvironment().getRequest().getParameter("thOldJspName");
 		YRilevDatiPrdTS bo = (YRilevDatiPrdTS) getBo();
-		if(action.equals(YRilevDatiPrdTSFormActionAdapter.GENERA_UDS_AUTOMATICAMENTE)) {
+		if(action != null && action.equals(YRilevDatiPrdTSFormActionAdapter.GENERA_UDS_AUTOMATICAMENTE)) {
 			getComponentManager("YIdTipoUds").setMandatory(true);
 			getComponentManager("YNumeroPzBauletto").setMandatory(true);
 			getComponentManager("YNumeroPzUds").setMandatory(true);
 		}
 		Vector errors = super.runCheckAll();
-		if(jspName.indexOf("DichiarazioneConBollaSospFine.jsp") > 0 && bo.getTipoTimbratura() == RilevazioneDatiProdRig.FINE
+		if(action != null && jspName != null && jspName.indexOf("DichiarazioneConBollaSospFine.jsp") > 0 && bo.getTipoTimbratura() == RilevazioneDatiProdRig.FINE
 				&& bo.isAttivitaEsecutivaSuListaPPREL() && !action.equals(YRilevDatiPrdTSFormActionAdapter.GENERA_UDS_AUTOMATICAMENTE)) {
 			RigaLista rl = bo.getRigaListaCollegataRilevazione();
 			if(rl != null) {

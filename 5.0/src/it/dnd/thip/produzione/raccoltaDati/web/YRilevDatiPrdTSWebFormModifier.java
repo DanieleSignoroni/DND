@@ -49,7 +49,7 @@ public class YRilevDatiPrdTSWebFormModifier extends RilevDatiPrdTSWebFormModifie
 		if(action != null && action.equals(RilevDatiPrdTSFormActionAdapter.PRODUZIONE)) {
 			boolean isListaPPREL = ((YRilevDatiPrdTS)bo).isAttivitaEsecutivaSuListaPPREL();
 			if(isListaPPREL) {
-				//bo.valorizzaDatiPickingAutomatico();
+				bo.valorizzaDatiPickingAutomatico();
 				getBODataCollector().setBo(bo);
 			}
 		}
