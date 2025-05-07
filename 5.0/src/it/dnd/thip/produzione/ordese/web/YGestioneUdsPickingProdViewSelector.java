@@ -25,6 +25,11 @@ public class YGestioneUdsPickingProdViewSelector extends ViewSelectorDefault {
 	@Override
 	public String getNewObjectURL(ClassADCollection cadc, ServletEnvironment se, String actionAdapterName) {
 		String newUrl = super.getNewObjectURL(cadc, se, actionAdapterName);
+		if(se.getRequest().getParameter("MostraUdsAzioneGeneraUdsAutomaticamente") != null && se.getRequest().getParameter("MostraUdsAzioneGeneraUdsAutomaticamente").equals("Y")) {
+			newUrl+="&MostraUdsAzioneGeneraUdsAutomaticamente=Y";;
+			newUrl+="&IdTipoUds="+se.getRequest().getParameter("IdTipoUds");
+			newUrl+="&NumeroRitorno="+se.getRequest().getParameter("NumeroRitorno");
+		}
 		return newUrl;
 	}
 }

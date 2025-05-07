@@ -104,6 +104,8 @@
 %>
 <input type="hidden" name="thTarget" value><input type="hidden" name="thAction" value>
 <input type="hidden" name="MostraUdsAzioneGeneraUdsAutomaticamente" value="Y">
+<input type="hidden" name="IdTipoUds" value="<%=request.getParameter("IdTipoUds")%>">
+<input type="hidden" name="NumeroRitorno" value="<%=request.getParameter("NumeroRitorno")%>">
 <table id="emptyborder" border="0" style="border:0px;margin:0px" cellpadding="0" cellspacing="0" width="100%">
 <tr>
 	<td>

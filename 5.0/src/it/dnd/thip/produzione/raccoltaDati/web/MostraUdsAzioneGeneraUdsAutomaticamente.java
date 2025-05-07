@@ -30,6 +30,8 @@ public class MostraUdsAzioneGeneraUdsAutomaticamente extends ShowGrid {
 	@Override
 	protected void callGridJSP(ServletEnvironment se, String gridURL) throws IOException, ServletException {
 		gridURL+="&MostraUdsAzioneGeneraUdsAutomaticamente=Y";
+		gridURL+="&IdTipoUds="+se.getRequest().getParameter("IdTipoUds");
+		gridURL+="&NumeroRitorno="+se.getRequest().getParameter("NumeroRitorno");
 		gridURL = gridURL.replace("com/thera/thermfw/common/Grid.jsp", "it/dnd/thip/produzione/raccoltaDati/MostraUdsAzioneGeneraManGrid.jsp");
 		super.callGridJSP(se, gridURL);
 	}

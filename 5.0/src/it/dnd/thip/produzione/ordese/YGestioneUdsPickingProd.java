@@ -85,6 +85,7 @@ public class YGestioneUdsPickingProd extends YGestioneUdsPickingProdPO {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public RigaUds creaRigaUds(TestataUds testata) {
 		RigaUds riga = (RigaUds) Factory.createObject(RigaUds.class);
+		riga.setCodiceSocieta(testata.getCodiceSocieta());
 		riga.setTestataUds(testata);
 		Vector vec = new Vector();
 		try {

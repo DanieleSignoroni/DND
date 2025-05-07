@@ -19,17 +19,21 @@ public class AzioneGeneraUdsManualmente extends BaseServlet {
 
 	public void processAction(ServletEnvironment se) throws ServletException, IOException, SQLException{
 		YRilevDatiPrdTS bo = (YRilevDatiPrdTS) se.getRequest().getSession().getAttribute("RilevDatiPrdTSOldObject");
+		String idTipoUds = getStringParameter(se.getRequest(), "IdTipoUds");
 		if (se.isErrorListEmpity()){
 			RigaLista rl = bo.getRigaListaCollegataRilevazione();
 			if(rl != null) {
 				PrintWriter out = se.getResponse().getWriter();
 				String url = se.getServletPath();
 				String restrictCondition = "IdCodiceLista=" + rl.getTestataLista().getCodice();
+				restrictCondition += ";IdCodiceRigaLista=" + rl.getCodice();
 				restrictCondition += ";IdAzienda=" + Azienda.getAziendaCorrente();
 				String restrictConditions = "&thRestrictConditions=" +
 						com.thera.thermfw.web.URLUtils.get().encode(restrictCondition);
 				url += "it.dnd.thip.produzione.raccoltaDati.web.MostraUdsAzioneGeneraUdsAutomaticamente?ClassName=YGestioneUdsPickingProd&ngLook=true&thGridType=list" +
 						restrictConditions;
+				url += "&IdTipoUds="+idTipoUds;
+				url += "&NumeroRitorno="+bo.getAttivitaEsecutiva().getNumeroRitorno();
 				out.println("  <script language=\'JavaScript1.2\'>");
 				if (url.startsWith("/"))
 					url = url.substring(1);

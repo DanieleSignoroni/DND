@@ -8,9 +8,11 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import com.thera.thermfw.base.Trace;
+import com.thera.thermfw.common.ErrorMessage;
 import com.thera.thermfw.persist.CachedStatement;
 import com.thera.thermfw.persist.ConnectionManager;
 import com.thera.thermfw.persist.Database;
+import com.thera.thermfw.persist.ErrorCodes;
 import com.thera.thermfw.persist.KeyHelper;
 import com.thera.thermfw.persist.PersistentObject;
 
@@ -28,6 +30,7 @@ import it.thera.thip.logis.lgb.RigaListaTM;
 import it.thera.thip.produzione.raccoltaDati.RilevDatiPrdTS;
 import it.thera.thip.produzione.raccoltaDati.RilevazioneDatiProdMat;
 import it.thera.thip.produzione.raccoltaDati.RilevazioneDatiProdTes;
+import it.thera.thip.vendite.proposteEvasione.CreaMessaggioErrore;
 
 /**
  * <p></p>
@@ -174,7 +177,7 @@ public class YRilevDatiPrdTS extends RilevDatiPrdTS {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected int generaUdsLogistica(RilevazioneDatiProdTes testata) {
+	protected int generaUdsLogistica(RilevazioneDatiProdTes testata) { 
 		int rc = 0;
 		RigaLista rl = getRigaListaCollegataRilevazione();
 		if(rl != null) {
@@ -193,11 +196,12 @@ public class YRilevDatiPrdTS extends RilevDatiPrdTS {
 						int rcTes = testataUds.save();
 						if(rcTes > 0) {
 							RigaUds rigaUds = udsPicking.creaRigaUds(testataUds);
+							rigaUds.setArticolo(rl.getArticolo());
 							RilevazioneDatiProdMat mat = (RilevazioneDatiProdMat)testata.getRigheMateriali().get(0);
 							rigaUds.setCodiceMagLogico(mat.getIdMagazzino());
-							testataUds.getRigheUds().add(rigaUds);						
+
+							rc = rigaUds.save();
 						}
-						rc = testata.save();
 						if(rc > 0) {
 							udsPicking.getDatiComuniEstesi().setStato(DatiComuniEstesi.VALIDO);
 							rc = udsPicking.save();
@@ -206,6 +210,11 @@ public class YRilevDatiPrdTS extends RilevDatiPrdTS {
 				}
 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e) {
 				e.printStackTrace(Trace.excStream);
+				if(e instanceof SQLException)
+					testata.iErrori.add(CreaMessaggioErrore.daRcAErrorMessage(rc, (SQLException) e));
+				else
+					testata.iErrori.add(new ErrorMessage("BAS0000078",e.getMessage()));
+				rc = ErrorCodes.GENERIC_ERROR;
 			}
 		}
 		return rc;
