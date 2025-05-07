@@ -52,6 +52,7 @@ public class AzioneGeneraUdsAutomaticamente extends Check {
 
 	private static final long serialVersionUID = 1L;
 
+	@SuppressWarnings("unchecked")
 	public void processAction(ServletEnvironment se) throws ServletException, IOException, SQLException{
 		String action = (String) se.getRequest().getAttribute("Action");
 		RilevDatiPrdTSDataCollector boDC = getRilevDatiPrdTSBODC(se);
@@ -68,16 +69,20 @@ public class AzioneGeneraUdsAutomaticamente extends Check {
 				numeroUds = udsComplete.intValue(); // solo le UDS complete
 
 				if (residuo.compareTo(BigDecimal.ZERO) > 0) {
-					se.addErrorMessage(new ErrorMessage(
+					ErrorMessage em = new ErrorMessage(
 							"BAS0000089", 
 							"C'è un residuo di " + residuo.intValue() + " pezzi da gestire manualmente"
-							));
+							);
+					se.addErrorMessage(em);
+					boDC.getErrorList().getErrors().add(em);
 				}
 			} else {
-				se.addErrorMessage(new ErrorMessage(
+				ErrorMessage em = new ErrorMessage(
 						"BAS0000078", 
 						"Il numero di pezzi per UDS non può essere zero o negativo"
-						));
+						);
+				se.addErrorMessage(em);
+				boDC.getErrorList().getErrors().add(em);
 			}
 			RigaLista rl = bo.getRigaListaCollegataRilevazione();
 			TipoUds tipoUds = TipoUds.elementWithKey(bo.getYIdTipoUds(), PersistentObject.NO_LOCK);

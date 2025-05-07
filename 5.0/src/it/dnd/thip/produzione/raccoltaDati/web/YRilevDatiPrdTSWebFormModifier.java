@@ -19,6 +19,7 @@ import it.thera.thip.logis.fis.RigaMovimento;
 import it.thera.thip.logis.fis.Saldo;
 import it.thera.thip.produzione.ordese.PersDatiPrdUtenteRilev;
 import it.thera.thip.produzione.raccoltaDati.RilevDatiPrdTS;
+import it.thera.thip.produzione.raccoltaDati.RilevazioneDatiProdRig;
 import it.thera.thip.produzione.raccoltaDati.web.RilevDatiPrdTSFormActionAdapter;
 import it.thera.thip.produzione.raccoltaDati.web.RilevDatiPrdTSWebFormModifier;
 
@@ -59,7 +60,7 @@ public class YRilevDatiPrdTSWebFormModifier extends RilevDatiPrdTSWebFormModifie
 	@Override
 	public void writeFormEndElements(JspWriter out) throws IOException {
 		super.writeFormEndElements(out);
-		RilevDatiPrdTS bo = (RilevDatiPrdTS) getBODataCollector().getBo();
+		YRilevDatiPrdTS bo = (YRilevDatiPrdTS) getBODataCollector().getBo();
 		String action = (String) getRequest().getAttribute("Action");
 		if (action != null && (action.equals(YRilevDatiPrdTSFormActionAdapter.RIPOSIZIONA_UDC) || action.equals(YRilevDatiPrdTSFormActionAdapter.CHIAMATA_UDC))) {
 			if(getRequest().getAttribute("DisplayReparti") != null && getRequest().getAttribute("DisplayReparti").equals("N")) {
@@ -119,6 +120,12 @@ public class YRilevDatiPrdTSWebFormModifier extends RilevDatiPrdTSWebFormModifie
 				out.println("setFieldMandatory('YNumeroPzUds',true);");
 				out.println("setFieldMandatory('YNumeroPzBauletto',true);");
 				out.println("</script>");
+			}
+		}else if(action != null && action.equals(RilevDatiPrdTSFormActionAdapter.SUCCESSIVO) && bo.getTipoTimbratura() == RilevazioneDatiProdRig.FINE) {
+			//.Se sto passando alla pagina successiva (dove viene creato il doc prd) e ho il flag acceso
+			//.devo scriverlo nella form in modo da averlo poi nella save
+			if(bo.isYNonGestirePicking()) {
+				out.println("<input name=\"YNonGestirePicking\" type=\"hidden\" value=\"Y\">");
 			}
 		}
 	}

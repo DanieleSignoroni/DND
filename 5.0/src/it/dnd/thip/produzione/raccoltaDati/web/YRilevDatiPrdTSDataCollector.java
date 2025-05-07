@@ -46,14 +46,16 @@ public class YRilevDatiPrdTSDataCollector extends RilevDatiPrdTSDataCollector {
 		Vector errors = super.runCheckAll();
 		if(action != null && jspName != null && jspName.indexOf("DichiarazioneConBollaSospFine.jsp") > 0 && bo.getTipoTimbratura() == RilevazioneDatiProdRig.FINE
 				&& bo.checkAttivitaEsecutivaSuListaPVENL() && !action.equals(YRilevDatiPrdTSFormActionAdapter.GENERA_UDS_AUTOMATICAMENTE)
-				&& !action.equals(YRilevDatiPrdTSFormActionAdapter.GENERA_UDS_MANUALMENTE)) {
+				&& !action.equals(YRilevDatiPrdTSFormActionAdapter.GENERA_UDS_MANUALMENTE)
+				&& !bo.isYNonGestirePicking()) {
 			RigaLista rl = bo.getRigaListaCollegataRilevazione();
 			if(rl != null) {
 				BigDecimal qtaImballata = bo.getSommaQuantitaImballataPickingProduzione(rl, DatiComuniEstesi.ANNULLATO);
 				if(qtaImballata == null)
 					qtaImballata = BigDecimal.ZERO;
 				if(qtaImballata.compareTo(BigDecimal.ZERO) == 0 || qtaImballata.compareTo(bo.getQuantita()) < 0) {
-					errors.add(new ErrorMessage("BAS0000078","La quantita' dichiarata non coindice con la quantita' imballata, sono stati imballati "+qtaImballata.intValue()+" pezzi"));
+					errors.add(new ErrorMessage("BAS0000078","La quantita' dichiarata non coindice con la quantita' imballata, sono stati imballati "+qtaImballata.intValue()+" pezzi a fronte dei "
+						+bo.getQuantita().intValue()+" dichiarati"));
 				}
 			}
 		}
