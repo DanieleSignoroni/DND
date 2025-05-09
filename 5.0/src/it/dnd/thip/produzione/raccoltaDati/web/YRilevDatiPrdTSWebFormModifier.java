@@ -1,22 +1,27 @@
 package it.dnd.thip.produzione.raccoltaDati.web;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.jsp.JspWriter;
 
+import com.thera.thermfw.base.Q6Calc;
 import com.thera.thermfw.base.Trace;
 import com.thera.thermfw.persist.Factory;
 import com.thera.thermfw.web.WebElement;
 
 import it.dnd.thip.logis.fis.YEsecuzionePianiCarico;
 import it.dnd.thip.produzione.raccoltaDati.YRilevDatiPrdTS;
+import it.thera.thip.base.articolo.Articolo;
 import it.thera.thip.base.azienda.Reparto;
+import it.thera.thip.logis.fis.Missione;
 import it.thera.thip.logis.fis.RigaMovimento;
 import it.thera.thip.logis.fis.Saldo;
 import it.thera.thip.produzione.ordese.AttivitaEsecMateriale;
@@ -42,6 +47,7 @@ import it.thera.thip.produzione.raccoltaDati.web.RilevDatiPrdTSWebFormModifier;
  * Number   Date        Owner    Description
  * 71923    15/04/2025  DSSOF3   Prima stesura
  * 71946	02/05/2025	DSSOF3	 Gestione nuove azioni
+ * 71953	09/05/2025	DSSOF3	 Gestione nuovi attributi MappaUdc (1-20), picking automatico in dichiarazione prelievi.
  */
 
 public class YRilevDatiPrdTSWebFormModifier extends RilevDatiPrdTSWebFormModifier {
@@ -258,9 +264,9 @@ public class YRilevDatiPrdTSWebFormModifier extends RilevDatiPrdTSWebFormModifie
 		out.println("</table>");
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object[] initRigaDaOrdineEsec(RilevDatiPrdTS bo, AttivitaEsecMateriale atvEsecMat, int i) {
-		Object[] sup = super.initRigaDaOrdineEsec(bo, atvEsecMat, i);
 		try {
 			String setterUdc = "setCodiceMappaUdc" + String.valueOf(i);
 			Class<?> c = Factory.getClass(bo.getClass());
@@ -269,6 +275,116 @@ public class YRilevDatiPrdTSWebFormModifier extends RilevDatiPrdTSWebFormModifie
 		} catch (Exception e) {
 			e.printStackTrace(Trace.excStream);
 		}
-		return sup;
+		Object[] result = new Object[2];
+		List missioni = YRilevDatiPrdTS.trovaMissioniAttivitaEsecutivaMateriale(atvEsecMat);
+		try {
+			List lotti = recuperaLottiMat(bo, atvEsecMat);
+			Iterator iter = lotti.iterator();
+			while (iter.hasNext()) {
+				Object[] obj = (Object[]) iter.next();
+				String idLotto = (String) obj[0];
+				BigDecimal qta = (BigDecimal) obj[1];
+				if(missioni.size() > 0) {
+					Iterator iterMissioni = missioni.iterator();
+					while(iterMissioni.hasNext()) {
+						Missione m = (Missione) iterMissioni.next();
+						valorizzaRighe(bo, qta, idLotto, i, atvEsecMat,m);
+
+						//.Se ho solo una missione, allora il scrivo una variabile che mi mettera in read only il campo qtaPrel
+						if(atvEsecMat.getIdMagazzinoPrl().equals("001") && missioni.size() == 1) {
+							JspWriter out = this.webForm.getJspWriter();
+							out.println("<script language='JavaScript1.2'>");
+							String var = " var isQtaPrelevataUMPrm"+i+"Enabled=false";
+							out.println(var+";");
+							out.println("</script>");
+						}
+						i++;
+						if (i > 20) {
+							bo.setCurrentNumPag((i / 20) + bo.getCurrentNumPag());
+							bo.setIdAzienda(bo.getIdAzienda());
+							i = 1;
+						}
+					}
+				}else {
+					valorizzaRighe(bo, qta, idLotto, i, atvEsecMat,null);
+					i++;
+					if (i > 20) {
+						bo.setCurrentNumPag((i / 20) + bo.getCurrentNumPag());
+						bo.setIdAzienda(bo.getIdAzienda());
+						i = 1;
+					}
+				}
+			}
+			result[0] = bo;
+			result[1] = new Integer(i);
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return result;
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void valorizzaRighe(RilevDatiPrdTS bo, BigDecimal qta,
+			String idLotto, int i,
+			AttivitaEsecMateriale atvEsecMat, Missione m) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		if (qta.compareTo(new BigDecimal(0)) == 0) {
+			//qta = null; //Fix 25930 commento
+			idLotto = null;
+		}
+		String setterPrd = "setIdMateriale" + String.valueOf(i);
+		String setterVers = "setIdVersione" + String.valueOf(i);
+		String setterCfg = "setIdConfigurazione" + String.valueOf(i);
+		String setterMag = "setIdMagazzinoPrl" + String.valueOf(i);
+		String setterQta = "setQtaPrlUmPrm" + String.valueOf(i);
+		String setterQtaSec = "setQtaPrlUmSec" + String.valueOf(i);
+		String setterIdLot = "setIdLotto" + String.valueOf(i);
+		String setterDescMat = "setDescrizioneMateriale" + String.valueOf(i);
+		String setterCodMappaUdc = "setCodiceMappaUdc" + String.valueOf(i);
+
+		//Fix 26027 inizio
+		String setterEster = "setIdEsternoConfig"+String.valueOf(i);
+		//Fix 26027 fine
+
+		Class c = Factory.getClass(bo.getClass());
+		Method matMethod = c.getMethod(setterPrd, new Class[] { String.class });
+		Method versMethod = c.getMethod(setterVers, new Class[] { Integer.class });
+		Method cfgMethod = c.getMethod(setterCfg, new Class[] { Integer.class });
+		Method magMethod = c.getMethod(setterMag, new Class[] { String.class });
+		Method qtaMethod = c.getMethod(setterQta, new Class[] { BigDecimal.class });
+		Method qtaSecMethod = c.getMethod(setterQtaSec, new Class[] { BigDecimal.class });
+		Method idLotMethod = c.getMethod(setterIdLot, new Class[] { String.class });
+		Method descMatMethod = c.getMethod(setterDescMat, new Class[] { String.class });
+		Method codMappaUdcMethod = c.getMethod(setterCodMappaUdc, new Class[] { String.class });
+
+		//Fix 26027 inizio
+		Method EsternMethod = c.getMethod(setterEster, new Class[] { String.class });
+		EsternMethod.invoke(bo, new Object[] { atvEsecMat.getIdEsternoConfig()});
+		//Fix 26027 fine
+
+		matMethod.invoke(bo, new Object[] { atvEsecMat.getIdArticolo() });
+		versMethod.invoke(bo, new Object[] { atvEsecMat.getIdVersione() });
+		cfgMethod.invoke(bo, new Object[] { atvEsecMat.getIdConfigurazione() });
+		magMethod.invoke(bo, new Object[] { atvEsecMat.getIdMagazzinoPrl() });
+
+		if(m != null)
+			qta = m.getQta1Richiesta();
+
+		qtaMethod.invoke(bo, new Object[] { qta });
+		codMappaUdcMethod.invoke(bo, new Object[] {m != null ? m.getCodiceMappaUdc() : null});
+		Articolo articolo = atvEsecMat.getArticolo();
+		if (articolo != null && articolo.getIdUMSecMag() != null) {
+			BigDecimal qtaSec = articolo.convertiUM(qta, articolo.getUMPrmMag(), articolo.getUMSecMag(),
+					atvEsecMat.getVersione());
+			if (qtaSec != null) //Fix 39755
+				qtaSec = Q6Calc.get().setScale(qtaSec, 2, BigDecimal.ROUND_HALF_UP); //Fix 39755
+			qtaSecMethod.invoke(bo, new Object[] { qtaSec });
+		}
+		if (idLotto != null)
+			idLotMethod.invoke(bo, new Object[] { idLotto });
+
+		if (atvEsecMat.getDescrizione() != null) {
+			descMatMethod.invoke(bo, new Object[] { atvEsecMat.getDescrizione().getDescrizione() });
+		}
 	}
 }

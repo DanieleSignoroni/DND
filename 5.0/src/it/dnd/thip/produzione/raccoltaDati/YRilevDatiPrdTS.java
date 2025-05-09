@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Hashtable;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.List;
 import java.util.Vector;
 
 import com.thera.thermfw.base.Trace;
@@ -27,10 +27,13 @@ import it.thera.thip.base.articolo.ArticoloCliente;
 import it.thera.thip.base.generale.IntegrazioneThipLogis;
 import it.thera.thip.cs.DatiComuniEstesi;
 import it.thera.thip.logis.fis.MappaUdc;
+import it.thera.thip.logis.fis.Missione;
+import it.thera.thip.logis.fis.MissioneTM;
 import it.thera.thip.logis.fis.RigaUds;
 import it.thera.thip.logis.fis.TestataUds;
 import it.thera.thip.logis.lgb.RigaLista;
 import it.thera.thip.logis.lgb.RigaListaTM;
+import it.thera.thip.produzione.ordese.AttivitaEsecMateriale;
 import it.thera.thip.produzione.raccoltaDati.RilevDatiPrdTS;
 import it.thera.thip.produzione.raccoltaDati.RilevazioneDatiProdMat;
 import it.thera.thip.produzione.raccoltaDati.RilevazioneDatiProdTes;
@@ -50,6 +53,7 @@ import it.thera.thip.vendite.proposteEvasione.CreaMessaggioErrore;
  * Revisions:
  * Number   Date        Owner    Description
  * 71946    02/05/2025  DSSOF3   Prima stesura
+ * 71953	09/05/2025	DSSOF3	 Aggiunti attributi per MappaUDC (1-20).
  */
 
 public class YRilevDatiPrdTS extends RilevDatiPrdTS {
@@ -113,13 +117,80 @@ public class YRilevDatiPrdTS extends RilevDatiPrdTS {
 			+ "AND STATO = ? ";
 	protected static CachedStatement cSommaQuantitaImballata = new CachedStatement(STMT_QTA_IMBALLATA);
 
+	protected static final String STMT_MISSIONI_FROM_ATV_ESEC_MAT = "SELECT  "
+			+ "	LMISSIONE.* "
+			+ "FROM  "
+			+ "			 	THIP.PIANI_PRL_TES PIANI_PRL_TES "
+			+ "INNER JOIN LOGIS.LLISTA_TESTA LLISTA_TESTA ON  "
+			+ "			 	LLISTA_TESTA.COD_SOCIETA = PIANI_PRL_TES.ID_AZIENDA "
+			+ "	AND LLISTA_TESTA.CODICE = PIANI_PRL_TES.R_COD_LISTA "
+			+ "INNER JOIN LOGIS.LLISTA_RIGA LLISTA_RIGA ON  "
+			+ "			 	LLISTA_RIGA.COD_SOCIETA = LLISTA_TESTA.COD_SOCIETA "
+			+ "	AND LLISTA_RIGA.COD_LISTA = LLISTA_TESTA.CODICE "
+			+ "LEFT OUTER JOIN LOGIS.LMISSIONE LMISSIONE ON  "
+			+ "			 	LLISTA_RIGA.COD_SOCIETA = LMISSIONE.COD_SOCIETA "
+			+ "	AND LLISTA_RIGA.COD_LISTA = LMISSIONE.COD_LISTA "
+			+ "	AND LLISTA_RIGA.CODICE = LMISSIONE.COD_RIGA_LISTA "
+			+ "INNER JOIN THIP.PIANI_PRL_RIG PIANI_PRL_RIG ON  "
+			+ "			 	PIANI_PRL_RIG.ID_AZIENDA = PIANI_PRL_TES.ID_AZIENDA "
+			+ "	AND PIANI_PRL_RIG.ID_MODELLO_PRL = PIANI_PRL_TES.ID_MODELLO_PRL "
+			+ "	AND PIANI_PRL_RIG.TIPO_MODELLO_PRL = PIANI_PRL_TES.TIPO_MODELLO_PRL "
+			+ "	AND PIANI_PRL_RIG.ID_ANNO_ORD = PIANI_PRL_TES.ID_ANNO_ORD "
+			+ "	AND PIANI_PRL_RIG.ID_NUMERO_ORD = PIANI_PRL_TES.ID_NUMERO_ORD "
+			+ "	AND PIANI_PRL_RIG.ID_RIGA_ATTIVITA = PIANI_PRL_TES.ID_RIGA_ATTIVITA "
+			+ "	AND PIANI_PRL_RIG.ID_RIGA_MATERIALE = LLISTA_RIGA.NUM_RIGA_HOST "
+			+ "INNER JOIN THIP.ORD_ESEC_ATV ORD_ESEC_ATV ON  "
+			+ "			 	ORD_ESEC_ATV.ID_AZIENDA = PIANI_PRL_TES.ID_AZIENDA "
+			+ "	AND ORD_ESEC_ATV.ID_ANNO_ORD = PIANI_PRL_TES.ID_ANNO_ORD "
+			+ "	AND ORD_ESEC_ATV.ID_NUMERO_ORD = PIANI_PRL_TES.ID_NUMERO_ORD "
+			+ "	AND ORD_ESEC_ATV.ID_RIGA_ATTIVITA = PIANI_PRL_TES.ID_RIGA_ATTIVITA "
+			+ "INNER JOIN LOGIS.LUBICAZIONE UBICAZIONE "
+			+ "ON UBICAZIONE.CODICE = LMISSIONE.COD_UBICAZIONE  "
+			+ "AND UBICAZIONE.COD_MAG_FISICO = LMISSIONE.COD_MAG_FISICO "
+			+ "WHERE  "
+			+ "	PIANI_PRL_TES.ID_AZIENDA = ? "
+			+ "	AND ORD_ESEC_ATV.ID_ANNO_ORD = ? "
+			+ "	AND ORD_ESEC_ATV.ID_NUMERO_ORD = ? "
+			+ "	AND ORD_ESEC_ATV.ID_RIGA_ATTIVITA = ? "
+			+ "	AND LLISTA_RIGA.NUM_RIGA_HOST  = ?  "
+			+ "	AND UBICAZIONE.COD_ZONA_PRELIEVO = ?";
+	protected static CachedStatement cMissioniFromAttivitaEsecutivaMateriale = new CachedStatement(STMT_MISSIONI_FROM_ATV_ESEC_MAT);
+
+	public static final String STMT_IS_ATV_SU_LISTA_P_PRE = "SELECT "
+			+ "	* "
+			+ "FROM  "
+			+ "			 	THIP.PIANI_PRL_TES PIANI_PRL_TES "
+			+ "INNER JOIN LOGIS.LLISTA_TESTA LLISTA_TESTA ON  "
+			+ "			 	LLISTA_TESTA.COD_SOCIETA = PIANI_PRL_TES.ID_AZIENDA "
+			+ "	AND LLISTA_TESTA.CODICE = PIANI_PRL_TES.R_COD_LISTA "
+			+ "INNER JOIN LOGIS.LLISTA_RIGA LLISTA_RIGA ON  "
+			+ "			 	LLISTA_RIGA.COD_SOCIETA = LLISTA_TESTA.COD_SOCIETA "
+			+ "	AND LLISTA_RIGA.COD_LISTA = LLISTA_TESTA.CODICE "
+			+ "INNER JOIN THIP.PIANI_PRL_RIG PIANI_PRL_RIG ON  "
+			+ "			 	PIANI_PRL_RIG.ID_AZIENDA = PIANI_PRL_TES.ID_AZIENDA "
+			+ "	AND PIANI_PRL_RIG.ID_MODELLO_PRL = PIANI_PRL_TES.ID_MODELLO_PRL "
+			+ "	AND PIANI_PRL_RIG.TIPO_MODELLO_PRL = PIANI_PRL_TES.TIPO_MODELLO_PRL "
+			+ "	AND PIANI_PRL_RIG.ID_ANNO_ORD = PIANI_PRL_TES.ID_ANNO_ORD "
+			+ "	AND PIANI_PRL_RIG.ID_NUMERO_ORD = PIANI_PRL_TES.ID_NUMERO_ORD "
+			+ "	AND PIANI_PRL_RIG.ID_RIGA_ATTIVITA = PIANI_PRL_TES.ID_RIGA_ATTIVITA "
+			+ "	AND PIANI_PRL_RIG.ID_RIGA_MATERIALE = LLISTA_RIGA.NUM_RIGA_HOST "
+			+ "INNER JOIN THIP.ORD_ESEC_ATV ORD_ESEC_ATV ON  "
+			+ "			 	ORD_ESEC_ATV.ID_AZIENDA = PIANI_PRL_TES.ID_AZIENDA "
+			+ "	AND ORD_ESEC_ATV.ID_ANNO_ORD = PIANI_PRL_TES.ID_ANNO_ORD "
+			+ "	AND ORD_ESEC_ATV.ID_NUMERO_ORD = PIANI_PRL_TES.ID_NUMERO_ORD "
+			+ "	AND ORD_ESEC_ATV.ID_RIGA_ATTIVITA = PIANI_PRL_TES.ID_RIGA_ATTIVITA "
+			+ "WHERE  "
+			+ "	PIANI_PRL_TES.ID_AZIENDA = ? "
+			+ "	AND ORD_ESEC_ATV.ID_ANNO_ORD = ? "
+			+ "	AND ORD_ESEC_ATV.ID_NUMERO_ORD = ? "
+			+ "	AND ORD_ESEC_ATV.ID_RIGA_ATTIVITA = ? "
+			+ "	AND LLISTA_TESTA.COD_TIPO_LISTA = ? ";
+	protected static CachedStatement cAttivitaEsecutivaListaPPRE = new CachedStatement(STMT_IS_ATV_SU_LISTA_P_PRE);
+
 	protected String iYIdTipoUDS;
 	protected boolean iYNonGestirePicking;
 	protected Integer iYNumeroPzBauletto;
 	protected Integer iYNumeroPzUds;
-
-	@SuppressWarnings("rawtypes")
-	protected Map iMappaUdc = new Hashtable();
 
 	public YRilevDatiPrdTS() {
 		setYNonGestirePicking(false);
@@ -169,11 +240,9 @@ public class YRilevDatiPrdTS extends RilevDatiPrdTS {
 	@Override
 	protected void setIdAziendaInternal(String idAzienda) {
 		super.setIdAziendaInternal(idAzienda);
-		if(iMappaUdc != null) {
-			for(int i=0; i<20;i++){
-				if(iMappaUdc.isEmpty() || iMappaUdc.size() <= (i + (iCurrentNumPag - 1) * 20)){
-					iMappaUdc.put(new Integer((i + (iCurrentNumPag - 1) * 20)), (MappaUdc)Factory.createObject(MappaUdc.class));
-				}
+		for(int i=0; i<20;i++){
+			if(iMappaUdc.isEmpty() || iMappaUdc.size() <= (i + (iCurrentNumPag - 1) * 20)){
+				iMappaUdc.put(new Integer((i + (iCurrentNumPag - 1) * 20)), (MappaUdc)Factory.createObject(MappaUdc.class));
 			}
 		}
 	}
@@ -884,7 +953,7 @@ public class YRilevDatiPrdTS extends RilevDatiPrdTS {
 	public int convalidaRilevazione(RilevazioneDatiProdTes testata, int rc, boolean genDoc) {
 		int rcConvalida = super.convalidaRilevazione(testata, rc, genDoc);
 
-		//.Se la lista e' P/PREL devo generare le UDS automaticamente
+		//.Se la lista e' P/PVENL devo generare le UDS automaticamente
 		if(rcConvalida > 0 && checkAttivitaEsecutivaSuListaPVENL() && !isYNonGestirePicking()) {
 			int rcUds = generaUdsLogistica(testata);
 			if(rcUds >= 0)
@@ -892,8 +961,38 @@ public class YRilevDatiPrdTS extends RilevDatiPrdTS {
 			else
 				rcConvalida = rcUds;
 		}
+		//.Se la lista e' P/PRE devo confermare le missioni 
+		if(rcConvalida > 0 && isAttivitaEsecutivaSuListaPPRE()) {
+			int rcCnfMissioni = confermaMissioniAuto(testata);
+		}
 
 		return rcConvalida;
+	}
+
+	protected int confermaMissioniAuto(RilevazioneDatiProdTes testata) {
+		int rc = 0;
+		Iterator iterMateriali = testata.getRigheMateriali().iterator();
+		while(iterMateriali.hasNext()) {
+			RilevazioneDatiProdMat materiale = (RilevazioneDatiProdMat) iterMateriali.next();
+
+			try {
+				AttivitaEsecMateriale atvEsecMat = (AttivitaEsecMateriale) AttivitaEsecMateriale.elementWithKey(AttivitaEsecMateriale.class,
+						KeyHelper.buildObjectKey(new String[] {
+								testata.getIdAzienda(),
+								testata.getIdAnnoOrdine(),
+								testata.getIdNumeroOrdine(),
+								testata.getIdRigaAttivita().toString(),
+								materiale.getIdRigaMateriale().toString()
+						}), PersistentObject.NO_LOCK);
+				if(atvEsecMat != null) {
+					List missioni = trovaMissioniAttivitaEsecutivaMateriale(atvEsecMat);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace(Trace.excStream);
+			}
+
+		}
+		return rc;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -1032,6 +1131,57 @@ public class YRilevDatiPrdTS extends RilevDatiPrdTS {
 			ex.printStackTrace(Trace.excStream);
 		}
 		return sum;
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static List trovaMissioniAttivitaEsecutivaMateriale(AttivitaEsecMateriale materiale) {
+		List missioni = new ArrayList();
+		PreparedStatement ps = null;
+		ResultSet resultSet = null;
+		try {
+			ps = cMissioniFromAttivitaEsecutivaMateriale.getStatement();
+			Database db = ConnectionManager.getCurrentDatabase();
+			db.setString(ps, 1, materiale.getIdAzienda());
+			db.setString(ps, 2, materiale.getIdAnnoOrdine());
+			db.setString(ps, 3, materiale.getIdNumeroOrdine());
+			db.setString(ps, 4, materiale.getIdRigaAttivita().toString());
+			db.setString(ps, 5, materiale.getIdRigaMateriale().toString());
+			//db.setString(ps, 6, materiale.getAttivitaEsecutiva().getIdReparto());
+			db.setString(ps, 6, "STOCK");
+			resultSet =  ps.executeQuery();
+			if(resultSet.next()){
+				missioni.add(Missione.elementWithKey(Missione.class, KeyHelper.buildObjectKey(new String[] {
+						resultSet.getString(MissioneTM.COD_MAG_FISICO).trim(),
+						resultSet.getString(MissioneTM.CODICE).trim()
+				}), PersistentObject.NO_LOCK));
+			}
+		}catch (SQLException ex) {
+			ex.printStackTrace(Trace.excStream);
+		}
+		return missioni;
+	}
+
+	public boolean isAttivitaEsecutivaSuListaPPRE() {
+		if(getAttivitaEsecutiva() == null)
+			return false;
+		PreparedStatement ps = null;
+		ResultSet resultSet = null;
+		try {
+			ps = cAttivitaEsecutivaListaPPRE.getStatement();
+			Database db = ConnectionManager.getCurrentDatabase();
+			db.setString(ps, 1, getIdAzienda());
+			db.setString(ps, 2, getIdAnnoOrdine());
+			db.setString(ps, 3, getIdNumeroOrdine());
+			db.setString(ps, 4, getIdRigaAttivita().toString());
+			db.setString(ps, 5, "P/PRE");
+			resultSet =  ps.executeQuery();
+			if(resultSet.next()){
+				return true;
+			}
+		}catch (SQLException ex) {
+			ex.printStackTrace(Trace.excStream);
+		}
+		return false;
 	}
 
 }

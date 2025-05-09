@@ -597,7 +597,7 @@
   <button name="PaginaPrecBut" script="PaginaPrec()" resourceFile="it/thera/thip/produzione/raccoltaDati/resources/RilevDatiPrdTS" resourceID="PaginaPrec"/>
   <button name="PaginaSuccBut" script="PaginaSucc()" resourceFile="it/thera/thip/produzione/raccoltaDati/resources/RilevDatiPrdTS" resourceID="PaginaSucc"/>
   <!-- Fix 18536 Fine -->
-  <!-- 71XXX Softre Inizio -->
+  <!-- 71953 Softre Inizio -->
   <multisearchform name="MappaUdc1" classRD="MappaUdc1" editbutton="no"/>
   <multisearchform name="MappaUdc2" classRD="MappaUdc2" editbutton="no"/>
   <multisearchform name="MappaUdc3" classRD="MappaUdc3" editbutton="no"/>
@@ -618,7 +618,7 @@
   <multisearchform name="MappaUdc18" classRD="MappaUdc18" editbutton="no"/>
   <multisearchform name="MappaUdc19" classRD="MappaUdc19" editbutton="no"/>
   <multisearchform name="MappaUdc20" classRD="MappaUdc20" editbutton="no"/>
-  <!-- 71XXX Softre Fine -->
+  <!-- 71953 Softre Fine -->
   </form>
 
 </tfml>
