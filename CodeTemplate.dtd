@@ -32,9 +32,9 @@
 <!ATTLIST UserCode
       TYPE (methods | attributes | classes) #IMPLIED>
 <!ENTITY templateVersion "1.0">
-<!ENTITY className "YArticoloCliente">
+<!ENTITY className "YCfgLogTxMov">
 <!ENTITY bracesPosition "Up">
 <!ENTITY blockIndent "2">
-<!ENTITY ref1 "YArticoloClienteTM">
-<!ENTITY ref2 "YArticoloCliente">
+<!ENTITY ref1 "YCfgLogTxMovTM">
+<!ENTITY ref2 "YCfgLogTxMov">
 <!ENTITY ref3 "">

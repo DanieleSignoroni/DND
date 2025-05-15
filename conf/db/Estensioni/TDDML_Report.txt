@@ -1,4 +1,2 @@
 
-Elaborazione file comandi W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00005\tddml\5_CONSTRAINT.TDDML.
-ALTER TABLE THIPPERS.YARTICOLI_CLI ADD CONSTRAINT TipoUDS_272868176 FOREIGN KEY (R_TIPO_UDS)
-        REFERENCES LOGIS.LTIPO_UDS
+Elaborazione file comandi W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00006\tddml\6_CONSTRAINT.TDDML.

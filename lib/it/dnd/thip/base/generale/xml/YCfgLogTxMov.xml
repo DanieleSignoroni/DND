@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<customization>
+	<formcustomization customizePosition="ELEMENT"
+		customizeName="10" elementAD="MagFisico.Desc">
+		<!-- CUST_ADD </td> </tr> -->
+		<tr>
+			<td valign="top">
+				<label classHdr="YCfgLogTxMov" classRD="PoliticaRiordino"></label>
+			</td>
+			<td valign="top">
+				<multisearchform name="PoliticaRiordino" classRD="PoliticaRiordino" />
+				<!-- CUST_START_REM -->
+			</td>
+		</tr>
+		<!-- CUST_END_REM -->
+	</formcustomization>
+</customization>
