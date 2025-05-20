@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE TDDML SYSTEM "../../../TDDML.dtd">
+<TDDML>
+  <CreateTable schema="THIPPERS" name="LRPT_ETIC_PIA_CARICO" shortname="LRPT">
+    <Column name="REPORT_NR" shortname="REPORT_NR" type="integer" nullable="no"/>
+    <Column name="COD_SOCIETA" shortname="COD_SOCIETA" type="char" length="3" nullable="no"/>
+    <Column name="ID_ANNO_DOC" shortname="ID_ANNO_D0" type="char" length="6" nullable="no"/>
+    <Column name="ID_NUMERO_DOC" shortname="ID_NUMERO0" type="char" length="10" nullable="no"/>
+    <Column name="ID_RIGA_DOC" shortname="ID_RIGA_DO" type="integer" nullable="no"/>
+    <Column name="NUM_RITORNO_ATV" shortname="NUM_RITORN" type="char" length="10" nullable="yes"/>
+    <Column name="R_CLIENTE" shortname="R_CLIENTE" type="char" length="8" nullable="yes"/>
+    <Column name="R_REPARTO" shortname="R_REPARTO" type="char" length="3" nullable="yes"/>
+    <Column name="NUM_RIFERIMENTO" shortname="NUM_RIFERI" type="varchar" length="50" nullable="yes"/>
+    <Column name="UT_CREAZIONE" shortname="R_UTENTE_0" type="char" length="20" nullable="yes"/>
+    <Column name="TS_CREAZIONE" shortname="TIMESTAMP0" type="timestamp" nullable="no" default="CURRENT TIMESTAMP"/>
+    <Column name="R_UTENTE_AGG" shortname="R_UTENTE_1" type="char" length="20" nullable="yes"/>
+    <Column name="UT_AGGIORNAMENTO" shortname="TIMESTAMP1" type="timestamp" nullable="no" default="CURRENT TIMESTAMP"/>
+  </CreateTable>
+
+  <CreateIndex schema="THIPPERS" name="LRPT_ETIC_PIA_CARICO__I02" tabschema="THIPPERS" tabname="LRPT_ETIC_PIA_CARICO" shortname="YPIANO_I02" unique="yes">
+    <IndexCol name="REPORT_NR" order="Asc"/>
+    <IndexCol name="COD_SOCIETA" order="Asc"/>
+    <IndexCol name="ID_ANNO_DOC" order="Asc"/>
+    <IndexCol name="ID_NUMERO_DOC" order="Asc"/>
+    <IndexCol name="ID_RIGA_DOC" order="Asc"/>
+  </CreateIndex>
+
+  <AlterTable schema="THIPPERS" name="LRPT_ETIC_PIA_CARICO">
+    <AddPrimaryKey>
+      <PrimaryKey>
+        <ColumnRef name="REPORT_NR"/>
+        <ColumnRef name="COD_SOCIETA"/>
+        <ColumnRef name="ID_ANNO_DOC"/>
+        <ColumnRef name="ID_NUMERO_DOC"/>
+        <ColumnRef name="ID_RIGA_DOC"/>
+      </PrimaryKey>
+    </AddPrimaryKey>
+  </AlterTable>
+
+  <Comment>
+    <CommentTable schema="THIPPERS" name="LRPT_ETIC_PIA_CARICO" text="Piano carico toyota righe">
+      <CommentColumn name="COD_SOCIETA" text="Azienda"/>
+      <CommentColumn name="ID_ANNO_DOC" text="Anno documento"/>
+      <CommentColumn name="ID_NUMERO_DOC" text="Numero documento"/>
+      <CommentColumn name="ID_RIGA_DOC" text="Numero riga"/>
+      <CommentColumn name="NUM_RITORNO_ATV" text="Numero ritorno attività"/>
+      <CommentColumn name="R_CLIENTE" text="Cliente"/>
+      <CommentColumn name="R_REPARTO" text="Reparto"/>
+      <CommentColumn name="NUM_RIFERIMENTO" text="Numero Riferimento"/>
+      <CommentColumn name="UT_CREAZIONE" text="Utente creazione"/>
+      <CommentColumn name="TS_CREAZIONE" text="Timestamp creazione"/>
+      <CommentColumn name="R_UTENTE_AGG" text="Utente ultima modifica"/>
+      <CommentColumn name="UT_AGGIORNAMENTO" text="Timestamp ultima modifica"/>
+    </CommentTable>
+    <CommentIndex schema="THIPPERS" name="LRPT_ETIC_PIA_CARICO__I02" text="Primary Key"/>
+  </Comment>
+
+  <Grant schema="THIPPERS" name="LRPT_ETIC_PIA_CARICO"/>
+</TDDML>

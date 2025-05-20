@@ -1,0 +1,2 @@
+# LDESC_AZIONE
+    INSERT INTO <SCH><LOGIS>LDESC_AZIONE (CODICE,  CLASSE, ATTIVITA,SEQUENZA, CLASSE_EXEC, METODO, FLAG_IMMED, TIMESTAMP, FLAG_PARALLELO, FLAG_ABIL, COD_SOCIETA) VALUES (<NUM><BAS.DESC_AZIONE>, 'it.dnd.thip.logis.lgb.YPianoCaricoToyotaRiga', 'YE_PCRC', 0, 'it.dnd.thip.logis.bas.StampaEtichettaPianoCarico', 'avvia', 'Y', <CURTS>, 'N', 'Y', null);
