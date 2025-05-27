@@ -1,0 +1,10 @@
+ 
+# Riferimento: YTipoMissionePianoCaricoR
+    # ATTRIBUTE_REF
+    INSERT INTO <SCH>ATTRIBUTE_REF (ATTRIBUTE_REF, DESCRIPTION, TYPE_ID, TYPE_SIZE, TYPE_SCALE, DB_SIZE, DB_SCALE, FW_DATA_OWNER_ID, USER_ID, TIMESTAMP, ONLY_ICON_ON_WEBGRIDS) VALUES ('YTipoMissionePianoCaricoR', 'Tipo missione piano carico Toyota', 8, 0, 0, 0, 0, null, <USER>, <CURTS>, 'N');
+    # ENUM
+    INSERT INTO <SCH>ENUM (ATTRIBUTE_REF, ENUM_VALUE, SEQUENCE, ICON_NAME, BACK_COLOR, FORE_COLOR) VALUES ('YTipoMissionePianoCaricoR', 'P', 0, null, null, null);
+    INSERT INTO <SCH>ENUM (ATTRIBUTE_REF, ENUM_VALUE, SEQUENCE, ICON_NAME, BACK_COLOR, FORE_COLOR) VALUES ('YTipoMissionePianoCaricoR', 'V', 0, null, null, null);
+    # ENUM_NLS
+    INSERT INTO <SCH>ENUM_NLS (ATTRIBUTE_REF, ENUM_VALUE, LANGUAGE, ENUM_DESC) VALUES ('YTipoMissionePianoCaricoR', 'P', 'it', 'Prelievo');
+    INSERT INTO <SCH>ENUM_NLS (ATTRIBUTE_REF, ENUM_VALUE, LANGUAGE, ENUM_DESC) VALUES ('YTipoMissionePianoCaricoR', 'V', 'it', 'Versamento');
