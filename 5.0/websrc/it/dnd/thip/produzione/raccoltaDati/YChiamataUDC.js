@@ -28,7 +28,7 @@ function selectUDC(index) {
 	runActionDirect('CHIAMATA_UDC_SCELTA_UDC', 'action_submit', className, null, 'same', 'no');
 }
 
-function recuperaArticoloAttivitaFinale() {
+function recuperaArticoloAttivitaFinale() { //71978
 	var numeroRitornoVersamento = document.forms[0].NumeroRitornoVersamento.value;
 	var ajaxRequest = null;
 	if (window.XMLHttpRequest) {

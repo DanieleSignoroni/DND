@@ -15,7 +15,7 @@
 				<textinput name="BollaLavorazione" classAD="BollaLavorazione"/>
 				<textinput name="IdOperatore" classAD="IdOperatore"/>
 				<textinput name="IdArticolo" classAD="IdArticolo"/>
-				<textinput name="NumeroRitornoVersamento" classAD="NumeroRitornoVersamento" onBlur="recuperaArticoloAttivitaFinale()"/>
+				<textinput name="NumeroRitornoVersamento" classAD="NumeroRitornoVersamento" onBlur="recuperaArticoloAttivitaFinale()"/> <!-- 71978 -->
   </form>
 
 </tfml>
