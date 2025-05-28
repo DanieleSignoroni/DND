@@ -22,6 +22,7 @@ import it.thera.thip.cs.*;
  * Revisions:
  * Number   Date        Owner    Description
  * 71923    08/04/2025  DSSOF3   Prima stesura
+ * 71978	28/05/2025	DSSOF3	 Aggiunta colonna NUMERO_RITORNO_VERSAMENTO
  */
 
 public class YPianoCaricoToyotaTM extends TableManager {

@@ -26,7 +26,7 @@ import it.thera.thip.produzione.ordese.AttivitaEsecutivaTM;
 /*
  * Revisions:
  * Number   Date        Owner    Description
- * 71XXX    28/05/2025  DSSOF3   Prima stesura
+ * 71978    28/05/2025  DSSOF3   Prima stesura
  */
 
 public class RecuperaArticoloNumeroRitornoVersamento extends BaseServlet {

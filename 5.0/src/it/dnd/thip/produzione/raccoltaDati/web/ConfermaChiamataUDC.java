@@ -61,6 +61,7 @@ import it.thera.thip.produzione.raccoltaDati.web.AzionePaginaTS;
  * Revisions:
  * Number   Date        Owner    Description
  * 71923    16/04/2025  DSSOF3   Prima stesura
+ * 71978	28/05/2025	DSSOF3	 Gestione nuovo campo NumeroRitornoVersamento
  */
 
 public class ConfermaChiamataUDC extends Check {

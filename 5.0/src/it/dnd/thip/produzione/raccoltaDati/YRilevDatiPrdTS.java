@@ -54,6 +54,7 @@ import it.thera.thip.vendite.proposteEvasione.CreaMessaggioErrore;
  * Number   Date        Owner    Description
  * 71946    02/05/2025  DSSOF3   Prima stesura
  * 71953	09/05/2025	DSSOF3	 Aggiunti attributi per MappaUDC (1-20).
+ * 71978	28/05/2025	DSSOF3	 Aggiunta campo NumeroRitornoVersamento
  */
 
 public class YRilevDatiPrdTS extends RilevDatiPrdTS {

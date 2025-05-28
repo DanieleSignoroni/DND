@@ -65,6 +65,7 @@ import it.thera.thip.logis.rf.gui.LogisRF;
  * Revisions:
  * Number   Date        Owner    Description
  * 71923    10/04/2025  DSSOF3   Prima stesura
+ * 71978	28/05/2025	DSSOF3	 Implementare la gestione del nuovo campo TipoMissione
  */
 
 public class YProcessaListeCaricoRf extends LogisRF {

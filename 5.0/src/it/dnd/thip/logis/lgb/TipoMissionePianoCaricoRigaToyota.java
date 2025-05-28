@@ -13,7 +13,7 @@ package it.dnd.thip.logis.lgb;
 /*
  * Revisions:
  * Number   Date        Owner    Description
- * 71XXX    27/05/2025  DSSOF3   Prima stesura
+ * 71978    27/05/2025  DSSOF3   Prima stesura
  */
 
 public abstract class TipoMissionePianoCaricoRigaToyota {

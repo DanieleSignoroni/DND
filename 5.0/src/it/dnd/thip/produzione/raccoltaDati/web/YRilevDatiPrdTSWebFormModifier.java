@@ -48,6 +48,7 @@ import it.thera.thip.produzione.raccoltaDati.web.RilevDatiPrdTSWebFormModifier;
  * 71923    15/04/2025  DSSOF3   Prima stesura
  * 71946	02/05/2025	DSSOF3	 Gestione nuove azioni
  * 71953	09/05/2025	DSSOF3	 Gestione nuovi attributi MappaUdc (1-20), picking automatico in dichiarazione prelievi.
+ * 71978	28/05/2025	DSSOF3	 Gestione nuovo campo NumeroRitornoVersamento
  */
 
 public class YRilevDatiPrdTSWebFormModifier extends RilevDatiPrdTSWebFormModifier {

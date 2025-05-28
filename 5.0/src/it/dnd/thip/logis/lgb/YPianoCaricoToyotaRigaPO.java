@@ -42,6 +42,7 @@ import it.thera.thip.vendite.documentoVE.DocumentoVenRigaLottoPrm;
  * Revisions:
  * Number   Date        Owner    Description
  * 71923    08/04/2025  DSSOF3   Prima stesura
+ * 71978	28/05/2025	DSSOF3	 Aggiunta campo TipoMissione
  */
 
 public abstract class YPianoCaricoToyotaRigaPO extends DocumentoBaseRiga implements BusinessObject, Authorizable, Deletable, Child, Conflictable {
