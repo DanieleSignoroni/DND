@@ -50,6 +50,8 @@ import com.thera.thermfw.base.*;
 
 import it.thera.thip.magazzino.saldi.*;
 import it.thera.thip.cs.*;
+import it.dnd.thip.base.articolo.YArticolo;
+import it.dnd.thip.base.articolo.YArticoloDatiProduz;
 import it.dnd.thip.base.generale.YCfgLogTxMov; //71953
 import it.thera.thip.base.azienda.Azienda;
 import it.thera.thip.base.generale.*;
@@ -319,8 +321,8 @@ public class MovimentoMagazzino extends MovimentoMagazzinoPO {
             YCfgLogTxMov filtro = (YCfgLogTxMov)elencoFiltri.get(i);
             if (filtro.getIdMagazzino() != null &&
                     filtro.getIdMagazzino().equals(getCodiceMagazzino()) &&
-                    filtro.getIdPoliticaRiordino() != null &&
-                    getArticolo().getIdPoliticaRiordino().equals(filtro.getIdPoliticaRiordino())){
+                    filtro.getIdUbicazioneVersamento() != null &&
+                    ((YArticoloDatiProduz)getArticolo().getArticoloDatiProduz()).getIdUbicazioneVersamento().equals(filtro.getIdUbicazioneVersamento())){
             	cfgMov = filtro;
             	break;
             }

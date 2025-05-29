@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE TDDML SYSTEM "../../../TDDML.dtd">
+<TDDML>
+  <AlterTable schema="THIPPERS" name="YCFG_LOG_TX_MOV">
+    <AddColumn>
+      <Column name="R_UBICAZIONE_VRS" shortname="UBIC_VERS" type="char" length="15" nullable="yes"/>
+	  <Column name="R_COD_MAG_FISICO" shortname="MAG_FISICO" type="char" length="5" nullable="yes"/>
+    </AddColumn>
+  <Comment>
+    <CommentTable schema="THIPPERS" name="YCFG_LOG_TX_MOV" text="YCFG_LOG_TX_MOV">
+      <CommentColumn name="R_UBICAZIONE_VRS" text="Ubicazione versamento"/>
+	   <CommentColumn name="R_COD_MAG_FISICO" text="Codice magazzino fisico"/>
+    </CommentTable>
+  </Comment>
+  <AddConstraint>
+   <Constraint name="UbicazioneVersamento_24054" refschema="LOGIS" reftable="LUBICAZIONE" schema="THIPPERS" ondelete="Restrict">
+        <ColumnRef name="R_COD_MAG_FISICO"/>
+        <ColumnRef name="R_UBICAZIONE_VRS"/>
+   </Constraint>
+   <Constraint name="MagFisicoVrs_24054" refschema="LOGIS" reftable="LMAG_FISICO" schema="THIPPERS" ondelete="Restrict">
+        <ColumnRef name="R_COD_MAG_FISICO"/>
+   </Constraint>
+  </AddConstraint>
+  </AlterTable>
+</TDDML>
