@@ -22,14 +22,18 @@ import it.thera.thip.base.azienda.Azienda;
 import it.thera.thip.base.azienda.Reparto;
 import it.thera.thip.cs.EntitaAzienda;
 
-public abstract class YAgvBufferTestataPO extends EntitaAzienda
-implements BusinessObject, Authorizable, Deletable, Conflictable {
+public abstract class YAgvBufferTestataPO extends EntitaAzienda implements BusinessObject, Authorizable, Deletable, Conflictable {
+
+	//.Rif attributo 'Stato buffer'
+	public static final char NON_SIGNIFICATIVO = '-';
+	public static final char SPENTO = 'S';
+	public static final char ACCESO = 'A';
 
 	private static YAgvBufferTestata cInstance;
 
 	protected Integer iIdBuffer;
 
-	protected char iStatoBuffer = 'S';
+	protected char iStatoBuffer = SPENTO;
 
 	protected Proxy iReparto1 = new Proxy(it.thera.thip.base.azienda.Reparto.class);
 
@@ -50,7 +54,7 @@ implements BusinessObject, Authorizable, Deletable, Conflictable {
 	}
 
 	public YAgvBufferTestataPO() {
-		setStatoBuffer('S');
+		setStatoBuffer(SPENTO);
 		setIdAzienda(Azienda.getAziendaCorrente());
 	}
 
