@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE TDDML SYSTEM "../../../TDDML.dtd">
+<TDDML>
+  <!-- YAGV_BUFFER_RIG (YAGV_B0): Agv - buffer riga; -->
+  <CreateTable schema="THIPPERS" name="YAGV_BUFFER_RIG" shortname="YAGV_B0">
+    <Column name="ID_AZIENDA" shortname="ID_AZIEND0" type="char" length="3" nullable="no"/>
+    <Column name="ID_BUFFER" shortname="ID_BUFFE0" type="integer" nullable="no"/>
+    <Column name="STATO" shortname="STAT0" type="char" length="1" nullable="no"/>
+    <Column name="R_UTENTE_CRZ" shortname="R_UTENTE_0" type="char" length="20" nullable="yes"/>
+    <Column name="TIMESTAMP_CRZ" shortname="TIMESTAMP0" type="timestamp" nullable="no" default="CURRENT TIMESTAMP"/>
+    <Column name="R_UTENTE_AGG" shortname="R_UTENTE_1" type="char" length="20" nullable="yes"/>
+    <Column name="TIMESTAMP_AGG" shortname="TIMESTAMP1" type="timestamp" nullable="no" default="CURRENT TIMESTAMP"/>
+    <Column name="ID_RIGA_BUFFER" shortname="ID_RIGA_BU" type="integer" nullable="no"/>
+    <Column name="R_ANNO_PC_TOYOTA" shortname="R_ANNO_PC_" type="char" length="6" nullable="yes"/>
+    <Column name="R_NUMERO_PC_TOYOTA" shortname="R_NUMERO_P" type="char" length="10" nullable="yes"/>
+    <Column name="R_RIGA_PC_TOYOTA" shortname="R_RIGA_PC_" type="integer" nullable="yes"/>
+  </CreateTable>
+  <CreateIndex schema="THIPPERS" name="YAGV_BUFFER_RI_I01" tabschema="THIPPERS" tabname="YAGV_BUFFER_RIG" shortname="YAGV_B_I02" unique="yes">
+    <IndexCol name="ID_AZIENDA" order="Asc"/>
+    <IndexCol name="ID_BUFFER" order="Asc"/>
+    <IndexCol name="ID_RIGA_BUFFER" order="Asc"/>
+  </CreateIndex>
+  <AlterTable schema="THIPPERS" name="YAGV_BUFFER_RIG">
+    <AddPrimaryKey>
+      <PrimaryKey>
+        <ColumnRef name="ID_AZIENDA"/>
+        <ColumnRef name="ID_BUFFER"/>
+        <ColumnRef name="ID_RIGA_BUFFER"/>
+      </PrimaryKey>
+    </AddPrimaryKey>
+  </AlterTable>
+  <Comment>
+    <CommentTable schema="THIPPERS" name="YAGV_BUFFER_RIG" text="Agv - buffer riga">
+      <CommentColumn name="ID_AZIENDA" text="Azienda"/>
+      <CommentColumn name="ID_BUFFER" text="Codice Buffer"/>
+      <CommentColumn name="STATO" text="Stato"/>
+      <CommentColumn name="R_UTENTE_CRZ" text="Utente creazione"/>
+      <CommentColumn name="TIMESTAMP_CRZ" text="Timestamp creazione"/>
+      <CommentColumn name="R_UTENTE_AGG" text="Utente ultima modifica"/>
+      <CommentColumn name="TIMESTAMP_AGG" text="Timestamp ultima modifica"/>
+      <CommentColumn name="ID_RIGA_BUFFER" text="Codice riga buffer"/>
+      <CommentColumn name="R_ANNO_PC_TOYOTA" text="Anno piano carico - Toyota"/>
+      <CommentColumn name="R_NUMERO_PC_TOYOTA" text="Numero piano carico - Toyota"/>
+      <CommentColumn name="R_RIGA_PC_TOYOTA" text="Riga piano carico - Toyota"/>
+    </CommentTable>
+    <CommentIndex schema="THIPPERS" name="YAGV_BUFFER_RI_I01" text="Primary Key"/>
+  </Comment>
+  <Grant schema="THIPPERS" name="YAGV_BUFFER_RIG"/>
+</TDDML>

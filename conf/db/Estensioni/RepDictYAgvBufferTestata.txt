@@ -1,0 +1,8 @@
+<B>2025-09-03 10:09:04</B>
+<BR>Il file <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00001\tddml\1_DROP_YAGV_BUFFER_TES.TDDML</B> e' stato generato correttamente.
+<BR>Il dizionario <B>YAGV_BUFFER_TES</B> è stato creato
+<BR>Il dizionario <B>YAGV_BUFFER_RIG</B> è stato creato
+<BR>Il file <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00001\tddml\1_YAGV_BUFFER_TES.TDDML</B> e' stato generato correttamente.
+<BR>Il file <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00001\tddml\1_YAGV_BUFFER_RIG.TDDML</B> e' stato generato correttamente.
+<BR>Il file <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00001\tddml\1_CONSTRAINT.TDDML</B> e' stato generato correttamente.
+<BR><B>La generazione tabella è completata con successo</B><BR>
