@@ -1,0 +1,35 @@
+<tfml>
+
+<generator type="batchForm"/>
+
+<form classHdr="YSchedulazioneBufferAgv"
+		name="YSchedulazioneBufferAgv"
+		submitReset="none"
+		errorList="yes" 
+		inputFont="Arial,10"
+		menubar="yes"
+		toolbar="yes" 
+		collector="it.dnd.thip.agv.web.YSchedulazioneBufferAgvBatchDC"
+		servlet="it.dnd.thip.agv.web.YSchedulazioneBufferAgvBatchActionAdapter"
+		webFormModifierClass="it.dnd.thip.agv.web.YSchedulazioneBufferAgvModifier"		
+		header="com.thera.thermfw.common.Header.jsp"
+		footer="com.thera.thermfw.common.Footer.jsp">
+
+<menubar	name="myMenuBar" width="60" color="#000000" background="#A5B6CE">
+	<import file="it/thera/thip/produzione/ordese/BatchRunnableMenuSchedulaSrv.tfml"/>
+</menubar>
+
+<toolbar name="myToolBar" width="24" height="24" imgwidth="16" imgheight="16" color="#f7fbfd" background="#C8D6E1">
+	<import file="it/thera/thip/produzione/ordese/BatchRunnableMenuSchedulaSrv.tfml"/>
+</toolbar>
+<!-- Fix 12836  inizio -->
+<textinput classAD="IdAzienda" name="IdAzienda"/>
+<textinput classAD="ScheduledJobId" name="ScheduledJobId"/>
+<!-- Fix 12836 fine -->
+<textinput classAD="OreInitiale" name="OreInitiale"/>
+<textinput classAD="ExpirationTime" name="ExpirationTime"/>
+<textinput classAD="SleepTime" name="SleepTime"/>
+<combobox classAD="Stato" name="Stato"/>
+<label resourceFile="it.thera.thip.produzione.ordese.resources.SchedulazioneServiceBatch" resourceID="SleepTime" name="SleepTimeLabel"/>
+</form>
+</tfml>
