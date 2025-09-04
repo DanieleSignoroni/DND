@@ -1,5 +1,0 @@
-<B>2025-04-08 11:06:56</B>
-<BR>Il dizionario <B>YREPARTI</B> è stato cancellato
-<BR>Il file <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00001\tddml\1_DROP_YREPARTI.TDDML</B> e' stato generato correttamente.
-<BR>Il dizionario <B>YREPARTI</B> è stato creato
-<BR><B>La generazione tabella è completata con successo</B><BR>

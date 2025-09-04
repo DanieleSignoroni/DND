@@ -1,4 +1,0 @@
-<B>2025-04-08 10:15:45</B>
-<BR>Il file <B>YUbicazione.properties</B> è stato generato correttamente nel cartela <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00002\src\it\dnd\thip\logis\fis\resources</B><BR>Il file <B>it\dnd\thip\logis\fis\resourcesYUbicazione.properties</B> è stato copiato nel classpath
-<BR>Il file <B>YUbicazione.properties</B> è stato generato correttamente nel cartela <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00002\src\it\dnd\thip\logis\fis\resources</B><BR>Il file <B>it\dnd\thip\logis\fis\resourcesYUbicazione.properties</B> è stato copiato nel classpath
-<BR><B>Generazione HTML/TFML è completata con successo</B><BR>

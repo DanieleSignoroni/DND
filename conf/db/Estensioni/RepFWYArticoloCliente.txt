@@ -1,3 +1,0 @@
-<B>2025-05-02 14:08:02</B>
-<BR>Il descrittore di classe <B>YArticoloCliente</B> è stato generato correttamente
-<BR><B>La generazione descrittori di classe è completata con successo</B><BR>

@@ -1,3 +1,0 @@
-<B>2025-05-02 12:34:26</B>
-<BR>Il file <B>YGestioneUdsPickingProd.jsp</B> è stato generato correttamente nel cartela <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00004\websrc\it\dnd\thip\produzione\ordese</B><BR>Il file <B>YGestioneUdsPickingProd.jsp</B> è stato copiato nel classpath
-<BR><B>Generazione JSP è completata con successo</B><BR>

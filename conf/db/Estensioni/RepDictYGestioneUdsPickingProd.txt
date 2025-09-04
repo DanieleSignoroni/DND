@@ -1,6 +1,0 @@
-<B>2025-05-02 12:34:10</B>
-<BR>Il file <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00004\tddml\4_DROP_YGESTIONE_UDS_PICKING_PROD.TDDML</B> e' stato generato correttamente.
-<BR>Il dizionario <B>YGESTIONE_UDS_PICKING_PROD</B> è stato creato
-<BR>Il file <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00004\tddml\4_YGESTIONE_UDS_PICKING_PROD.TDDML</B> e' stato generato correttamente.
-<BR>Il file <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00004\tddml\4_CONSTRAINT.TDDML</B> e' stato generato correttamente.
-<BR><B>La generazione tabella è completata con successo</B><BR>

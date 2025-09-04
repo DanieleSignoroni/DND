@@ -1,6 +1,0 @@
-<B>2025-05-02 14:07:44</B>
-<BR>Il file <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00005\tddml\5_DROP_YARTICOLI_CLI.TDDML</B> e' stato generato correttamente.
-<BR>Il dizionario <B>YARTICOLI_CLI</B> è stato creato
-<BR>Il file <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00005\tddml\5_YARTICOLI_CLI.TDDML</B> e' stato generato correttamente.
-<BR>Il file <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00005\tddml\5_CONSTRAINT.TDDML</B> e' stato generato correttamente.
-<BR><B>La generazione tabella è completata con successo</B><BR>

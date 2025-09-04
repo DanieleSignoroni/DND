@@ -1,3 +1,0 @@
-<B>2025-05-02 12:34:20</B>
-<BR>Il descrittore di classe <B>YGestioneUdsPickingProd</B> è stato generato correttamente
-<BR><B>La generazione descrittori di classe è completata con successo</B><BR>

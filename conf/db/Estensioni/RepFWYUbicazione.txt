@@ -1,3 +1,0 @@
-<B>2025-04-08 10:15:43</B>
-<BR>Il descrittore di classe <B>YUbicazione</B> è stato generato correttamente
-<BR><B>La generazione descrittori di classe è completata con successo</B><BR>
