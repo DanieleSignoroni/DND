@@ -13,7 +13,6 @@
     <Column name="ID_RIGA_BUFFER" shortname="ID_RIGA_BU" type="integer" nullable="no"/>
     <Column name="R_ANNO_PC_TOYOTA" shortname="R_ANNO_PC_" type="char" length="6" nullable="yes"/>
     <Column name="R_NUMERO_PC_TOYOTA" shortname="R_NUMERO_P" type="char" length="10" nullable="yes"/>
-    <Column name="R_RIGA_PC_TOYOTA" shortname="R_RIGA_PC_" type="integer" nullable="yes"/>
   </CreateTable>
   <CreateIndex schema="THIPPERS" name="YAGV_BUFFER_RI_I01" tabschema="THIPPERS" tabname="YAGV_BUFFER_RIG" shortname="YAGV_B_I02" unique="yes">
     <IndexCol name="ID_AZIENDA" order="Asc"/>
@@ -41,7 +40,6 @@
       <CommentColumn name="ID_RIGA_BUFFER" text="Codice riga buffer"/>
       <CommentColumn name="R_ANNO_PC_TOYOTA" text="Anno piano carico - Toyota"/>
       <CommentColumn name="R_NUMERO_PC_TOYOTA" text="Numero piano carico - Toyota"/>
-      <CommentColumn name="R_RIGA_PC_TOYOTA" text="Riga piano carico - Toyota"/>
     </CommentTable>
     <CommentIndex schema="THIPPERS" name="YAGV_BUFFER_RI_I01" text="Primary Key"/>
   </Comment>

@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-                      "file:///W:\PthDev\Projects\Panthera\DND\WebContent\dtd/xhtml1-transitional.dtd">
+                      "file:///K:/Thip/5.1.0/websrcsvil/dtd/xhtml1-transitional.dtd">
 <html>
 <!-- WIZGEN Therm 2.0.0 as Form - multiBrowserGen = true -->
 <%=WebGenerator.writeRuntimeInfo()%>
@@ -255,11 +255,10 @@
                     <td colspan="2" valign="top">
                       <!--<span class="editgrid" id="YAgvBufferRiga">--><% 
   WebEditGrid YAgvBufferTestataYAgvBufferRiga =  
-     new com.thera.thermfw.web.WebEditGrid("YAgvBufferTestata", "YAgvBufferRiga", 8, new String[]{"IdRigaBuffer", "IdBuffer", "IdAzienda", "IdAnnoPcToyota", "IdNumeroPcToyota", "IdRigaPcToyota", "Azienda.Descrizione", "PianoCaricoToyotaRiga.NumeroRiferimento"}, 3, null, null,false,"com.thera.thermfw.web.servlet.GridActionAdapterForIndependentRow"); 
+     new com.thera.thermfw.web.WebEditGrid("YAgvBufferTestata", "YAgvBufferRiga", 8, new String[]{"IdRigaBuffer", "IdBuffer", "IdAzienda", "IdAnnoPcToyota", "IdNumeroPcToyota", "Azienda.Descrizione"}, 3, null, null,false,"com.thera.thermfw.web.servlet.GridActionAdapterForIndependentRow"); 
  YAgvBufferTestataYAgvBufferRiga.setParent(YAgvBufferTestataForm); 
  YAgvBufferTestataYAgvBufferRiga.setNoControlRowKeys(false); 
  YAgvBufferTestataYAgvBufferRiga.addHideAsDefault("Azienda.Descrizione"); 
- YAgvBufferTestataYAgvBufferRiga.addHideAsDefault("PianoCaricoToyotaRiga.NumeroRiferimento"); 
  YAgvBufferTestataYAgvBufferRiga.write(out); 
 %>
 <!--</span>-->

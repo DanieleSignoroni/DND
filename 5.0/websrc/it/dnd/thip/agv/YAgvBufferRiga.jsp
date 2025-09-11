@@ -1,9 +1,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-                      "file:///W:\PthDev\Projects\Panthera\DND\WebContent\dtd/xhtml1-transitional.dtd">
+                      "file:///K:/Thip/5.1.0/websrcsvil/dtd/xhtml1-transitional.dtd">
 <html>
 <!-- WIZGEN Therm 2.0.0 as Form riga indipendente - multiBrowserGen = true -->
 <%=WebGenerator.writeRuntimeInfo()%>
-  <head>
+<head>
 <%@ page contentType="text/html; charset=Cp1252"%>
 <%@ page import= " 
   java.sql.*, 
@@ -93,11 +93,11 @@
    myToolBarTB.write(out); 
 %> 
 </head>
-  <body onbeforeunload="<%=YAgvBufferRigaForm.getBodyOnBeforeUnload()%>" onload="<%=YAgvBufferRigaForm.getBodyOnLoad()%>" onunload="<%=YAgvBufferRigaForm.getBodyOnUnload()%>" style="margin: 0px; overflow: hidden;"><%
+<body onbeforeunload="<%=YAgvBufferRigaForm.getBodyOnBeforeUnload()%>" onload="<%=YAgvBufferRigaForm.getBodyOnLoad()%>" onunload="<%=YAgvBufferRigaForm.getBodyOnUnload()%>" style="margin: 0px; overflow: hidden;"><%
    YAgvBufferRigaForm.writeBodyStartElements(out); 
 %> 
 
-    <table width="100%" height="100%" cellspacing="0" cellpadding="0">
+	<table width="100%" height="100%" cellspacing="0" cellpadding="0">
 <tr>
 <td style="height:0" valign="top">
 <% String hdr = YAgvBufferRigaForm.getCompleteHeader();
@@ -115,22 +115,17 @@
   YAgvBufferRigaForm.writeFormStartElements(out); 
 %>
 
-      <table cellpadding="0" cellspacing="0" height="100%" id="emptyborder" width="100%">
-        <tr>
-          <td style="height:0">
-            <% menuBar.writeElements(out); %> 
-
-          </td>
-        </tr>
-        <tr>
-          <td style="height:0">
-            <% myToolBarTB.writeChildren(out); %> 
-
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <% 
+		<table cellpadding="0" cellspacing="0" height="100%" id="emptyborder" width="100%">
+			<tr>
+				<td style="height: 0"><% menuBar.writeElements(out); %> 
+</td>
+			</tr>
+			<tr>
+				<td style="height: 0"><% myToolBarTB.writeChildren(out); %> 
+</td>
+			</tr>
+			<tr>
+				<td><% 
   WebTextInput YAgvBufferRigaIdBuffer =  
      new com.thera.thermfw.web.WebTextInput("YAgvBufferRiga", "IdBuffer"); 
   YAgvBufferRigaIdBuffer.setParent(YAgvBufferRigaForm); 
@@ -138,12 +133,10 @@
 <input class="<%=YAgvBufferRigaIdBuffer.getClassType()%>" id="<%=YAgvBufferRigaIdBuffer.getId()%>" maxlength="<%=YAgvBufferRigaIdBuffer.getMaxLength()%>" name="<%=YAgvBufferRigaIdBuffer.getName()%>" size="<%=YAgvBufferRigaIdBuffer.getSize()%>" type="hidden"><% 
   YAgvBufferRigaIdBuffer.write(out); 
 %>
-
-          </td>
-        </tr>
-        <tr>
-          <td height="100%">
-            <!--<span class="tabbed" id="mytabbed">-->
+</td>
+			</tr>
+			<tr>
+				<td height="100%"><!--<span class="tabbed" id="mytabbed">-->
 <table width="100%" height="100%" cellpadding="0" cellspacing="0" style="padding-right:1px">
    <tr valign="top">
      <td><% 
@@ -156,17 +149,13 @@
      </td>
    </tr>
    <tr>
-     <td height="100%"><div class="tabbed_pagine" id="tabbedPagine" style="position: relative; width: 100%; height: 100%;">
-              <div class="tabbed_page" id="<%=mytabbed.getTabPageId("tab2")%>" style="width:100%;height:100%;overflow:auto;"><% mytabbed.startTab("tab2"); %>
-                <table style="width: 100%;">
-                  <tr>
-                    <td valign="top">
-                      <%{  WebLabelCompound label = new com.thera.thermfw.web.WebLabelCompound(null, null, "YAgvBufferRiga", "IdRigaBuffer", null); 
+     <td height="100%"><div class="tabbed_pagine" id="tabbedPagine" style="position: relative; width: 100%; height: 100%;"> <div class="tabbed_page" id="<%=mytabbed.getTabPageId("tab2")%>" style="width:100%;height:100%;overflow:auto;"><% mytabbed.startTab("tab2"); %>
+							<table style="width: 100%;">
+								<tr>
+									<td valign="top"><%{  WebLabelCompound label = new com.thera.thermfw.web.WebLabelCompound(null, null, "YAgvBufferRiga", "IdRigaBuffer", null); 
    label.setParent(YAgvBufferRigaForm); 
-%><label class="<%=label.getClassType()%>" for="IdRigaBuffer"><%label.write(out);%></label><%}%>
-                    </td>
-                    <td valign="top">
-                      <% 
+%><label class="<%=label.getClassType()%>" for="IdRigaBuffer"><%label.write(out);%></label><%}%></td>
+									<td valign="top"><% 
   WebTextInput YAgvBufferRigaIdRigaBuffer =  
      new com.thera.thermfw.web.WebTextInput("YAgvBufferRiga", "IdRigaBuffer"); 
   YAgvBufferRigaIdRigaBuffer.setParent(YAgvBufferRigaForm); 
@@ -174,61 +163,50 @@
 <input class="<%=YAgvBufferRigaIdRigaBuffer.getClassType()%>" id="<%=YAgvBufferRigaIdRigaBuffer.getId()%>" maxlength="<%=YAgvBufferRigaIdRigaBuffer.getMaxLength()%>" name="<%=YAgvBufferRigaIdRigaBuffer.getName()%>" size="<%=YAgvBufferRigaIdRigaBuffer.getSize()%>"><% 
   YAgvBufferRigaIdRigaBuffer.write(out); 
 %>
-
-                    </td>
-                  </tr>
-                  <tr>
-                    <td valign="top">
-                      <%{  WebLabelCompound label = new com.thera.thermfw.web.WebLabelCompound(null, null, "YAgvBufferRiga", "IdRigaPcToyota", null); 
+</td>
+								</tr>
+								<tr>
+									<td valign="top"><%{  WebLabelCompound label = new com.thera.thermfw.web.WebLabelCompound(null, null, "YAgvBufferRiga", "IdNumeroPcToyota", null); 
    label.setParent(YAgvBufferRigaForm); 
-%><label class="<%=label.getClassType()%>" for="PianoCaricoToyotaRiga"><%label.write(out);%></label><%}%>
-                    </td>
-                    <td valign="top">
-                      <% 
-  WebMultiSearchForm YAgvBufferRigaPianoCaricoToyotaRiga =  
-     new com.thera.thermfw.web.WebMultiSearchForm("YAgvBufferRiga", "PianoCaricoToyotaRiga", false, false, true, 3, null, null); 
-  YAgvBufferRigaPianoCaricoToyotaRiga.setParent(YAgvBufferRigaForm); 
-  YAgvBufferRigaPianoCaricoToyotaRiga.write(out); 
+%><label class="<%=label.getClassType()%>" for="PianoCaricoToyota"><%label.write(out);%></label><%}%></td>
+									<td valign="top"><% 
+  WebMultiSearchForm YAgvBufferRigaPianoCaricoToyota =  
+     new com.thera.thermfw.web.WebMultiSearchForm("YAgvBufferRiga", "PianoCaricoToyota", false, false, true, 3, null, null); 
+  YAgvBufferRigaPianoCaricoToyota.setParent(YAgvBufferRigaForm); 
+  YAgvBufferRigaPianoCaricoToyota.write(out); 
 %>
-<!--<span class="multisearchform" id="PianoCaricoToyotaRiga"></span>-->
-                    </td>
-                  </tr>
-                  <tr>
-                    <td valign="top">
-                      <% 
+<!--<span class="multisearchform" id="PianoCaricoToyota"></span>--></td>
+								</tr>
+								<tr>
+									<td valign="top"><% 
    request.setAttribute("parentForm", YAgvBufferRigaForm); 
    String CDForDatiComuniEstesi$it$thera$thip$cs$DatiComuniEstesi$jsp = "DatiComuniEstesi"; 
 %>
 <jsp:include page="/it/thera/thip/cs/DatiComuniEstesi.jsp" flush="true"> 
 <jsp:param name="CDName" value="<%=CDForDatiComuniEstesi$it$thera$thip$cs$DatiComuniEstesi$jsp%>"/> 
 </jsp:include> 
-<!--<span class="subform" id="DatiComuniEstesi"></span>-->
-                    </td>
-                    <td valign="top">
-                    </td>
-                  </tr>
-                </table>
-              <% mytabbed.endTab(); %> 
+<!--<span class="subform" id="DatiComuniEstesi"></span>--></td>
+									<td valign="top"></td>
+								</tr>
+							</table>
+					<% mytabbed.endTab(); %> 
 </div>
-            </div><% mytabbed.endTabbed();%> 
+				</div><% mytabbed.endTabbed();%> 
 
      </td>
    </tr>
-</table><!--</span>-->
-          </td>
-        </tr>
-        <tr>
-          <td style="height:0">
-            <% 
+</table><!--</span>--></td>
+			</tr>
+			<tr>
+				<td style="height: 0"><% 
   WebErrorList errorList = new com.thera.thermfw.web.WebErrorList(); 
   errorList.setParent(YAgvBufferRigaForm); 
   errorList.write(out); 
 %>
-<!--<span class="errorlist"></span>-->
-          </td>
-        </tr>
-      </table>
-    <%
+<!--<span class="errorlist"></span>--></td>
+			</tr>
+		</table>
+	<%
   YAgvBufferRigaForm.writeFormEndElements(out); 
 %>
 </form></td>
@@ -247,7 +225,7 @@
 </table>
 
 
-  <%
+<%
            // blocco YYY  
            // a completamento blocco di codice XXX in head 
               YAgvBufferRigaForm.writeBodyEndElements(out); 

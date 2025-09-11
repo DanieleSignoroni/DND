@@ -17,7 +17,7 @@
     <tabbed name="mytabbed" height="100%" width="100%">
       <tab name="tab2" resourceFile="it.dnd.thip.agv.resources.YAgvBufferRiga" resourceID="tab2">
         <textinput name="IdRigaBuffer" classAD="IdRigaBuffer"/>
-        <multisearchform name="PianoCaricoToyotaRiga" classRD="PianoCaricoToyotaRiga" additionalfields="2"/>
+        <multisearchform name="PianoCaricoToyota" classRD="PianoCaricoToyota" additionalfields="2"/>
         <subform classCD="DatiComuniEstesi" name="DatiComuniEstesi"/>
       </tab>
     </tabbed>

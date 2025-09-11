@@ -30,8 +30,6 @@ public class YAgvBufferRigaTM extends TableManager {
 
 	public static final String R_NUMERO_PC_TOYOTA = "R_NUMERO_PC_TOYOTA";
 
-	public static final String R_RIGA_PC_TOYOTA = "R_RIGA_PC_TOYOTA";
-
 	public static final String TABLE_NAME = SystemParam.getSchema("THIPPERS") + "YAGV_BUFFER_RIG";
 
 	private static TableManager cInstance;
@@ -61,7 +59,6 @@ public class YAgvBufferRigaTM extends TableManager {
 		addAttribute("IdAzienda", ID_AZIENDA);
 		addAttribute("IdAnnoPcToyota", R_ANNO_PC_TOYOTA);
 		addAttribute("IdNumeroPcToyota", R_NUMERO_PC_TOYOTA);
-		addAttribute("IdRigaPcToyota", R_RIGA_PC_TOYOTA, "getIntegerObject");
 		addAttribute("IdBuffer", ID_BUFFER, "getIntegerObject");
 
 		addComponent("DatiComuniEstesi", DatiComuniEstesiTTM.class);
@@ -72,8 +69,7 @@ public class YAgvBufferRigaTM extends TableManager {
 	}
 
 	private void init() throws SQLException {
-		configure(ID_RIGA_BUFFER + ", " + ID_AZIENDA + ", " + R_ANNO_PC_TOYOTA + ", " + R_NUMERO_PC_TOYOTA + ", "
-				+ R_RIGA_PC_TOYOTA + ", " + ID_BUFFER + ", " + STATO + ", " + R_UTENTE_CRZ + ", " + TIMESTAMP_CRZ + ", "
+		configure(ID_RIGA_BUFFER + ", " + ID_AZIENDA + ", " + R_ANNO_PC_TOYOTA + ", " + R_NUMERO_PC_TOYOTA + ", " + ID_BUFFER + ", " + STATO + ", " + R_UTENTE_CRZ + ", " + TIMESTAMP_CRZ + ", "
 				+ R_UTENTE_AGG + ", " + TIMESTAMP_AGG);
 	}
 

@@ -27,9 +27,7 @@
           <column classAD="IdAzienda" hidden="yes"/>
           <column classAD="IdAnnoPcToyota"/>
           <column classAD="IdNumeroPcToyota"/>
-          <column classAD="IdRigaPcToyota"/>
           <column classAD="Azienda.Descrizione" hideAsDefault="yes"/>
-          <column classAD="PianoCaricoToyotaRiga.NumeroRiferimento" hideAsDefault="yes"/>
         </editgrid>
         <subform classCD="DatiComuniEstesi" name="DatiComuniEstesi"/>
       </tab>

@@ -17,18 +17,17 @@ import com.thera.thermfw.persist.TableManager;
 import com.thera.thermfw.security.Authorizable;
 import com.thera.thermfw.security.Conflictable;
 
-import it.dnd.thip.logis.lgb.YPianoCaricoToyotaRiga;
+import it.dnd.thip.logis.lgb.YPianoCaricoToyota;
 import it.thera.thip.base.azienda.Azienda;
 import it.thera.thip.cs.EntitaAzienda;
 
-public abstract class YAgvBufferRigaPO extends EntitaAzienda
-		implements BusinessObject, Authorizable, Deletable, Child, Conflictable {
+public abstract class YAgvBufferRigaPO extends EntitaAzienda implements BusinessObject, Authorizable, Deletable, Child, Conflictable {
 
 	private static YAgvBufferRiga cInstance;
 
 	protected Integer iIdRigaBuffer;
 
-	protected Proxy iPianocaricotoyotariga = new Proxy(it.dnd.thip.logis.lgb.YPianoCaricoToyotaRiga.class);
+	protected Proxy iPianoCaricoToyota = new Proxy(it.dnd.thip.logis.lgb.YPianoCaricoToyota.class);
 
 	protected Proxy iParent = new Proxy(it.dnd.thip.agv.YAgvBufferTestata.class);
 
@@ -58,27 +57,27 @@ public abstract class YAgvBufferRigaPO extends EntitaAzienda
 		return iIdRigaBuffer;
 	}
 
-	public void setPianocaricotoyotariga(YPianoCaricoToyotaRiga pianocaricotoyotariga) {
+	public void setPianoCaricoToyota(YPianoCaricoToyota PianoCaricoToyota) {
 		String oldObjectKey = getKey();
 		String idAzienda = getIdAzienda();
-		if (pianocaricotoyotariga != null) {
-			idAzienda = KeyHelper.getTokenObjectKey(pianocaricotoyotariga.getKey(), 1);
+		if (PianoCaricoToyota != null) {
+			idAzienda = KeyHelper.getTokenObjectKey(PianoCaricoToyota.getKey(), 1);
 		}
 		setIdAziendaInternal(idAzienda);
-		this.iPianocaricotoyotariga.setObject(pianocaricotoyotariga);
+		this.iPianoCaricoToyota.setObject(PianoCaricoToyota);
 		setDirty();
 		if (!KeyHelper.areEqual(oldObjectKey, getKey())) {
 			setOnDB(false);
 		}
 	}
 
-	public YPianoCaricoToyotaRiga getPianocaricotoyotariga() {
-		return (YPianoCaricoToyotaRiga) iPianocaricotoyotariga.getObject();
+	public YPianoCaricoToyota getPianoCaricoToyota() {
+		return (YPianoCaricoToyota) iPianoCaricoToyota.getObject();
 	}
 
-	public void setPianocaricotoyotarigaKey(String key) {
+	public void setPianoCaricoToyotaKey(String key) {
 		String oldObjectKey = getKey();
-		iPianocaricotoyotariga.setKey(key);
+		iPianoCaricoToyota.setKey(key);
 		String idAzienda = KeyHelper.getTokenObjectKey(key, 1);
 		setIdAziendaInternal(idAzienda);
 		setDirty();
@@ -87,46 +86,34 @@ public abstract class YAgvBufferRigaPO extends EntitaAzienda
 		}
 	}
 
-	public String getPianocaricotoyotarigaKey() {
-		return iPianocaricotoyotariga.getKey();
+	public String getPianoCaricoToyotaKey() {
+		return iPianoCaricoToyota.getKey();
 	}
 
 	public void setIdAnnoPcToyota(String idAnnoPcToyota) {
-		String key = iPianocaricotoyotariga.getKey();
-		iPianocaricotoyotariga.setKey(KeyHelper.replaceTokenObjectKey(key, 2, idAnnoPcToyota));
+		String key = iPianoCaricoToyota.getKey();
+		iPianoCaricoToyota.setKey(KeyHelper.replaceTokenObjectKey(key, 2, idAnnoPcToyota));
 		setDirty();
 	}
 
 	public String getIdAnnoPcToyota() {
-		String key = iPianocaricotoyotariga.getKey();
+		String key = iPianoCaricoToyota.getKey();
 		String objIdAnnoPcToyota = KeyHelper.getTokenObjectKey(key, 2);
 		return objIdAnnoPcToyota;
 
 	}
 
 	public void setIdNumeroPcToyota(String idNumeroPcToyota) {
-		String key = iPianocaricotoyotariga.getKey();
-		iPianocaricotoyotariga.setKey(KeyHelper.replaceTokenObjectKey(key, 3, idNumeroPcToyota));
+		String key = iPianoCaricoToyota.getKey();
+		iPianoCaricoToyota.setKey(KeyHelper.replaceTokenObjectKey(key, 3, idNumeroPcToyota));
 		setDirty();
 	}
 
 	public String getIdNumeroPcToyota() {
-		String key = iPianocaricotoyotariga.getKey();
+		String key = iPianoCaricoToyota.getKey();
 		String objIdNumeroPcToyota = KeyHelper.getTokenObjectKey(key, 3);
 		return objIdNumeroPcToyota;
 
-	}
-
-	public void setIdRigaPcToyota(Integer idRigaPcToyota) {
-		String key = iPianocaricotoyotariga.getKey();
-		iPianocaricotoyotariga.setKey(KeyHelper.replaceTokenObjectKey(key, 4, idRigaPcToyota));
-		setDirty();
-	}
-
-	public Integer getIdRigaPcToyota() {
-		String key = iPianocaricotoyotariga.getKey();
-		String objIdRigaPcToyota = KeyHelper.getTokenObjectKey(key, 4);
-		return KeyHelper.stringToIntegerObj(objIdRigaPcToyota);
 	}
 
 	public void setParent(YAgvBufferTestata parent) {
@@ -183,7 +170,7 @@ public abstract class YAgvBufferRigaPO extends EntitaAzienda
 	public void setEqual(Copyable obj) throws CopyException {
 		super.setEqual(obj);
 		YAgvBufferRigaPO yAgvBufferRigaPO = (YAgvBufferRigaPO) obj;
-		iPianocaricotoyotariga.setEqual(yAgvBufferRigaPO.iPianocaricotoyotariga);
+		iPianoCaricoToyota.setEqual(yAgvBufferRigaPO.iPianoCaricoToyota);
 		iParent.setEqual(yAgvBufferRigaPO.iParent);
 	}
 
@@ -238,8 +225,8 @@ public abstract class YAgvBufferRigaPO extends EntitaAzienda
 
 	protected void setIdAziendaInternal(String idAzienda) {
 		iAzienda.setKey(idAzienda);
-		String key2 = iPianocaricotoyotariga.getKey();
-		iPianocaricotoyotariga.setKey(KeyHelper.replaceTokenObjectKey(key2, 1, idAzienda));
+		String key2 = iPianoCaricoToyota.getKey();
+		iPianoCaricoToyota.setKey(KeyHelper.replaceTokenObjectKey(key2, 1, idAzienda));
 		String key3 = iParent.getKey();
 		iParent.setKey(KeyHelper.replaceTokenObjectKey(key3, 1, idAzienda));
 	}
