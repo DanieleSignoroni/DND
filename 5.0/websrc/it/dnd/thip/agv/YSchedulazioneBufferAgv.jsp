@@ -3,7 +3,7 @@
 <html>
 <!-- WIZGEN Therm 2.0.0 as Batch form - multiBrowserGen = true -->
 <%=WebGenerator.writeRuntimeInfo()%>
-	<head>
+<head>
 <%@ page contentType="text/html; charset=Cp1252"%>
 <%@ page import= " 
   java.sql.*, 
@@ -75,24 +75,14 @@
            // fine blocco XXX  
            // a completamento blocco di codice YYY a fine body con catch e gestione errori 
 %> 
-<title>Schedulazione Service Batch</title><% 
-  WebMenuBar menuBar = new com.thera.thermfw.web.WebMenuBar("HM_Array1", "150", "#000000","#000000","#A5B6CE","#E4EAEF","#FFFFFF","#000000"); 
-  menuBar.setParent(YSchedulazioneBufferAgvForm); 
-   request.setAttribute("menuBar", menuBar); 
-%> 
-<jsp:include page="/it/thera/thip/produzione/ordese/BatchRunnableMenuSchedulaSrv.jsp" flush="true"> 
-<jsp:param name="partRequest" value="menuBar"/> 
-</jsp:include> 
-<% 
-  menuBar.write(out); 
-  menuBar.writeChildren(out); 
-%> 
+
+<title>Schedulazione Service Batch</title>
 <% 
   WebToolBar myToolBarTB = new com.thera.thermfw.web.WebToolBar("myToolBar", "24", "24", "16", "16", "#f7fbfd","#C8D6E1"); 
   myToolBarTB.setParent(YSchedulazioneBufferAgvForm); 
    request.setAttribute("toolBar", myToolBarTB); 
 %> 
-<jsp:include page="/it/thera/thip/produzione/ordese/BatchRunnableMenuSchedulaSrv.jsp" flush="true"> 
+<jsp:include page="/com/thera/thermfw/batch/BatchRunnableMenu.jsp" flush="true"> 
 <jsp:param name="partRequest" value="toolBar"/> 
 </jsp:include> 
 <% 
@@ -103,7 +93,7 @@
    YSchedulazioneBufferAgvForm.writeBodyStartElements(out); 
 %> 
 
-<table width="100%" height="100%" cellspacing="0" cellpadding="0">
+	<table width="100%" height="100%" cellspacing="0" cellpadding="0">
 <tr>
 <td style="height:0" valign="top">
 <% String hdr = YSchedulazioneBufferAgvForm.getCompleteHeader();
@@ -121,19 +111,21 @@
   YSchedulazioneBufferAgvForm.writeFormStartElements(out); 
 %>
 
-<table cellpadding="0" cellspacing="0" height="67%" width="100%"><!-- Fix 39405 modeficato il height da 100% a 67%-->
-		<tr valign="top"><td style="height:0"><% menuBar.writeElements(out); %> 
-</td></tr>
-		<tr valign="top"><td style="height:0"><% myToolBarTB.writeChildren(out); %> 
-</td></tr>
-	<tr><td>
-			<table border="0" cellpadding="2" cellspacing="0" style="margin: 7 7 7 7;" width="98%">
-		<!--Fix 12836   inizio -->
-		<tr>
-				 <td height="30" width="20%"><%{  WebLabelCompound label = new com.thera.thermfw.web.WebLabelCompound(null, null, "YSchedulazioneBufferAgv", "IdAzienda", null); 
+		<table cellpadding="0" cellspacing="0" height="67%" width="100%">
+			<!-- Fix 39405 modeficato il height da 100% a 67%-->
+			<tr valign="top">
+				<td style="height: 0"><% myToolBarTB.writeChildren(out); %> 
+</td>
+			</tr>
+			<tr>
+				<td>
+					<table border="0" cellpadding="2" cellspacing="0" style="margin: 7 7 7 7;" width="98%">
+						<!--Fix 12836   inizio -->
+						<tr style="display:none;">
+							<td height="30" width="20%"><%{  WebLabelCompound label = new com.thera.thermfw.web.WebLabelCompound(null, null, "YSchedulazioneBufferAgv", "IdAzienda", null); 
    label.setParent(YSchedulazioneBufferAgvForm); 
 %><label class="<%=label.getClassType()%>" for="IdAzienda"><%label.write(out);%></label><%}%></td>
-				 <td height="30" width="80%"><% 
+							<td height="30" width="80%"><% 
   WebTextInput YSchedulazioneBufferAgvIdAzienda =  
      new com.thera.thermfw.web.WebTextInput("YSchedulazioneBufferAgv", "IdAzienda"); 
   YSchedulazioneBufferAgvIdAzienda.setParent(YSchedulazioneBufferAgvForm); 
@@ -142,94 +134,20 @@
   YSchedulazioneBufferAgvIdAzienda.write(out); 
 %>
 </td>
-		</tr>	
-		<tr>
-				 <td height="30" width="20%"><%{  WebLabelCompound label = new com.thera.thermfw.web.WebLabelCompound(null, null, "YSchedulazioneBufferAgv", "ScheduledJobId", null); 
-   label.setParent(YSchedulazioneBufferAgvForm); 
-%><label class="<%=label.getClassType()%>" for="ScheduledJobId"><%label.write(out);%></label><%}%></td>
-				 <td height="30" width="80%"><% 
-  WebTextInput YSchedulazioneBufferAgvScheduledJobId =  
-     new com.thera.thermfw.web.WebTextInput("YSchedulazioneBufferAgv", "ScheduledJobId"); 
-  YSchedulazioneBufferAgvScheduledJobId.setParent(YSchedulazioneBufferAgvForm); 
-%>
-<input class="<%=YSchedulazioneBufferAgvScheduledJobId.getClassType()%>" id="<%=YSchedulazioneBufferAgvScheduledJobId.getId()%>" maxlength="<%=YSchedulazioneBufferAgvScheduledJobId.getMaxLength()%>" name="<%=YSchedulazioneBufferAgvScheduledJobId.getName()%>" size="<%=YSchedulazioneBufferAgvScheduledJobId.getSize()%>"><% 
-  YSchedulazioneBufferAgvScheduledJobId.write(out); 
-%>
-</td>
-		</tr>	
-		<!--Fix 12836   fine -->
-		<tr>
-				 <td height="30" width="20%"><%{  WebLabelCompound label = new com.thera.thermfw.web.WebLabelCompound(null, null, "YSchedulazioneBufferAgv", "OreInitiale", null); 
-   label.setParent(YSchedulazioneBufferAgvForm); 
-%><label class="<%=label.getClassType()%>" for="OreInitiale"><%label.write(out);%></label><%}%></td>
-				 <td height="30" width="80%"><% 
-  WebTextInput YSchedulazioneBufferAgvOreInitiale =  
-     new com.thera.thermfw.web.WebTextInput("YSchedulazioneBufferAgv", "OreInitiale"); 
-  YSchedulazioneBufferAgvOreInitiale.setParent(YSchedulazioneBufferAgvForm); 
-%>
-<input class="<%=YSchedulazioneBufferAgvOreInitiale.getClassType()%>" id="<%=YSchedulazioneBufferAgvOreInitiale.getId()%>" maxlength="<%=YSchedulazioneBufferAgvOreInitiale.getMaxLength()%>" name="<%=YSchedulazioneBufferAgvOreInitiale.getName()%>" size="<%=YSchedulazioneBufferAgvOreInitiale.getSize()%>"><% 
-  YSchedulazioneBufferAgvOreInitiale.write(out); 
-%>
-</td>
-				</tr>
-		<tr>
-				 <td height="30" width="20%"><%{  WebLabelCompound label = new com.thera.thermfw.web.WebLabelCompound(null, null, "YSchedulazioneBufferAgv", "ExpirationTime", null); 
-   label.setParent(YSchedulazioneBufferAgvForm); 
-%><label class="<%=label.getClassType()%>" for="ExpirationTime"><%label.write(out);%></label><%}%></td>
-				 <td height="30" width="80%"><% 
-  WebTextInput YSchedulazioneBufferAgvExpirationTime =  
-     new com.thera.thermfw.web.WebTextInput("YSchedulazioneBufferAgv", "ExpirationTime"); 
-  YSchedulazioneBufferAgvExpirationTime.setParent(YSchedulazioneBufferAgvForm); 
-%>
-<input class="<%=YSchedulazioneBufferAgvExpirationTime.getClassType()%>" id="<%=YSchedulazioneBufferAgvExpirationTime.getId()%>" maxlength="<%=YSchedulazioneBufferAgvExpirationTime.getMaxLength()%>" name="<%=YSchedulazioneBufferAgvExpirationTime.getName()%>" size="<%=YSchedulazioneBufferAgvExpirationTime.getSize()%>"><% 
-  YSchedulazioneBufferAgvExpirationTime.write(out); 
-%>
-</td>
-				</tr>
-		<tr>
-				 <td height="30" width="20%"><%{  WebLabelCompound label = new com.thera.thermfw.web.WebLabelCompound(null, null, "YSchedulazioneBufferAgv", "SleepTime", null); 
-   label.setParent(YSchedulazioneBufferAgvForm); 
-%><label class="<%=label.getClassType()%>" for="SleepTime"><%label.write(out);%></label><%}%></td>
-				 <td height="30" width="80%"><% 
-  WebTextInput YSchedulazioneBufferAgvSleepTime =  
-     new com.thera.thermfw.web.WebTextInput("YSchedulazioneBufferAgv", "SleepTime"); 
-  YSchedulazioneBufferAgvSleepTime.setParent(YSchedulazioneBufferAgvForm); 
-%>
-<input class="<%=YSchedulazioneBufferAgvSleepTime.getClassType()%>" id="<%=YSchedulazioneBufferAgvSleepTime.getId()%>" maxlength="<%=YSchedulazioneBufferAgvSleepTime.getMaxLength()%>" name="<%=YSchedulazioneBufferAgvSleepTime.getName()%>" size="<%=YSchedulazioneBufferAgvSleepTime.getSize()%>"><% 
-  YSchedulazioneBufferAgvSleepTime.write(out); 
-%>
-
-			 <label class="thLabel" id="SleepTimeLabel" name="SleepTimeLabel">
- <% { WebLabelSimple label = new com.thera.thermfw.web.WebLabelSimple("it.thera.thip.produzione.ordese.resources.SchedulazioneServiceBatch", "SleepTime", null, null, null, null); 
- label.setParent(YSchedulazioneBufferAgvForm); 
-label.write(out); }%> 
-</label></td>
-				</tr>
-		<tr>
-				 <td height="30" width="20%"><%{  WebLabelCompound label = new com.thera.thermfw.web.WebLabelCompound(null, null, "YSchedulazioneBufferAgv", "Stato", null); 
-   label.setParent(YSchedulazioneBufferAgvForm); 
-%><label class="<%=label.getClassType()%>" for="Stato"><%label.write(out);%></label><%}%></td>
-				 <td height="30" width="80%"><% 
-  WebComboBox YSchedulazioneBufferAgvStato =  
-     new com.thera.thermfw.web.WebComboBox("YSchedulazioneBufferAgv", "Stato", null); 
-  YSchedulazioneBufferAgvStato.setParent(YSchedulazioneBufferAgvForm); 
-%>
-<select id="<%=YSchedulazioneBufferAgvStato.getId()%>" name="<%=YSchedulazioneBufferAgvStato.getName()%>"><% 
-  YSchedulazioneBufferAgvStato.write(out); 
-%> 
-</select></td>
-				</tr>
-				
-			</table>	
-		</td></tr>
-		<tr valign="bottom"><td style="height:0"><% 
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr valign="bottom">
+				<td style="height: 0"><% 
   WebErrorList errorList = new com.thera.thermfw.web.WebErrorList(); 
   errorList.setParent(YSchedulazioneBufferAgvForm); 
   errorList.write(out); 
 %>
-<!--<span class="errorlist"></span>--></td></tr>
-</table>
-<%
+<!--<span class="errorlist"></span>--></td>
+			</tr>
+		</table>
+	<%
   YSchedulazioneBufferAgvForm.writeFormEndElements(out); 
 %>
 </form></td>

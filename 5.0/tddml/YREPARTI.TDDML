@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE TDDML SYSTEM "../../../TDDML.dtd">
+<TDDML>
+  <!-- YLUBICAZIONE (YLUBICA): Ubicazione; -->
+  <AlterTable schema="THIPPERS" name="YREPARTI">
+    <AddColumn>
+		<Column name="LOGICA_MISSIONI_TOYOTA" shortname="L_M_T" type="char" length="1" nullable="no" default="-"/>
+	</AddColumn>
+  </AlterTable>
+</TDDML>
