@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE TDDML SYSTEM "../../../TDDML.dtd">
+<TDDML>
+  <!-- SUBSCRIPTION (SUBSCRI): Subscription; -->
+  <CreateTable schema="TOYOTA" name="SUBSCRIPTION" shortname="SUBSCRI">
+    <Column name="STATO" shortname="STATO" type="char" length="1" nullable="no"/>
+    <Column name="R_UTENTE_CRZ" shortname="R_UTENTE_C" type="char" length="20" nullable="yes"/>
+    <Column name="TIMESTAMP_CRZ" shortname="TIMESTAMP_" type="timestamp" nullable="no" default="CURRENT TIMESTAMP"/>
+    <Column name="R_UTENTE_AGG" shortname="R_UTENTE_A" type="char" length="20" nullable="yes"/>
+    <Column name="TIMESTAMP_AGG" shortname="TIMESTAMP0" type="timestamp" nullable="no" default="CURRENT TIMESTAMP"/>
+    <Column name="ID" shortname="ID" type="varchar" length="500" nullable="no"/>
+    <Column name="TS_SUBSCRIPTION" shortname="TS_SUBSCRI" type="timestamp" nullable="yes"/>
+    <Column name="SOURCE_TYPE" shortname="SOURCE_TYP" type="varchar" length="35" nullable="yes"/>
+    <Column name="ENDPOINT" shortname="ENDPOINT" type="varchar" length="250" nullable="yes"/>
+    <Column name="AUTHENTICATION" shortname="AUTHENTICA" type="varchar" length="255" nullable="yes"/>
+    <Column name="TS_END_SUBSCRIPTION" shortname="TS_END_SUB" type="timestamp" nullable="yes"/>
+  </CreateTable>
+  <CreateIndex schema="TOYOTA" name="SUBSCRIPTION_I01" tabschema="TOYOTA" tabname="SUBSCRIPTION" shortname="SUBSCR_I01" unique="yes">
+    <IndexCol name="ID" order="Asc"/>
+  </CreateIndex>
+  <AlterTable schema="TOYOTA" name="SUBSCRIPTION">
+    <AddPrimaryKey>
+      <PrimaryKey>
+        <ColumnRef name="ID"/>
+      </PrimaryKey>
+    </AddPrimaryKey>
+  </AlterTable>
+  <Comment>
+    <CommentTable schema="TOYOTA" name="SUBSCRIPTION" text="Subscription">
+      <CommentColumn name="STATO" text="Stato"/>
+      <CommentColumn name="R_UTENTE_CRZ" text="Utente creazione"/>
+      <CommentColumn name="TIMESTAMP_CRZ" text="Timestamp creazione"/>
+      <CommentColumn name="R_UTENTE_AGG" text="Utente ultima modifica"/>
+      <CommentColumn name="TIMESTAMP_AGG" text="Timestamp ultima modifica"/>
+      <CommentColumn name="ID" text="id"/>
+      <CommentColumn name="TS_SUBSCRIPTION" text="Timestamp iscrizione"/>
+      <CommentColumn name="SOURCE_TYPE" text="Source Type"/>
+      <CommentColumn name="ENDPOINT" text="Endpoint"/>
+      <CommentColumn name="AUTHENTICATION" text="Authentication"/>
+      <CommentColumn name="TS_END_SUBSCRIPTION" text="Timestamp fine iscrizione"/>
+    </CommentTable>
+    <CommentIndex schema="TOYOTA" name="SUBSCRIPTION_I01" text="Primary Key"/>
+  </Comment>
+  <Grant schema="TOYOTA" name="SUBSCRIPTION"/>
+</TDDML>

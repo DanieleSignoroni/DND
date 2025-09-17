@@ -4,8 +4,6 @@ import javax.ws.rs.core.Response;
 
 import org.json.JSONObject;
 
-import it.thera.thip.api.client.ApiRequest;
-
 /**
  * <p></p>
  *
@@ -30,11 +28,11 @@ public class LoadApi extends BaseToyotaApi {
 	}
 
 	@Override
-	protected void onBefore(String operation, ApiRequest request, JSONObject bodyOrNull) {
+	protected void onBefore(CallContext ctx) {
 	}
 
 	@Override
-	protected Response onAfter(String operation, Response response) {
+	protected Response onAfter(CallContext ctx, Response response) {
 		return response;
 	}
 

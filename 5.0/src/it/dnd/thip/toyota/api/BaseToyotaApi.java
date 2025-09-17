@@ -1,8 +1,5 @@
 package it.dnd.thip.toyota.api;
 
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-
 import javax.ws.rs.core.Response;
 
 import org.json.JSONObject;
@@ -33,31 +30,31 @@ import it.thera.thip.api.client.ApiResponse;
 
 public abstract class BaseToyotaApi {
 
-	/** Ogni anagrafica dichiara il suo path: "/loads", "/transports", ... */
 	protected abstract String basePath();
 
-	/**
-	 * Viene chiamato prima di inviare la richiesta.
-	 * Puoi: validare/mutare il body, aggiungere header, loggare, ecc.
-	 * Di default non fa nulla.
-	 */
-	protected void onBefore(String operation,
-			ApiRequest request,
-			JSONObject bodyOrNull) {
+	protected void onBefore(CallContext ctx) {
 	}
 
-	/**
-	 * Viene chiamato dopo aver ottenuto la Response.
-	 * Puoi: tradurre errori, mappare payload, loggare, ecc.
-	 * Di default ritorna la response così com’è.
-	 */
-	protected Response onAfter(String operation,
-			Response response) {
+	protected Response onAfter(CallContext ctx, Response response) {
 		return response;
 	}
 
-	protected ApiClient client() throws KeyManagementException, NoSuchAlgorithmException {
-		return InterfacciaToyota.getInstance().getApiClientWithBearerAuth();
+	protected Response execute(String operation, Method method, String suffix, JSONObject body) throws Exception {
+
+		ApiClient c = InterfacciaToyota.getInstance().getApiClientWithBearerAuth();
+		ApiRequest req = new ApiRequest(method, url(suffix));
+		if (body != null)
+			req.setBody(body.toString());
+
+		CallContext ctx = new CallContext(operation, method, suffix, body, req);
+		onBefore(ctx);
+
+		ApiResponse ar = c.send(req);
+
+		Response r = InterfacciaToyota.getInstance().buildResponse(ar.getStatus(),
+				new JSONObject(ar.getBodyAsString()));
+
+		return onAfter(ctx, r);
 	}
 
 	protected String url(String suffix) {
@@ -71,54 +68,39 @@ public abstract class BaseToyotaApi {
 		return ip + basePath() + "/" + suffix;
 	}
 
-	public Response list() throws KeyManagementException, NoSuchAlgorithmException {
-		ApiClient c = client();
-		ApiRequest req = new ApiRequest(Method.GET, url(""));
-		onBefore("list", req, null);
-		ApiResponse ar = c.send(req);
-		Response r = InterfacciaToyota.getInstance().buildResponse(ar.getStatus(), new JSONObject(ar.getBodyAsString()));
-		return onAfter("list", r);
+	public Response list() throws Exception {
+		return execute("list", Method.GET, "", null);
 	}
 
-	public Response getById(String id) throws KeyManagementException, NoSuchAlgorithmException {
-		ApiClient c = client();
-		ApiRequest req = new ApiRequest(Method.GET, url(id));
-		onBefore("getById", req, null);
-		ApiResponse ar = c.send(req);
-		Response r = InterfacciaToyota.getInstance().buildResponse(ar.getStatus(), new JSONObject(ar.getBodyAsString()));
-		return onAfter("getById", r);
+	public Response getById(String id) throws Exception {
+		return execute("getById", Method.GET, id, null);
 	}
 
-	public Response create(JSONObject body) throws KeyManagementException, NoSuchAlgorithmException {
-		ApiClient c = client();
-		ApiRequest req = new ApiRequest(Method.POST, url(""));
-		if (body != null) {
-			req.setBody(body.toString());
+	public Response create(JSONObject b) throws Exception {
+		return execute("create", Method.POST, "", b);
+	}
+
+	public Response update(String id, JSONObject b) throws Exception {
+		return execute("update", Method.PUT, id, b);
+	}
+
+	public Response delete(String id) throws Exception {
+		return execute("delete", Method.DELETE, id, null);
+	}
+
+	public static final class CallContext {
+		public final String operation;
+		public final Method method;
+		public final String suffix;
+		public final JSONObject body;
+		public final ApiRequest request;
+
+		CallContext(String operation, Method method, String suffix, JSONObject body, ApiRequest request) {
+			this.operation = operation;
+			this.method = method;
+			this.suffix = suffix;
+			this.body = body;
+			this.request = request;
 		}
-		onBefore("create", req, body);
-		ApiResponse ar = c.send(req);
-		Response r = InterfacciaToyota.getInstance().buildResponse(ar.getStatus(), new JSONObject(ar.getBodyAsString()));
-		return onAfter("create", r);
-	}
-
-	public Response update(String id, JSONObject body) throws KeyManagementException, NoSuchAlgorithmException {
-		ApiClient c = client();
-		ApiRequest req = new ApiRequest(Method.PUT, url(id));
-		if (body != null) {
-			req.setBody(body.toString());
-		}
-		onBefore("update", req, body);
-		ApiResponse ar = c.send(req);
-		Response r = InterfacciaToyota.getInstance().buildResponse(ar.getStatus(), new JSONObject(ar.getBodyAsString()));
-		return onAfter("update", r);
-	}
-
-	public Response delete(String id) throws KeyManagementException, NoSuchAlgorithmException {
-		ApiClient c = client();
-		ApiRequest req = new ApiRequest(Method.DELETE, url(id));
-		onBefore("delete", req, null);
-		ApiResponse ar = c.send(req);
-		Response r = InterfacciaToyota.getInstance().buildResponse(ar.getStatus(), new JSONObject(ar.getBodyAsString()));
-		return onAfter("delete", r);
 	}
 }
