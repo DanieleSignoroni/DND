@@ -3,9 +3,17 @@ package it.dnd.thip.agv;
 import java.io.IOException;
 import java.util.Properties;
 
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.Response.StatusType;
+
 import com.thera.thermfw.base.CacheController;
 import com.thera.thermfw.base.Trace;
 import com.thera.thermfw.persist.Factory;
+
+import it.dnd.thip.toyota.api.OAuth2ClientCredentialsTokenManager;
+import it.thera.thip.api.client.ApiClient;
+import it.thera.thip.api.client.auth.BearerAuthentication;
 
 /**
  * <p></p>
@@ -31,6 +39,8 @@ public class InterfacciaToyota {
 
 	protected Properties properties = new Properties();
 
+	private final OAuth2ClientCredentialsTokenManager tokenManager;
+
 	static {
 		try {
 			CacheController.registerCache(InterfacciaToyota.class, "reset", true);
@@ -52,6 +62,7 @@ public class InterfacciaToyota {
 
 	public InterfacciaToyota() {
 		load();
+		this.tokenManager = new OAuth2ClientCredentialsTokenManager(getIp(), getClient_id(), getClient_secret(), getScope());
 	}
 
 	protected void load() {
@@ -78,7 +89,7 @@ public class InterfacciaToyota {
 	public String getGrant_type() {
 		return getStringProperty("grant_type");
 	}
-	
+
 	public String getIp() {
 		return getStringProperty("ip");
 	}
@@ -120,4 +131,28 @@ public class InterfacciaToyota {
 			return 0;
 		return Integer.parseInt(res);
 	}
+
+	/**
+	 * Ritorna il token
+	 * @return
+	 */
+	public String getToken() {
+		return tokenManager.getToken();
+	}
+
+	public ApiClient getApiClientWithBearerAuth() {
+		ApiClient client = new ApiClient("");
+		client.setAuthentication(new BearerAuthentication(getToken()));
+		return client;
+	}
+	
+	public Response buildResponse(StatusType status, Object entity) {
+    	ResponseBuilder builder = Response.status(status); 
+    	
+    	if (entity != null) {
+    		builder.entity(entity.toString());
+    	}
+    	
+		return builder.build();
+    }
 }

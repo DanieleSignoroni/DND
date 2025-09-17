@@ -1,4 +1,4 @@
-package it.dnd.thip.auth;
+package it.dnd.thip.api.auth;
 
 import java.util.concurrent.locks.ReentrantLock;
 

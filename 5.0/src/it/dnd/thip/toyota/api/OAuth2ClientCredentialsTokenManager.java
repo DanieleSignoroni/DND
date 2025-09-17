@@ -1,13 +1,14 @@
-package it.dnd.thip.toyota;
+package it.dnd.thip.toyota.api;
 
 import javax.ws.rs.core.Response.Status.Family;
 import org.json.JSONObject;
+
+import it.dnd.thip.api.auth.AbstractTokenManager;
+import it.dnd.thip.api.auth.TokenResponse;
 import it.thera.thip.api.client.ApiClient;
 import it.thera.thip.api.client.ApiRequest;
 import it.thera.thip.api.client.ApiRequest.Method;
 import it.thera.thip.api.client.ApiResponse;
-import it.dnd.thip.auth.AbstractTokenManager;
-import it.dnd.thip.auth.TokenResponse;
 
 public class OAuth2ClientCredentialsTokenManager extends AbstractTokenManager {
 

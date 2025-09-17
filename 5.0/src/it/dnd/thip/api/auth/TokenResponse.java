@@ -1,4 +1,4 @@
-package it.dnd.thip.auth;
+package it.dnd.thip.api.auth;
 
 public final class TokenResponse {
 	private final String token;
