@@ -1,20 +1,12 @@
 package it.dnd.thip.toyota.load;
 
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.StatusType;
 
 import org.json.JSONObject;
 
-import com.thera.thermfw.common.*;
+import com.thera.thermfw.common.ErrorMessage;
 
-import it.dnd.thip.agv.InterfacciaToyota;
-import it.thera.thip.api.client.ApiClient;
-import it.thera.thip.api.client.ApiRequest;
-import it.thera.thip.api.client.ApiRequest.Method;
-import it.thera.thip.api.client.ApiResponse;
+import it.dnd.thip.toyota.api.LoadApi;
 
 /**
  * <p></p>
@@ -34,44 +26,30 @@ import it.thera.thip.api.client.ApiResponse;
 
 public class Load extends LoadPO {
 
+	private static final LoadApi API = new LoadApi();
+
 	public ErrorMessage checkDelete() {
 		return null;
 	}
 
-	/**
-	 * Si occupa di ritornare le informazioni di un 'Load' chiedendole a Toyota.
-	 * @param id del Load
-	 * @return una response con {@link StatusType} e un json object che contiene la response
-	 * @throws NoSuchAlgorithmException 
-	 * @throws KeyManagementException 
-	 */
-	public static Response getLoadInformation(String id) throws KeyManagementException, NoSuchAlgorithmException {
-		Response response = null;
-		ApiClient client = InterfacciaToyota.getInstance().getApiClientWithBearerAuth();
-		if(client != null) {
-			ApiRequest request = new ApiRequest(Method.GET, InterfacciaToyota.getInstance().getIp() + "/loads/"+id);
-			ApiResponse apiResponse = client.send(request);
-			response = InterfacciaToyota.getInstance().buildResponse(apiResponse.getStatus(), new JSONObject(apiResponse.getBodyAsString()));
-		}
-		return response;
+	public static Response listLoads() throws Exception {
+		return API.list();
 	}
-	
-	/**
-	 * Si occupa di creare un nuovo 'Load' in Toyota.<br>
-	 * @param body contiene le informazioni con le quali il 'Load' deve essere creato
-	 * @return una response con {@link StatusType} e un json object che contiene la response
-	 * @throws KeyManagementException
-	 * @throws NoSuchAlgorithmException
-	 */
-	public static Response createNewLoad(JSONObject body) throws KeyManagementException, NoSuchAlgorithmException {
-		Response response = null;
-		ApiClient client = InterfacciaToyota.getInstance().getApiClientWithBearerAuth();
-		if(client != null) {
-			ApiRequest request = new ApiRequest(Method.POST, InterfacciaToyota.getInstance().getIp() + "/loads");
-			ApiResponse apiResponse = client.send(request);
-			response = InterfacciaToyota.getInstance().buildResponse(apiResponse.getStatus(), new JSONObject(apiResponse.getBodyAsString()));
-		}
-		return response;
+
+	public static Response getLoad(String id) throws Exception {
+		return API.getById(id);
+	}
+
+	public static Response createNewLoad(JSONObject body) throws Exception {
+		return API.createNewLoad(body);
+	}
+
+	public static Response updateLoad(String id, JSONObject body) throws Exception {
+		return API.update(id, body);
+	}
+
+	public static Response removeLoad(String id) throws Exception {
+		return API.removeLoad(id);
 	}
 
 }
