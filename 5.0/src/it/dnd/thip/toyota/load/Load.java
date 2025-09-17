@@ -55,5 +55,23 @@ public class Load extends LoadPO {
 		}
 		return response;
 	}
+	
+	/**
+	 * Si occupa di creare un nuovo 'Load' in Toyota.<br>
+	 * @param body contiene le informazioni con le quali il 'Load' deve essere creato
+	 * @return una response con {@link StatusType} e un json object che contiene la response
+	 * @throws KeyManagementException
+	 * @throws NoSuchAlgorithmException
+	 */
+	public static Response createNewLoad(JSONObject body) throws KeyManagementException, NoSuchAlgorithmException {
+		Response response = null;
+		ApiClient client = InterfacciaToyota.getInstance().getApiClientWithBearerAuth();
+		if(client != null) {
+			ApiRequest request = new ApiRequest(Method.POST, InterfacciaToyota.getInstance().getIp() + "/loads");
+			ApiResponse apiResponse = client.send(request);
+			response = InterfacciaToyota.getInstance().buildResponse(apiResponse.getStatus(), new JSONObject(apiResponse.getBodyAsString()));
+		}
+		return response;
+	}
 
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE TDDML SYSTEM "../../../TDDML.dtd">
+<TDDML>
+  <!-- TRANSPORT (TRANSPO): Transport; -->
+  <CreateTable schema="TOYOTA" name="TRANSPORT" shortname="TRANSPO">
+    <Column name="STATO" shortname="STATO" type="char" length="1" nullable="no"/>
+    <Column name="R_UTENTE_CRZ" shortname="R_UTENTE_C" type="char" length="20" nullable="yes"/>
+    <Column name="TIMESTAMP_CRZ" shortname="TIMESTAMP_" type="timestamp" nullable="no" default="CURRENT TIMESTAMP"/>
+    <Column name="R_UTENTE_AGG" shortname="R_UTENTE_A" type="char" length="20" nullable="yes"/>
+    <Column name="TIMESTAMP_AGG" shortname="TIMESTAMP0" type="timestamp" nullable="no" default="CURRENT TIMESTAMP"/>
+    <Column name="ID" shortname="ID" type="varchar" length="500" nullable="no"/>
+    <Column name="DATA" shortname="DATA" type="longvarchar" length="5000" nullable="yes"/>
+    <Column name="TRANSPORT_STATE" shortname="TRANSPORT_" type="char" length="1" nullable="no" default="0"/>
+  </CreateTable>
+  <CreateIndex schema="TOYOTA" name="TRANSPORT_I01" tabschema="TOYOTA" tabname="TRANSPORT" shortname="TRANSP_I01" unique="yes">
+    <IndexCol name="ID" order="Asc"/>
+  </CreateIndex>
+  <AlterTable schema="TOYOTA" name="TRANSPORT">
+    <AddPrimaryKey>
+      <PrimaryKey>
+        <ColumnRef name="ID"/>
+      </PrimaryKey>
+    </AddPrimaryKey>
+  </AlterTable>
+  <Comment>
+    <CommentTable schema="TOYOTA" name="TRANSPORT" text="Transport">
+      <CommentColumn name="STATO" text="Stato"/>
+      <CommentColumn name="R_UTENTE_CRZ" text="Utente creazione"/>
+      <CommentColumn name="TIMESTAMP_CRZ" text="Timestamp creazione"/>
+      <CommentColumn name="R_UTENTE_AGG" text="Utente ultima modifica"/>
+      <CommentColumn name="TIMESTAMP_AGG" text="Timestamp ultima modifica"/>
+      <CommentColumn name="ID" text="id"/>
+      <CommentColumn name="DATA" text="Data"/>
+      <CommentColumn name="TRANSPORT_STATE" text="Transport - State"/>
+    </CommentTable>
+    <CommentIndex schema="TOYOTA" name="TRANSPORT_I01" text="Primary Key"/>
+  </Comment>
+  <Grant schema="TOYOTA" name="TRANSPORT"/>
+</TDDML>
