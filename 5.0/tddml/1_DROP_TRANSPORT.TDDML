@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE TDDML SYSTEM "../../../TDDML.dtd">
+<TDDML>
+  <DropTable name="TRANSPORT" schema="TOYOTA">
+    <Continue/>
+  </DropTable>
+  <DropTable name="TRANSPORT_EVENT" schema="TOYOTA">
+    <Continue/>
+  </DropTable>
+</TDDML>

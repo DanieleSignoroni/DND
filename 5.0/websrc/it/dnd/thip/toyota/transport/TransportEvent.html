@@ -1,7 +1,7 @@
 <html>
   <head></head>
   <body style="margin: 0px; overflow: hidden;">
-    <form name="TransportForm">
+    <form name="TransportEventForm">
       <table height="100%" width="100%" cellspacing="0" cellpadding="0" id="emptyborder">
         <tr>
           <td style="height:0">
@@ -15,15 +15,28 @@
         </tr>
         <tr>
           <td>
+            <input type="hidden" name="Id" id="Id"/>
+          </td>
+        </tr>
+        <tr>
+          <td>
             <span class="tabbed" id="mytabbed">
-              <span class="tab" id="tab1">
+              <span class="tab" id="tab2">
                 <table style="width: 100%;">
                   <tr>
                     <td valign="top">
-                      <label for="Id"></label>
+                      <label for="Index"></label>
                     </td>
                     <td valign="top">
-                      <textarea id="Id" name="Id" cols="60" rows="5"></textarea>
+                      <input id="Index" name="Index"></input>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td valign="top">
+                      <label for="EventType"></label>
+                    </td>
+                    <td valign="top">
+                      <input id="EventType" name="EventType"></input>
                     </td>
                   </tr>
                   <tr>
@@ -36,33 +49,9 @@
                   </tr>
                   <tr>
                     <td valign="top">
-                      <label for="TransportState"></label>
-                    </td>
-                    <td valign="top">
-                      <select name="TransportState" id="TransportState"></select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td valign="top">
                       <span class="subform" id="DatiComuniEstesi"></span>
                     </td>
                     <td valign="top">
-                    </td>
-                  </tr>
-                </table>
-              </span>
-              <span class="tab" id="tab2">
-                <table style="width: 100%;">
-                  <tr>
-                    <td valign="top">
-                      <label for="Event"></label>
-                    </td>
-                    <td valign="top">
-                    </td>
-                  </tr>
-                  <tr>
-                    <td valign="top" colspan="2">
-                      <span id="Event" class="editgrid"></span>
                     </td>
                   </tr>
                 </table>

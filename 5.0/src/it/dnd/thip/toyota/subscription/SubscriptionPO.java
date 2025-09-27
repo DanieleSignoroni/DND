@@ -102,6 +102,7 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
 	public SubscriptionPO() {
 		setSourceType('-');
 		setPassaToyota(false);
+		setId("-1");
 	}
 
 	/**

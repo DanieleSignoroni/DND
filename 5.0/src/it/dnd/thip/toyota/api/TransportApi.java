@@ -24,7 +24,7 @@ public class TransportApi extends BaseToyotaApi {
 
 	@Override
 	protected String basePath() { 
-		return "/transports";
+		return "v1/transports";
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /*
- * @(#)TransportPO.java
+ * @(#)TransportEventPO.java
  */
 
 /**
@@ -22,18 +22,23 @@ import it.thera.thip.cs.*;
 import com.thera.thermfw.common.*;
 import com.thera.thermfw.security.*;
 
-public abstract class TransportPO extends PersistentObjectDCE implements BusinessObject, Authorizable, Deletable, Conflictable {
+public abstract class TransportEventPO extends PersistentObjectDCE implements BusinessObject, Authorizable, Deletable, Child, Conflictable {
 
   
   /**
    *  instance
    */
-  private static Transport cInstance;
+  private static TransportEvent cInstance;
 
   /**
-   * Attributo iId
+   * Attributo iIndex
    */
-  protected String iId;
+  protected Integer iIndex;
+
+  /**
+   * Attributo iEventType
+   */
+  protected String iEventType;
 
   /**
    * Attributo iData
@@ -41,14 +46,9 @@ public abstract class TransportPO extends PersistentObjectDCE implements Busines
   protected String iData;
 
   /**
-   * Attributo iTransportState
+   * Attributo iParent
    */
-  protected char iTransportState = '0';
-
-  /**
-   * Attributo iEvent
-   */
-  protected OneToMany iEvent = new OneToMany(it.dnd.thip.toyota.transport.TransportEvent.class, this, 1, false);
+  protected Proxy iParent = new Proxy(it.dnd.thip.toyota.transport.Transport.class);
 
   
   /**
@@ -70,7 +70,7 @@ public abstract class TransportPO extends PersistentObjectDCE implements Busines
    */
   public static Vector retrieveList(String where, String orderBy, boolean optimistic) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
     if (cInstance == null)
-      cInstance = (Transport)Factory.createObject(Transport.class);
+      cInstance = (TransportEvent)Factory.createObject(TransportEvent.class);
     return PersistentObject.retrieveList(cInstance, where, orderBy, optimistic);
   }
 
@@ -78,7 +78,7 @@ public abstract class TransportPO extends PersistentObjectDCE implements Busines
    *  elementWithKey
    * @param key
    * @param lockType
-   * @return Transport
+   * @return TransportEvent
    * @throws SQLException
    */
   /*
@@ -87,12 +87,12 @@ public abstract class TransportPO extends PersistentObjectDCE implements Busines
    * 27/09/2025    CodeGen     Codice generato da CodeGenerator
    *
    */
-  public static Transport elementWithKey(String key, int lockType) throws SQLException {
-    return (Transport)PersistentObject.elementWithKey(Transport.class, key, lockType);
+  public static TransportEvent elementWithKey(String key, int lockType) throws SQLException {
+    return (TransportEvent)PersistentObject.elementWithKey(TransportEvent.class, key, lockType);
   }
 
   /**
-   * TransportPO
+   * TransportEventPO
    */
   /*
    * Revisions:
@@ -100,13 +100,14 @@ public abstract class TransportPO extends PersistentObjectDCE implements Busines
    * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
-  public TransportPO() {
-    setTransportState('0');
+  public TransportEventPO() {
+  
+    // TO DO
   }
 
   /**
    * Valorizza l'attributo. 
-   * @param id
+   * @param index
    */
   /*
    * Revisions:
@@ -114,11 +115,40 @@ public abstract class TransportPO extends PersistentObjectDCE implements Busines
    * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
-  public void setId(String id) {
-    this.iId = id;
+  public void setIndex(Integer index) {
+    this.iIndex = index;
     setDirty();
     setOnDB(false);
-    iEvent.setFatherKeyChanged();
+  }
+
+  /**
+   * Restituisce l'attributo. 
+   * @return Integer
+   */
+  /*
+   * Revisions:
+   * Date          Owner      Description
+   * 27/09/2025    Wizard     Codice generato da Wizard
+   *
+   */
+  public Integer getIndex() {
+    return iIndex;
+  }
+
+  /**
+   * Valorizza l'attributo. 
+   * @param eventType
+   */
+  /*
+   * Revisions:
+   * Date          Owner      Description
+   * 27/09/2025    Wizard     Codice generato da Wizard
+   *
+   */
+  public void setEventType(String eventType) {
+    this.iEventType = eventType;
+    setDirty();
+    setOnDB(false);
   }
 
   /**
@@ -131,8 +161,8 @@ public abstract class TransportPO extends PersistentObjectDCE implements Busines
    * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
-  public String getId() {
-    return iId;
+  public String getEventType() {
+    return iEventType;
   }
 
   /**
@@ -166,7 +196,7 @@ public abstract class TransportPO extends PersistentObjectDCE implements Busines
 
   /**
    * Valorizza l'attributo. 
-   * @param transportState
+   * @param parent
    */
   /*
    * Revisions:
@@ -174,14 +204,15 @@ public abstract class TransportPO extends PersistentObjectDCE implements Busines
    * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
-  public void setTransportState(char transportState) {
-    this.iTransportState = transportState;
+  public void setParent(Transport parent) {
+    this.iParent.setObject(parent);
     setDirty();
+    setOnDB(false);
   }
 
   /**
    * Restituisce l'attributo. 
-   * @return char
+   * @return Transport
    */
   /*
    * Revisions:
@@ -189,13 +220,13 @@ public abstract class TransportPO extends PersistentObjectDCE implements Busines
    * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
-  public char getTransportState() {
-    return iTransportState;
+  public Transport getParent() {
+    return (Transport)iParent.getObject();
   }
 
   /**
-   * getEvent
-   * @return List
+   * setParentKey
+   * @param key
    */
   /*
    * Revisions:
@@ -203,8 +234,55 @@ public abstract class TransportPO extends PersistentObjectDCE implements Busines
    * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
-  public List getEvent() {
-    return getEventInternal();
+  public void setParentKey(String key) {
+    iParent.setKey(key);
+    setDirty();
+    setOnDB(false);
+  }
+
+  /**
+   * getParentKey
+   * @return String
+   */
+  /*
+   * Revisions:
+   * Date          Owner      Description
+   * 27/09/2025    Wizard     Codice generato da Wizard
+   *
+   */
+  public String getParentKey() {
+    return iParent.getKey();
+  }
+
+  /**
+   * Valorizza l'attributo. 
+   * @param id
+   */
+  /*
+   * Revisions:
+   * Date          Owner      Description
+   * 27/09/2025    Wizard     Codice generato da Wizard
+   *
+   */
+  public void setId(String id) {
+    iParent.setKey(id);
+    setDirty();
+    setOnDB(false);
+  }
+
+  /**
+   * Restituisce l'attributo. 
+   * @return String
+   */
+  /*
+   * Revisions:
+   * Date          Owner      Description
+   * 27/09/2025    Wizard     Codice generato da Wizard
+   *
+   */
+  public String getId() {
+    String key = iParent.getKey();
+    return key;
   }
 
   /**
@@ -220,8 +298,8 @@ public abstract class TransportPO extends PersistentObjectDCE implements Busines
    */
   public void setEqual(Copyable obj) throws CopyException {
     super.setEqual(obj);
-    TransportPO transportPO = (TransportPO)obj;
-    iEvent.setEqual(transportPO.iEvent);
+    TransportEventPO transportEventPO = (TransportEventPO)obj;
+    iParent.setEqual(transportEventPO.iParent);
   }
 
   /**
@@ -252,7 +330,9 @@ public abstract class TransportPO extends PersistentObjectDCE implements Busines
    *
    */
   public void setKey(String key) {
-    setId(key);
+    setId(KeyHelper.getTokenObjectKey(key, 1));
+    setIndex(KeyHelper.stringToIntegerObj(KeyHelper.getTokenObjectKey(key, 2)));
+    setEventType(KeyHelper.getTokenObjectKey(key, 3));
   }
 
   /**
@@ -266,7 +346,11 @@ public abstract class TransportPO extends PersistentObjectDCE implements Busines
    *
    */
   public String getKey() {
-    return getId();
+    String id = getId();
+    Integer index = getIndex();
+    String eventType = getEventType();
+    Object[] keyParts = {id, index, eventType};
+    return KeyHelper.buildObjectKey(keyParts);
   }
 
   /**
@@ -284,10 +368,8 @@ public abstract class TransportPO extends PersistentObjectDCE implements Busines
   }
 
   /**
-   * saveOwnedObjects
-   * @param rc
-   * @return int
-   * @throws SQLException
+   * getFatherKey
+   * @return String
    */
   /*
    * Revisions:
@@ -295,15 +377,13 @@ public abstract class TransportPO extends PersistentObjectDCE implements Busines
    * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
-  public int saveOwnedObjects(int rc) throws SQLException {
-    rc = iEvent.save(rc);
-    return rc;
+  public String getFatherKey() {
+    return getParentKey();
   }
 
   /**
-   * deleteOwnedObjects
-   * @return int
-   * @throws SQLException
+   * setFatherKey
+   * @param key
    */
   /*
    * Revisions:
@@ -311,14 +391,13 @@ public abstract class TransportPO extends PersistentObjectDCE implements Busines
    * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
-  public int deleteOwnedObjects() throws SQLException {
-    return getEventInternal().delete();
+  public void setFatherKey(String key) {
+    setParentKey(key);
   }
 
   /**
-   * initializeOwnedObjects
-   * @param result
-   * @return boolean
+   * setFather
+   * @param father
    */
   /*
    * Revisions:
@@ -326,9 +405,22 @@ public abstract class TransportPO extends PersistentObjectDCE implements Busines
    * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
-  public boolean initializeOwnedObjects(boolean result) {
-    result = iEvent.initialize(result);
-    return result;
+  public void setFather(PersistentObject father) {
+    iParent.setObject(father);
+  }
+
+  /**
+   * getOrderByClause
+   * @return String
+   */
+  /*
+   * Revisions:
+   * Date          Owner      Description
+   * 27/09/2025    Wizard     Codice generato da Wizard
+   *
+   */
+  public String getOrderByClause() {
+    return "";
   }
 
   /**
@@ -357,23 +449,7 @@ public abstract class TransportPO extends PersistentObjectDCE implements Busines
    *
    */
   protected TableManager getTableManager() throws SQLException {
-    return TransportTM.getInstance();
-  }
-
-  /**
-   * getEventInternal
-   * @return OneToMany
-   */
-  /*
-   * Revisions:
-   * Date          Owner      Description
-   * 27/09/2025    Wizard     Codice generato da Wizard
-   *
-   */
-  protected OneToMany getEventInternal() {
-    if (iEvent.isNew())
-        iEvent.retrieve();
-    return iEvent;
+    return TransportEventTM.getInstance();
   }
 
 }

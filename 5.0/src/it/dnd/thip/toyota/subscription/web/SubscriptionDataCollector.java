@@ -1,11 +1,23 @@
 package it.dnd.thip.toyota.subscription.web;
 
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Vector;
 
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status.Family;
+
+import org.json.JSONObject;
+
+import com.thera.thermfw.base.Trace;
+import com.thera.thermfw.common.ErrorMessage;
+import com.thera.thermfw.persist.ErrorCodes;
 import com.thera.thermfw.web.WebDataCollector;
 import com.thera.thermfw.web.WebForm;
 
+import it.dnd.thip.agv.InterfacciaToyota;
 import it.dnd.thip.toyota.subscription.Subscription;
+import it.thera.thip.cs.DatiComuniEstesi;
 
 /**
  *
@@ -38,13 +50,34 @@ public class SubscriptionDataCollector extends WebDataCollector {
 	}
 
 	@Override
-	public int save() {
+	protected int runSave(boolean force) throws SQLException {
 		int mode = getMode();
 		if(mode == WebForm.NEW) {
 			Subscription bo = (Subscription) getBo();
-
-			//.faccio la chaimata a toyota per creare una nuova subscription
+			try {
+				Response r = Subscription.createNewSubscription(bo.getJsonNewSubscription());
+				if(r.getStatusInfo().getFamily() == Family.SUCCESSFUL) {
+					JSONObject body = new JSONObject((String)r.getEntity());
+					if(body != null) {
+						bo.setId(body.getString("id"));
+						bo.setEndpoint(body.getString("endpoint"));
+						bo.getDatiComuniEstesi().setStato(DatiComuniEstesi.VALIDO);
+						bo.setPassaToyota(true);
+						String s = body.getString("createdDateTime");
+						Timestamp ts = InterfacciaToyota.getTimestampForString(s);
+						bo.setTimestampSubscription(ts);
+						bo.setTsSubRefreshed(ts);
+					}
+				}else {
+					getErrorList().addError(new ErrorMessage("BAS0000078","Toyota - creazione subscription terminata con status "+r.getStatus()+" e con errori : "+r.getEntity()));
+					return ErrorCodes.GENERIC_ERROR;
+				}
+			} catch (Exception e) {
+				e.printStackTrace(Trace.excStream);
+				return ErrorCodes.GENERIC_ERROR;
+			}
 		}
-		return super.save();
+		return super.runSave(force);
 	}
+
 }

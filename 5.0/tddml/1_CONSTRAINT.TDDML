@@ -1,37 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE TDDML SYSTEM "../../../TDDML.dtd">
 <TDDML>
-  <!-- YAGV_BUFFER_TES (YAGV_BU) -->
-  <AlterTable schema="THIPPERS" name="YAGV_BUFFER_TES">
+  <!-- TRANSPORT_EVENT (TRANSP0) -->
+  <AlterTable schema="TOYOTA" name="TRANSPORT_EVENT">
     <AddConstraint>
-      <Constraint name="Azienda_1502450699" refschema="THIP" reftable="AZIENDE_ESTESE" schema="THIPPERS" ondelete="Restrict">
-        <ColumnRef name="ID_AZIENDA"/>
-      </Constraint>
-      <Constraint name="Reparto1_148425795" refschema="THIP" reftable="REPARTI" schema="THIPPERS" ondelete="Restrict">
-        <ColumnRef name="ID_AZIENDA"/>
-        <ColumnRef name="R_REPARTO_1"/>
-      </Constraint>
-      <Constraint name="Reparto2_115210209" refschema="THIP" reftable="REPARTI" schema="THIPPERS" ondelete="Restrict">
-        <ColumnRef name="ID_AZIENDA"/>
-        <ColumnRef name="R_REPARTO_2"/>
-      </Constraint>
-    </AddConstraint>
-  </AlterTable>
-  <!-- YAGV_BUFFER_RIG (YAGV_B0) -->
-  <AlterTable schema="THIPPERS" name="YAGV_BUFFER_RIG">
-    <AddConstraint>
-      <Constraint name="Azienda_950792863" refschema="THIP" reftable="AZIENDE_ESTESE" schema="THIPPERS" ondelete="Restrict">
-        <ColumnRef name="ID_AZIENDA"/>
-      </Constraint>
-      <Constraint name="PianoCaricoToyotaR" refschema="THIPPERS" reftable="YPIANO_CARICO_TOYOTA_RIG" schema="THIPPERS" ondelete="Restrict">
-        <ColumnRef name="ID_AZIENDA"/>
-        <ColumnRef name="R_ANNO_PC_TOYOTA"/>
-        <ColumnRef name="R_NUMERO_PC_TOYOTA"/>
-        <ColumnRef name="R_RIGA_PC_TOYOTA"/>
-      </Constraint>
-      <Constraint name="YAgvBufferRiga_163" refschema="THIPPERS" reftable="YAGV_BUFFER_TES" schema="THIPPERS" ondelete="Cascade">
-        <ColumnRef name="ID_AZIENDA"/>
-        <ColumnRef name="ID_BUFFER"/>
+      <Constraint name="Event_1728592846" refschema="TOYOTA" reftable="TRANSPORT" schema="TOYOTA" ondelete="Cascade">
+        <ColumnRef name="ID"/>
       </Constraint>
     </AddConstraint>
   </AlterTable>

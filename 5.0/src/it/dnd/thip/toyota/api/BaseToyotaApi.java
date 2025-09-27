@@ -51,8 +51,9 @@ public abstract class BaseToyotaApi {
 
 		ApiResponse ar = c.send(req);
 
+		String bodyAsString = ar.getBodyAsString();
 		Response r = InterfacciaToyota.getInstance().buildResponse(ar.getStatus(),
-				new JSONObject(ar.getBodyAsString()));
+				bodyAsString.isEmpty() ? "" : new JSONObject(bodyAsString));
 
 		return onAfter(ctx, r);
 	}

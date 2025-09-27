@@ -24,6 +24,10 @@ public class SubscriptionViewSelector extends ViewSelectorDefault {
 
 	@Override
 	public String getNewObjectURL(ClassADCollection cadc, ServletEnvironment se, String actionAdapterName) {
-		return "it/dnd/thip/toyota/subscription/SubscriptionNuovo.jsp";
+		String url = null;
+		String urlObj = "it/dnd/thip/toyota/subscription/SubscriptionNuovo.jsp";
+		if (urlObj != null)
+			url = "/" + urlObj + "?Mode=NEW" + "&InitialActionAdapter=" + actionAdapterName;
+		return url;
 	}
 }

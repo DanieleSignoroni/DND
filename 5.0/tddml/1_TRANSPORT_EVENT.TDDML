@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE TDDML SYSTEM "../../../TDDML.dtd">
+<TDDML>
+  <!-- TRANSPORT_EVENT (TRANSP0): Transport Event; -->
+  <CreateTable schema="TOYOTA" name="TRANSPORT_EVENT" shortname="TRANSP0">
+    <Column name="ID" shortname="I0" type="varchar" length="500" nullable="no"/>
+    <Column name="STATO" shortname="STAT0" type="char" length="1" nullable="no"/>
+    <Column name="R_UTENTE_CRZ" shortname="R_UTENTE_0" type="char" length="20" nullable="yes"/>
+    <Column name="TIMESTAMP_CRZ" shortname="TIMESTAMP0" type="timestamp" nullable="no" default="CURRENT TIMESTAMP"/>
+    <Column name="R_UTENTE_AGG" shortname="R_UTENTE_1" type="char" length="20" nullable="yes"/>
+    <Column name="TIMESTAMP_AGG" shortname="TIMESTAMP1" type="timestamp" nullable="no" default="CURRENT TIMESTAMP"/>
+    <Column name="ID_EVENT" shortname="ID_EVENT" type="integer" nullable="no"/>
+    <Column name="EVENT_TYPE" shortname="EVENT_TYPE" type="varchar" length="35" nullable="no"/>
+    <Column name="DATA" shortname="DAT0" type="longvarchar" length="5000" nullable="yes"/>
+  </CreateTable>
+  <CreateIndex schema="TOYOTA" name="TRANSPORT_EVEN_I01" tabschema="TOYOTA" tabname="TRANSPORT_EVENT" shortname="TRANSP_I02" unique="yes">
+    <IndexCol name="ID" order="Asc"/>
+    <IndexCol name="ID_EVENT" order="Asc"/>
+    <IndexCol name="EVENT_TYPE" order="Asc"/>
+  </CreateIndex>
+  <AlterTable schema="TOYOTA" name="TRANSPORT_EVENT">
+    <AddPrimaryKey>
+      <PrimaryKey>
+        <ColumnRef name="ID"/>
+        <ColumnRef name="ID_EVENT"/>
+        <ColumnRef name="EVENT_TYPE"/>
+      </PrimaryKey>
+    </AddPrimaryKey>
+  </AlterTable>
+  <Comment>
+    <CommentTable schema="TOYOTA" name="TRANSPORT_EVENT" text="Transport Event">
+      <CommentColumn name="ID" text="id"/>
+      <CommentColumn name="STATO" text="Stato"/>
+      <CommentColumn name="R_UTENTE_CRZ" text="Utente creazione"/>
+      <CommentColumn name="TIMESTAMP_CRZ" text="Timestamp creazione"/>
+      <CommentColumn name="R_UTENTE_AGG" text="Utente ultima modifica"/>
+      <CommentColumn name="TIMESTAMP_AGG" text="Timestamp ultima modifica"/>
+      <CommentColumn name="ID_EVENT" text="Index"/>
+      <CommentColumn name="EVENT_TYPE" text="Event Type"/>
+      <CommentColumn name="DATA" text="Data"/>
+    </CommentTable>
+    <CommentIndex schema="TOYOTA" name="TRANSPORT_EVEN_I01" text="Primary Key"/>
+  </Comment>
+  <Grant schema="TOYOTA" name="TRANSPORT_EVENT"/>
+</TDDML>

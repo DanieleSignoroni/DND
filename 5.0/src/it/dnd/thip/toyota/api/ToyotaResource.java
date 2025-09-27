@@ -10,6 +10,22 @@ import org.json.JSONObject;
 
 import com.thera.thermfw.rs.BaseResource;
 
+/**
+ * <p></p>
+ *
+ * <p>
+ * Company: Softre Solutions<br>
+ * Author: Daniele Signoroni<br>
+ * Date: 27/09/2025
+ * </p>
+ */
+
+/*
+ * Revisions:
+ * Number   Date        Owner    Description
+ * 72XXX    27/09/2025  DSSOF3   Prima stesura
+ */
+
 @Path("/toyota")
 public class ToyotaResource extends BaseResource {
 	
@@ -27,6 +43,8 @@ public class ToyotaResource extends BaseResource {
 	@POST 
 	@Path("/transport/notify")
 	public Response transportNotify(String body) {	   
-		return buildResponse(Status.OK);
+		JSONObject res = service.receiveTransportNotify(body);
+		return buildResponse(Status.OK, res);
 	}
+	
 }

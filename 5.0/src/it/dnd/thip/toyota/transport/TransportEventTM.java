@@ -1,9 +1,9 @@
 /*
- * @(#)TransportTM.java
+ * @(#)TransportEventTM.java
  */
 
 /**
- * TransportTM
+ * TransportEventTM
  *
  * <br></br><b>Copyright (C) : Thera SpA</b>
  * @author Wizard 27/09/2025 at 13:43:12
@@ -21,9 +21,14 @@ import java.sql.*;
 import com.thera.thermfw.base.*;
 import it.thera.thip.cs.*;
 
-public class TransportTM extends TableManager {
+public class TransportEventTM extends TableManager {
 
   
+  /**
+   * Attributo ID
+   */
+  public static final String ID = "ID";
+
   /**
    * Attributo STATO
    */
@@ -50,9 +55,14 @@ public class TransportTM extends TableManager {
   public static final String TIMESTAMP_AGG = "TIMESTAMP_AGG";
 
   /**
-   * Attributo ID
+   * Attributo ID_EVENT
    */
-  public static final String ID = "ID";
+  public static final String ID_EVENT = "ID_EVENT";
+
+  /**
+   * Attributo EVENT_TYPE
+   */
+  public static final String EVENT_TYPE = "EVENT_TYPE";
 
   /**
    * Attributo DATA
@@ -60,14 +70,9 @@ public class TransportTM extends TableManager {
   public static final String DATA = "DATA";
 
   /**
-   * Attributo TRANSPORT_STATE
-   */
-  public static final String TRANSPORT_STATE = "TRANSPORT_STATE";
-
-  /**
    *  TABLE_NAME
    */
-  public static final String TABLE_NAME = SystemParam.getSchema("TOYOTA") + "TRANSPORT";
+  public static final String TABLE_NAME = SystemParam.getSchema("TOYOTA") + "TRANSPORT_EVENT";
 
   /**
    *  instance
@@ -77,7 +82,7 @@ public class TransportTM extends TableManager {
   /**
    *  CLASS_NAME
    */
-  private static final String CLASS_NAME = it.dnd.thip.toyota.transport.Transport.class.getName();
+  private static final String CLASS_NAME = it.dnd.thip.toyota.transport.TransportEvent.class.getName();
 
   
   /**
@@ -93,13 +98,13 @@ public class TransportTM extends TableManager {
    */
   public synchronized static TableManager getInstance() throws SQLException {
     if (cInstance == null) {
-      cInstance = (TableManager)Factory.createObject(TransportTM.class);
+      cInstance = (TableManager)Factory.createObject(TransportEventTM.class);
     }
     return cInstance;
   }
 
   /**
-   *  TransportTM
+   *  TransportEventTM
    * @throws SQLException
    */
   /*
@@ -108,7 +113,7 @@ public class TransportTM extends TableManager {
    * 27/09/2025    CodeGen     Codice generato da CodeGenerator
    *
    */
-  public TransportTM() throws SQLException {
+  public TransportEventTM() throws SQLException {
     super();
   }
 
@@ -140,12 +145,13 @@ public class TransportTM extends TableManager {
    */
   protected void initializeRelation() throws SQLException {
     super.initializeRelation();
-    addAttribute("Id", ID);
+    addAttribute("Index", ID_EVENT, "getIntegerObject");
+    addAttribute("EventType", EVENT_TYPE);
     addAttribute("Data", DATA);
-    addAttribute("TransportState", TRANSPORT_STATE);
+    addAttribute("Id", ID);
     
     addComponent("DatiComuniEstesi", DatiComuniEstesiTTM.class);
-    setKeys(ID);
+    setKeys(ID + "," + ID_EVENT + "," + EVENT_TYPE);
 
     setTimestampColumn("TIMESTAMP_AGG");
     ((it.thera.thip.cs.DatiComuniEstesiTTM)getTransientTableManager("DatiComuniEstesi")).setExcludedColums();
@@ -162,9 +168,9 @@ public class TransportTM extends TableManager {
    *
    */
   private void init() throws SQLException {
-    configure(ID + ", " + DATA + ", " + TRANSPORT_STATE + ", " + STATO
-         + ", " + R_UTENTE_CRZ + ", " + TIMESTAMP_CRZ + ", " + R_UTENTE_AGG + ", " + TIMESTAMP_AGG
-        );
+    configure(ID_EVENT + ", " + EVENT_TYPE + ", " + DATA + ", " + ID
+         + ", " + STATO + ", " + R_UTENTE_CRZ + ", " + TIMESTAMP_CRZ + ", " + R_UTENTE_AGG
+         + ", " + TIMESTAMP_AGG);
   }
 
 }

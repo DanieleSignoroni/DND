@@ -24,7 +24,7 @@ public class LoadApi extends BaseToyotaApi {
 
 	@Override
 	protected String basePath() { 
-		return "/loads";
+		return "v1/loads";
 	}
 
 	@Override

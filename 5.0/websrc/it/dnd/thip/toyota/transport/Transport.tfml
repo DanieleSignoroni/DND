@@ -22,6 +22,14 @@
         <combobox name="TransportState" classAD="TransportState"/>
         <subform classCD="DatiComuniEstesi" name="DatiComuniEstesi"/>
       </tab>
+      <tab name="tab2" resourceFile="it.dnd.thip.toyota.transport.resources.Transport" resourceID="tab2">
+        <editgrid name="Event" classCD="Event" menu="bottom" type="independent">
+          <column classAD="EventType"/>
+          <column classAD="Index"/>
+          <column classAD="Id" hidden="yes"/>
+          <column classAD="Data"/>
+        </editgrid>
+      </tab>
     </tabbed>
   </form>
 </tfml>

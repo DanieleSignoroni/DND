@@ -25,7 +25,7 @@ public class SubscriptionApi extends BaseToyotaApi {
 
 	@Override
 	protected String basePath() {
-		return "/subscriptions";
+		return "v1/subscriptions";
 	}
 
 	@Override

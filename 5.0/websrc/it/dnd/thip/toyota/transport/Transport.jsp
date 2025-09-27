@@ -137,6 +137,7 @@
   WebTabbed mytabbed = new com.thera.thermfw.web.WebTabbed("mytabbed", "100%", "100%"); 
   mytabbed.setParent(TransportForm); 
  mytabbed.addTab("tab1", "it.dnd.thip.toyota.transport.resources.Transport", "tab1", "Transport", null, null, null, null); 
+ mytabbed.addTab("tab2", "it.dnd.thip.toyota.transport.resources.Transport", "tab2", "Transport", null, null, null, null); 
   mytabbed.write(out); 
 %>
 
@@ -212,6 +213,32 @@
 <!--<span class="subform" id="DatiComuniEstesi"></span>-->
                     </td>
                     <td valign="top">
+                    </td>
+                  </tr>
+                </table>
+              <% mytabbed.endTab(); %> 
+</div>
+              <div class="tabbed_page" id="<%=mytabbed.getTabPageId("tab2")%>" style="width:100%;height:100%;overflow:auto;"><% mytabbed.startTab("tab2"); %>
+                <table style="width: 100%;">
+                  <tr>
+                    <td valign="top">
+                      <%{  WebLabelCompound label = new com.thera.thermfw.web.WebLabelCompound(null, null, "Transport", null, "Event"); 
+   label.setParent(TransportForm); 
+%><label class="<%=label.getClassType()%>" for="Event"><%label.write(out);%></label><%}%>
+                    </td>
+                    <td valign="top">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" valign="top">
+                      <!--<span class="editgrid" id="Event">--><% 
+  WebEditGrid TransportEvent =  
+     new com.thera.thermfw.web.WebEditGrid("Transport", "Event", 8, new String[]{"EventType", "Index", "Id", "Data"}, 3, null, null,false,"com.thera.thermfw.web.servlet.GridActionAdapterForIndependentRow"); 
+ TransportEvent.setParent(TransportForm); 
+ TransportEvent.setNoControlRowKeys(false); 
+ TransportEvent.write(out); 
+%>
+<!--</span>-->
                     </td>
                   </tr>
                 </table>

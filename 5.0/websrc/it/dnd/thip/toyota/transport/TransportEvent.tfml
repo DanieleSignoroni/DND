@@ -1,0 +1,27 @@
+<tfml>
+  <generator type="indipendentRowForm"/>
+  <form classHdr="TransportEvent"
+    name="TransportEventForm"
+    locktype="nolock"
+    errorList="yes" menubar="yes" toolbar="yes" submitReset="none"
+    servlet="com.thera.thermfw.web.servlet.FormActionAdapter"
+    header="com.thera.thermfw.common.Header.jsp"
+    footer="com.thera.thermfw.common.Footer.jsp">
+    <menubar  name="myMenuBar">
+      <import file="it/thera/thip/cs/defObjMenu.tfml"/>
+    </menubar>
+    <toolbar name="myToolBar" imgwidth="16" imgheight="16">
+      <import file="it/thera/thip/cs/defObjMenu.tfml"/>
+    </toolbar>
+    <textinput name="Id" classAD="Id"/>
+    <tabbed name="mytabbed" height="100%" width="100%">
+      <tab name="tab2" resourceFile="it.dnd.thip.toyota.transport.resources.TransportEvent" resourceID="tab2">
+        <textinput name="Index" classAD="Index"/>
+        <textinput name="EventType" classAD="EventType"/>
+        <textarea name="Data" classAD="Data"/>
+        <subform classCD="DatiComuniEstesi" name="DatiComuniEstesi"/>
+      </tab>
+    </tabbed>
+  </form>
+</tfml>
+

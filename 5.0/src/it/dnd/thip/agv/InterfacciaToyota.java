@@ -1,6 +1,8 @@
 package it.dnd.thip.agv;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Properties;
 
 import javax.ws.rs.core.Response;
@@ -11,6 +13,7 @@ import com.thera.thermfw.base.CacheController;
 import com.thera.thermfw.base.Trace;
 import com.thera.thermfw.persist.Factory;
 
+import it.dnd.thip.toyota.PsnDatiToyota;
 import it.dnd.thip.toyota.api.OAuth2ClientCredentialsTokenManager;
 import it.thera.thip.api.client.ApiClient;
 import it.thera.thip.api.client.auth.BearerAuthentication;
@@ -57,6 +60,7 @@ public class InterfacciaToyota {
 	}
 
 	public static void reset() {
+		instance = null;
 		getInstance().load();
 	}
 
@@ -75,11 +79,21 @@ public class InterfacciaToyota {
 	}
 
 	public String getClient_id() {
-		return getStringProperty("client_id");
+		PsnDatiToyota psnDati = PsnDatiToyota.getCurrentPsnDatiToyota();
+		if(psnDati != null) {
+			return psnDati.getClientId();
+		}else {
+			return getStringProperty("client_id");
+		}
 	}
 
 	public String getClient_secret() {
-		return getStringProperty("client_secret");
+		PsnDatiToyota psnDati = PsnDatiToyota.getCurrentPsnDatiToyota();
+		if(psnDati != null) {
+			return psnDati.getClientSecret();
+		}else {
+			return getStringProperty("client_secret");
+		}
 	}
 
 	public String getScope() {
@@ -91,7 +105,12 @@ public class InterfacciaToyota {
 	}
 
 	public String getIp() {
-		return getStringProperty("ip");
+		PsnDatiToyota psnDati = PsnDatiToyota.getCurrentPsnDatiToyota();
+		if(psnDati != null) {
+			return psnDati.getIp();
+		}else {
+			return getStringProperty("ip");
+		}
 	}
 
 	/**
@@ -145,14 +164,20 @@ public class InterfacciaToyota {
 		client.setAuthentication(new BearerAuthentication(getToken()));
 		return client;
 	}
-	
+
 	public Response buildResponse(StatusType status, Object entity) {
-    	ResponseBuilder builder = Response.status(status); 
-    	
-    	if (entity != null) {
-    		builder.entity(entity.toString());
-    	}
-    	
+		ResponseBuilder builder = Response.status(status); 
+
+		if (entity != null) {
+			builder.entity(entity.toString());
+		}
+
 		return builder.build();
-    }
+	}
+	
+	public static Timestamp getTimestampForString(String s) {
+		Instant instant = Instant.parse(s);          
+		Timestamp ts = Timestamp.from(instant);
+		return ts;
+	}
 }
