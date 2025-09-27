@@ -1,28 +1,42 @@
-package it.dnd.thip.toyota.subscription;
-
-import com.thera.thermfw.common.ErrorMessage;
+/*
+ * @(#)Subscription.java
+ */
 
 /**
- * <p></p>
+ * null
  *
- * <p>
- * Company: Softre Solutions<br>
- * Author: Daniele Signoroni<br>
- * Date: 17/09/2025
- * </p>
+ * <br></br><b>Copyright (C) : Thera s.p.a.</b>
+ * @author Wizard 27/09/2025 at 09:40:42
  */
-
 /*
  * Revisions:
- * Number   Date        Owner    Description
- * 72XXX    17/09/2025  DSSOF3   Prima stesura
+ * Date          Owner      Description
+ * 27/09/2025    Wizard     Codice generato da Wizard
+ *
  */
+package it.dnd.thip.toyota.subscription;
+import com.thera.thermfw.persist.*;
+import java.sql.*;
+import com.thera.thermfw.common.*;
 
 public class Subscription extends SubscriptionPO {
 
-	public ErrorMessage checkDelete() {
-
-		return null;
-	}
+  
+  
+  /**
+   * checkDelete
+   * @return ErrorMessage
+   */
+  /*
+   * Revisions:
+   * Date          Owner      Description
+   * 27/09/2025    Wizard     Codice generato da Wizard
+   *
+   */
+  public ErrorMessage checkDelete() {
+    /**@todo*/
+    return null;
+  }
 
 }
+

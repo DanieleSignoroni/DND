@@ -10,10 +10,12 @@
     <Column name="TIMESTAMP_AGG" shortname="TIMESTAMP0" type="timestamp" nullable="no" default="CURRENT TIMESTAMP"/>
     <Column name="ID" shortname="ID" type="varchar" length="500" nullable="no"/>
     <Column name="TS_SUBSCRIPTION" shortname="TS_SUBSCRI" type="timestamp" nullable="yes"/>
-    <Column name="SOURCE_TYPE" shortname="SOURCE_TYP" type="varchar" length="35" nullable="yes"/>
+    <Column name="SOURCE_TYPE" shortname="SOURCE_TYP" type="char" length="1" nullable="no" default="-"/>
     <Column name="ENDPOINT" shortname="ENDPOINT" type="varchar" length="250" nullable="yes"/>
     <Column name="AUTHENTICATION" shortname="AUTHENTICA" type="varchar" length="255" nullable="yes"/>
     <Column name="TS_END_SUBSCRIPTION" shortname="TS_END_SUB" type="timestamp" nullable="yes"/>
+    <Column name="TS_SUB_REFRESHED" shortname="TS_SUB_REF" type="timestamp" nullable="yes"/>
+    <Column name="PASSA_TOYOTA" shortname="PASSA_TOYO" type="char" length="1" nullable="no" default="N"/>
   </CreateTable>
   <CreateIndex schema="TOYOTA" name="SUBSCRIPTION_I01" tabschema="TOYOTA" tabname="SUBSCRIPTION" shortname="SUBSCR_I01" unique="yes">
     <IndexCol name="ID" order="Asc"/>
@@ -38,6 +40,8 @@
       <CommentColumn name="ENDPOINT" text="Endpoint"/>
       <CommentColumn name="AUTHENTICATION" text="Authentication"/>
       <CommentColumn name="TS_END_SUBSCRIPTION" text="Timestamp fine iscrizione"/>
+      <CommentColumn name="TS_SUB_REFRESHED" text="Timestamp ultimo check validità"/>
+      <CommentColumn name="PASSA_TOYOTA" text="Passa a Toyota"/>
     </CommentTable>
     <CommentIndex schema="TOYOTA" name="SUBSCRIPTION_I01" text="Primary Key"/>
   </Comment>

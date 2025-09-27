@@ -190,14 +190,14 @@
                     </td>
                     <td valign="top">
                       <% 
-  WebTextInput SubscriptionSourceType =  
-     new com.thera.thermfw.web.WebTextInput("Subscription", "SourceType"); 
+  WebComboBox SubscriptionSourceType =  
+     new com.thera.thermfw.web.WebComboBox("Subscription", "SourceType", null); 
   SubscriptionSourceType.setParent(SubscriptionForm); 
 %>
-<input class="<%=SubscriptionSourceType.getClassType()%>" id="<%=SubscriptionSourceType.getId()%>" maxlength="<%=SubscriptionSourceType.getMaxLength()%>" name="<%=SubscriptionSourceType.getName()%>" size="<%=SubscriptionSourceType.getSize()%>"><% 
+<select id="<%=SubscriptionSourceType.getId()%>" name="<%=SubscriptionSourceType.getName()%>"><% 
   SubscriptionSourceType.write(out); 
-%>
-
+%> 
+</select>
                     </td>
                   </tr>
                   <tr>
@@ -252,6 +252,39 @@
   SubscriptionTsEndSubscription.write(out); 
 %>
 
+                    </td>
+                  </tr>
+                  <tr>
+                    <td valign="top">
+                      <%{  WebLabelCompound label = new com.thera.thermfw.web.WebLabelCompound(null, null, "Subscription", "TsSubRefreshed", null); 
+   label.setParent(SubscriptionForm); 
+%><label class="<%=label.getClassType()%>" for="TsSubRefreshed"><%label.write(out);%></label><%}%>
+                    </td>
+                    <td valign="top">
+                      <% 
+  WebTextInput SubscriptionTsSubRefreshed =  
+     new com.thera.thermfw.web.WebTextInput("Subscription", "TsSubRefreshed"); 
+  SubscriptionTsSubRefreshed.setParent(SubscriptionForm); 
+%>
+<input class="<%=SubscriptionTsSubRefreshed.getClassType()%>" id="<%=SubscriptionTsSubRefreshed.getId()%>" maxlength="<%=SubscriptionTsSubRefreshed.getMaxLength()%>" name="<%=SubscriptionTsSubRefreshed.getName()%>" size="<%=SubscriptionTsSubRefreshed.getSize()%>"><% 
+  SubscriptionTsSubRefreshed.write(out); 
+%>
+
+                    </td>
+                  </tr>
+                  <tr>
+                    <td valign="top">
+                      <% 
+  WebCheckBox SubscriptionPassaToyota =  
+     new com.thera.thermfw.web.WebCheckBox("Subscription", "PassaToyota"); 
+  SubscriptionPassaToyota.setParent(SubscriptionForm); 
+%>
+<input id="<%=SubscriptionPassaToyota.getId()%>" name="<%=SubscriptionPassaToyota.getName()%>" type="checkbox" value="Y"><%
+  SubscriptionPassaToyota.write(out); 
+%>
+
+                    </td>
+                    <td valign="top">
                     </td>
                   </tr>
                   <tr>

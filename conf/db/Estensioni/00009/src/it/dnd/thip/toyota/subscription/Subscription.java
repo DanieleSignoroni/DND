@@ -6,12 +6,12 @@
  * null
  *
  * <br></br><b>Copyright (C) : Thera s.p.a.</b>
- * @author Wizard 17/09/2025 at 16:53:39
+ * @author Wizard 27/09/2025 at 09:40:42
  */
 /*
  * Revisions:
  * Date          Owner      Description
- * 17/09/2025    Wizard     Codice generato da Wizard
+ * 27/09/2025    Wizard     Codice generato da Wizard
  *
  */
 package it.dnd.thip.toyota.subscription;
@@ -30,7 +30,7 @@ public class Subscription extends SubscriptionPO {
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    Wizard     Codice generato da Wizard
+   * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
   public ErrorMessage checkDelete() {

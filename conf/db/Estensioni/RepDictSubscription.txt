@@ -1,4 +1,5 @@
-<B>2025-09-17 16:53:34</B>
+<B>2025-09-27 09:40:39</B>
+<BR>Il dizionario <B>SUBSCRIPTION</B> è stato cancellato
 <BR>Il file <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00009\tddml\9_DROP_SUBSCRIPTION.TDDML</B> e' stato generato correttamente.
 <BR>Il dizionario <B>SUBSCRIPTION</B> è stato creato
 <BR>Il file <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00009\tddml\9_SUBSCRIPTION.TDDML</B> e' stato generato correttamente.

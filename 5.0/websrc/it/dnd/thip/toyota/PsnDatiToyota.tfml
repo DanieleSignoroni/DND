@@ -1,0 +1,35 @@
+<tfml>
+  <generator type="form"/>
+  <form classHdr="PsnDatiToyota"
+    name="PsnDatiToyotaForm"
+    locktype="nolock"
+    errorList="yes" menubar="yes" toolbar="yes" submitReset="none"
+    servlet="com.thera.thermfw.web.servlet.FormActionAdapter"
+    jsLibraryName="it/dnd/thip/toyota/PsnDatiToyota.js"
+    webFormModifierClass="it.dnd.thip.toyota.web.PsnDatiToyotaFormModifier"
+    onLoadPresent="yes"
+    header="com.thera.thermfw.common.Header.jsp"
+    footer="com.thera.thermfw.common.Footer.jsp">
+    <menubar  name="myMenuBar">
+      <import file="it/thera/thip/cs/defObjMenu.tfml"/>
+    </menubar>
+    <toolbar name="myToolBar" imgwidth="16" imgheight="16">
+      <import file="it/thera/thip/cs/defObjMenu.tfml"/>
+    </toolbar>
+    <textinput name="IdAzienda" classAD="IdAzienda"/>
+    <tabbed name="mytabbed" height="100%" width="100%">
+      <tab name="tab1" resourceFile="it.dnd.thip.toyota.resources.PsnDatiToyota" resourceID="tab1">
+        <textarea name="ClientIdPanth01" classAD="ClientIdPanth01"/>
+        <textarea name="ClientSecretPanth01" classAD="ClientSecretPanth01"/>
+        <textarea name="UrlPanth01" classAD="UrlPanth01"/>
+        <subform classCD="DatiComuniEstesi" name="DatiComuniEstesi"/>
+      </tab>
+      <tab name="tab2" resourceFile="it.dnd.thip.toyota.resources.PsnDatiToyota" resourceID="tab2">
+        <textarea name="ClientIdPanth02" classAD="ClientIdPanth02"/>
+        <textarea name="ClientSecretPanth02" classAD="ClientSecretPanth02"/>
+        <textarea name="UrlPanth02" classAD="UrlPanth02"/>
+      </tab>
+    </tabbed>
+  </form>
+</tfml>
+

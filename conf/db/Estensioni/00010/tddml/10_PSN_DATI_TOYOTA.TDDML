@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE TDDML SYSTEM "../../../TDDML.dtd">
+<TDDML>
+  <!-- PSN_DATI_TOYOTA (PSN_DA1): Pers. Dati - Toyota; -->
+  <CreateTable schema="THIPPERS" name="PSN_DATI_TOYOTA" shortname="PSN_DA1">
+    <Column name="ID_AZIENDA" shortname="ID_AZIENDA" type="char" length="3" nullable="no"/>
+    <Column name="STATO" shortname="STATO" type="char" length="1" nullable="no"/>
+    <Column name="R_UTENTE_CRZ" shortname="R_UTENTE_C" type="char" length="20" nullable="yes"/>
+    <Column name="TIMESTAMP_CRZ" shortname="TIMESTAMP_" type="timestamp" nullable="no" default="CURRENT TIMESTAMP"/>
+    <Column name="R_UTENTE_AGG" shortname="R_UTENTE_A" type="char" length="20" nullable="yes"/>
+    <Column name="TIMESTAMP_AGG" shortname="TIMESTAMP0" type="timestamp" nullable="no" default="CURRENT TIMESTAMP"/>
+    <Column name="CLIENT_ID_PANTH01" shortname="CLIENT_ID_" type="varchar" length="1000" nullable="no"/>
+    <Column name="CLIENT_SECRET_PANTH01" shortname="CLIENT_SEC" type="varchar" length="1000" nullable="no"/>
+    <Column name="URL_PANTH01" shortname="URL_PANTH0" type="varchar" length="250" nullable="no"/>
+    <Column name="CLIENT_ID_PANTH02" shortname="CLIENT_ID0" type="varchar" length="1000" nullable="no"/>
+    <Column name="CLIENT_SECRET_PANTH02" shortname="CLIENT_SE0" type="varchar" length="1000" nullable="no"/>
+    <Column name="URL_PANTH02" shortname="URL_PANTH1" type="varchar" length="250" nullable="no"/>
+  </CreateTable>
+  <CreateIndex schema="THIPPERS" name="PSN_DATI_TOYOT_I01" tabschema="THIPPERS" tabname="PSN_DATI_TOYOTA" shortname="PSN_DA_I02" unique="yes">
+    <IndexCol name="ID_AZIENDA" order="Asc"/>
+  </CreateIndex>
+  <AlterTable schema="THIPPERS" name="PSN_DATI_TOYOTA">
+    <AddPrimaryKey>
+      <PrimaryKey>
+        <ColumnRef name="ID_AZIENDA"/>
+      </PrimaryKey>
+    </AddPrimaryKey>
+  </AlterTable>
+  <Comment>
+    <CommentTable schema="THIPPERS" name="PSN_DATI_TOYOTA" text="Pers. Dati - Toyota">
+      <CommentColumn name="ID_AZIENDA" text="Azienda"/>
+      <CommentColumn name="STATO" text="Stato"/>
+      <CommentColumn name="R_UTENTE_CRZ" text="Utente creazione"/>
+      <CommentColumn name="TIMESTAMP_CRZ" text="Timestamp creazione"/>
+      <CommentColumn name="R_UTENTE_AGG" text="Utente ultima modifica"/>
+      <CommentColumn name="TIMESTAMP_AGG" text="Timestamp ultima modifica"/>
+      <CommentColumn name="CLIENT_ID_PANTH01" text="Client id (PANTH01)"/>
+      <CommentColumn name="CLIENT_SECRET_PANTH01" text="Client secret (PANTH01)"/>
+      <CommentColumn name="URL_PANTH01" text="URL (PANTH01)"/>
+      <CommentColumn name="CLIENT_ID_PANTH02" text="Client id (PANTH02)"/>
+      <CommentColumn name="CLIENT_SECRET_PANTH02" text="Client secret (PANTH02)"/>
+      <CommentColumn name="URL_PANTH02" text="URL (PANTH02)"/>
+    </CommentTable>
+    <CommentIndex schema="THIPPERS" name="PSN_DATI_TOYOT_I01" text="Primary Key"/>
+  </Comment>
+  <Grant schema="THIPPERS" name="PSN_DATI_TOYOTA"/>
+</TDDML>

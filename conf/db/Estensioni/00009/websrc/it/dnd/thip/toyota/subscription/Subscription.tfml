@@ -19,10 +19,12 @@
       <tab name="tab1" resourceFile="it.dnd.thip.toyota.subscription.resources.Subscription" resourceID="tab1">
         <textarea name="Id" classAD="Id"/>
         <textinput name="TimestampSubscription" classAD="TimestampSubscription"/>
-        <textinput name="SourceType" classAD="SourceType"/>
+        <combobox name="SourceType" classAD="SourceType"/>
         <textarea name="Endpoint" classAD="Endpoint"/>
         <textarea name="Authentication" classAD="Authentication"/>
         <textinput name="TsEndSubscription" classAD="TsEndSubscription"/>
+        <textinput name="TsSubRefreshed" classAD="TsSubRefreshed"/>
+        <checkbox classAD="PassaToyota" name="PassaToyota"/>
         <subform classCD="DatiComuniEstesi" name="DatiComuniEstesi"/>
       </tab>
     </tabbed>

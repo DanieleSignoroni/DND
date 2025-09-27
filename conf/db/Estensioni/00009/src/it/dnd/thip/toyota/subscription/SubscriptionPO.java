@@ -6,12 +6,12 @@
  * null
  *
  * <br></br><b>Copyright (C) : Thera SpA</b>
- * @author Wizard 17/09/2025 at 16:53:39
+ * @author Wizard 27/09/2025 at 09:40:42
  */
 /*
  * Revisions:
  * Date          Owner      Description
- * 17/09/2025    Wizard     Codice generato da Wizard
+ * 27/09/2025    Wizard     Codice generato da Wizard
  *
  */
 package it.dnd.thip.toyota.subscription;
@@ -43,7 +43,7 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
   /**
    * Attributo iSourceType
    */
-  protected String iSourceType;
+  protected char iSourceType = '-';
 
   /**
    * Attributo iEndpoint
@@ -60,6 +60,16 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
    */
   protected java.sql.Timestamp iTsEndSubscription;
 
+  /**
+   * Attributo iTsSubRefreshed
+   */
+  protected java.sql.Timestamp iTsSubRefreshed;
+
+  /**
+   * Attributo iPassaToyota
+   */
+  protected boolean iPassaToyota = false;
+
   
   /**
    *  retrieveList
@@ -75,7 +85,7 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    CodeGen     Codice generato da CodeGenerator
+   * 27/09/2025    CodeGen     Codice generato da CodeGenerator
    *
    */
   public static Vector retrieveList(String where, String orderBy, boolean optimistic) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
@@ -94,7 +104,7 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    CodeGen     Codice generato da CodeGenerator
+   * 27/09/2025    CodeGen     Codice generato da CodeGenerator
    *
    */
   public static Subscription elementWithKey(String key, int lockType) throws SQLException {
@@ -107,12 +117,12 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    Wizard     Codice generato da Wizard
+   * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
   public SubscriptionPO() {
-  
-    // TO DO
+    setSourceType('-');
+    setPassaToyota(false);
   }
 
   /**
@@ -122,7 +132,7 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    Wizard     Codice generato da Wizard
+   * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
   public void setId(String id) {
@@ -138,7 +148,7 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    Wizard     Codice generato da Wizard
+   * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
   public String getId() {
@@ -152,7 +162,7 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    Wizard     Codice generato da Wizard
+   * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
   public void setTimestampSubscription(java.sql.Timestamp timestampSubscription) {
@@ -167,7 +177,7 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    Wizard     Codice generato da Wizard
+   * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
   public java.sql.Timestamp getTimestampSubscription() {
@@ -181,25 +191,25 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    Wizard     Codice generato da Wizard
+   * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
-  public void setSourceType(String sourceType) {
+  public void setSourceType(char sourceType) {
     this.iSourceType = sourceType;
     setDirty();
   }
 
   /**
    * Restituisce l'attributo. 
-   * @return String
+   * @return char
    */
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    Wizard     Codice generato da Wizard
+   * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
-  public String getSourceType() {
+  public char getSourceType() {
     return iSourceType;
   }
 
@@ -210,7 +220,7 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    Wizard     Codice generato da Wizard
+   * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
   public void setEndpoint(String endpoint) {
@@ -225,7 +235,7 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    Wizard     Codice generato da Wizard
+   * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
   public String getEndpoint() {
@@ -239,7 +249,7 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    Wizard     Codice generato da Wizard
+   * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
   public void setAuthentication(String authentication) {
@@ -254,7 +264,7 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    Wizard     Codice generato da Wizard
+   * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
   public String getAuthentication() {
@@ -268,7 +278,7 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    Wizard     Codice generato da Wizard
+   * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
   public void setTsEndSubscription(java.sql.Timestamp tsEndSubscription) {
@@ -283,11 +293,69 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    Wizard     Codice generato da Wizard
+   * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
   public java.sql.Timestamp getTsEndSubscription() {
     return iTsEndSubscription;
+  }
+
+  /**
+   * Valorizza l'attributo. 
+   * @param tsSubRefreshed
+   */
+  /*
+   * Revisions:
+   * Date          Owner      Description
+   * 27/09/2025    Wizard     Codice generato da Wizard
+   *
+   */
+  public void setTsSubRefreshed(java.sql.Timestamp tsSubRefreshed) {
+    this.iTsSubRefreshed = tsSubRefreshed;
+    setDirty();
+  }
+
+  /**
+   * Restituisce l'attributo. 
+   * @return java.sql.Timestamp
+   */
+  /*
+   * Revisions:
+   * Date          Owner      Description
+   * 27/09/2025    Wizard     Codice generato da Wizard
+   *
+   */
+  public java.sql.Timestamp getTsSubRefreshed() {
+    return iTsSubRefreshed;
+  }
+
+  /**
+   * Valorizza l'attributo. 
+   * @param passaToyota
+   */
+  /*
+   * Revisions:
+   * Date          Owner      Description
+   * 27/09/2025    Wizard     Codice generato da Wizard
+   *
+   */
+  public void setPassaToyota(boolean passaToyota) {
+    this.iPassaToyota = passaToyota;
+    setDirty();
+  }
+
+  /**
+   * Restituisce l'attributo. 
+   * @return boolean
+   */
+  /*
+   * Revisions:
+   * Date          Owner      Description
+   * 27/09/2025    Wizard     Codice generato da Wizard
+   *
+   */
+  public boolean getPassaToyota() {
+    return iPassaToyota;
   }
 
   /**
@@ -298,7 +366,7 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    Wizard     Codice generato da Wizard
+   * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
   public void setEqual(Copyable obj) throws CopyException {
@@ -308,6 +376,8 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
         iTimestampSubscription = (java.sql.Timestamp)subscriptionPO.iTimestampSubscription.clone();
     if (subscriptionPO.iTsEndSubscription != null)
         iTsEndSubscription = (java.sql.Timestamp)subscriptionPO.iTsEndSubscription.clone();
+    if (subscriptionPO.iTsSubRefreshed != null)
+        iTsSubRefreshed = (java.sql.Timestamp)subscriptionPO.iTsSubRefreshed.clone();
   }
 
   /**
@@ -318,7 +388,7 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    Wizard     Codice generato da Wizard
+   * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
   public Vector checkAll(BaseComponentsCollection components) {
@@ -334,7 +404,7 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    Wizard     Codice generato da Wizard
+   * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
   public void setKey(String key) {
@@ -348,7 +418,7 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    Wizard     Codice generato da Wizard
+   * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
   public String getKey() {
@@ -362,7 +432,7 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    Wizard     Codice generato da Wizard
+   * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
   public boolean isDeletable() {
@@ -376,7 +446,7 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    Wizard     Codice generato da Wizard
+   * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
   public String toString() {
@@ -391,7 +461,7 @@ public abstract class SubscriptionPO extends PersistentObjectDCE implements Busi
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    CodeGen     Codice generato da CodeGenerator
+   * 27/09/2025    CodeGen     Codice generato da CodeGenerator
    *
    */
   protected TableManager getTableManager() throws SQLException {

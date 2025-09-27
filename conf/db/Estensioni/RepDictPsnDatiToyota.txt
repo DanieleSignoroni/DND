@@ -1,0 +1,6 @@
+<B>2025-09-27 09:24:58</B>
+<BR>Il file <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00010\tddml\10_DROP_PSN_DATI_TOYOTA.TDDML</B> e' stato generato correttamente.
+<BR>Il dizionario <B>PSN_DATI_TOYOTA</B> è stato creato
+<BR>Il file <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00010\tddml\10_PSN_DATI_TOYOTA.TDDML</B> e' stato generato correttamente.
+<BR>Il file <B>W:\PthDev\Projects\Panthera\DND\conf\db\Estensioni\00010\tddml\10_CONSTRAINT.TDDML</B> e' stato generato correttamente.
+<BR><B>La generazione tabella è completata con successo</B><BR>

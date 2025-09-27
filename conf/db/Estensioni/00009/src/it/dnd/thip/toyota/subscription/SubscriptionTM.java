@@ -6,12 +6,12 @@
  * SubscriptionTM
  *
  * <br></br><b>Copyright (C) : Thera SpA</b>
- * @author Wizard 17/09/2025 at 16:53:39
+ * @author Wizard 27/09/2025 at 09:40:42
  */
 /*
  * Revisions:
  * Date          Owner      Description
- * 17/09/2025    Wizard     Codice generato da Wizard
+ * 27/09/2025    Wizard     Codice generato da Wizard
  *
  */
 package it.dnd.thip.toyota.subscription;
@@ -80,6 +80,16 @@ public class SubscriptionTM extends TableManager {
   public static final String TS_END_SUBSCRIPTION = "TS_END_SUBSCRIPTION";
 
   /**
+   * Attributo TS_SUB_REFRESHED
+   */
+  public static final String TS_SUB_REFRESHED = "TS_SUB_REFRESHED";
+
+  /**
+   * Attributo PASSA_TOYOTA
+   */
+  public static final String PASSA_TOYOTA = "PASSA_TOYOTA";
+
+  /**
    *  TABLE_NAME
    */
   public static final String TABLE_NAME = SystemParam.getSchema("TOYOTA") + "SUBSCRIPTION";
@@ -103,7 +113,7 @@ public class SubscriptionTM extends TableManager {
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    CodeGen     Codice generato da CodeGenerator
+   * 27/09/2025    CodeGen     Codice generato da CodeGenerator
    *
    */
   public synchronized static TableManager getInstance() throws SQLException {
@@ -120,7 +130,7 @@ public class SubscriptionTM extends TableManager {
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    CodeGen     Codice generato da CodeGenerator
+   * 27/09/2025    CodeGen     Codice generato da CodeGenerator
    *
    */
   public SubscriptionTM() throws SQLException {
@@ -134,7 +144,7 @@ public class SubscriptionTM extends TableManager {
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    CodeGen     Codice generato da CodeGenerator
+   * 27/09/2025    CodeGen     Codice generato da CodeGenerator
    *
    */
   protected void initialize() throws SQLException {
@@ -150,7 +160,7 @@ public class SubscriptionTM extends TableManager {
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    Wizard     Codice generato da Wizard
+   * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
   protected void initializeRelation() throws SQLException {
@@ -161,6 +171,8 @@ public class SubscriptionTM extends TableManager {
     addAttribute("Endpoint", ENDPOINT);
     addAttribute("Authentication", AUTHENTICATION);
     addAttribute("TsEndSubscription", TS_END_SUBSCRIPTION);
+    addAttribute("TsSubRefreshed", TS_SUB_REFRESHED);
+    addAttribute("PassaToyota", PASSA_TOYOTA);
     
     addComponent("DatiComuniEstesi", DatiComuniEstesiTTM.class);
     setKeys(ID);
@@ -176,13 +188,14 @@ public class SubscriptionTM extends TableManager {
   /*
    * Revisions:
    * Date          Owner      Description
-   * 17/09/2025    Wizard     Codice generato da Wizard
+   * 27/09/2025    Wizard     Codice generato da Wizard
    *
    */
   private void init() throws SQLException {
     configure(ID + ", " + TS_SUBSCRIPTION + ", " + SOURCE_TYPE + ", " + ENDPOINT
-         + ", " + AUTHENTICATION + ", " + TS_END_SUBSCRIPTION + ", " + STATO + ", " + R_UTENTE_CRZ
-         + ", " + TIMESTAMP_CRZ + ", " + R_UTENTE_AGG + ", " + TIMESTAMP_AGG);
+         + ", " + AUTHENTICATION + ", " + TS_END_SUBSCRIPTION + ", " + TS_SUB_REFRESHED + ", " + PASSA_TOYOTA
+         + ", " + STATO + ", " + R_UTENTE_CRZ + ", " + TIMESTAMP_CRZ + ", " + R_UTENTE_AGG
+         + ", " + TIMESTAMP_AGG);
   }
 
 }
